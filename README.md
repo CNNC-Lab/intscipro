@@ -39,7 +39,7 @@ This advanced course is designed to equip students with the programming, computa
 <tr><td>Nov 14</td><td><strong><a href="day05-data/README.md">Data Manipulation & Analysis</a></strong></td><td>Pandas, data cleaning</td></tr>
 <tr><td>Nov 21</td><td><strong><a href="day06-visualization/README.md">Visualization & Communication</a></strong></td><td>Publication-quality figures</td></tr>
 <tr><td>Nov 28</td><td><strong><a href="day07-intermediate/README.md">Intermediate Programming Concepts</a></strong></td><td>Error handling, documentation</td></tr>
-<tr><td>Dec 05</td><td><strong>Statistical Analysis & Machine Learning I</strong></td><td>Statistics, scikit-learn</td></tr>
+<tr><td>Dec 05</td><td><strong><a href="day08-machinelearning/README.md">Machine Learning I</a></strong></td><td>Statistics, scikit-learn</td></tr>
 <tr><td>Dec 12</td><td><strong>Statistical Analysis & Machine Learning II</strong></td><td>Deep learning, PyTorch</td></tr>
 <tr><td>Dec 19</td><td><strong>Numerical Simulation & Modeling</strong></td><td>Mathematical modeling</td></tr>
 <tr><td>Jan 09</td><td><strong>Specialized Tools & Domain Applications</strong></td><td>Neuroscience-specific tools</td></tr>
