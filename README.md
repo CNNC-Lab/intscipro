@@ -40,10 +40,10 @@ This advanced course is designed to equip students with the programming, computa
 <tr><td>Nov 21</td><td><strong><a href="day06-visualization/README.md">Visualization & Communication</a></strong></td><td>Publication-quality figures</td></tr>
 <tr><td>Nov 28</td><td><strong><a href="day07-intermediate/README.md">Intermediate Programming Concepts</a></strong></td><td>Error handling, documentation</td></tr>
 <tr><td>Dec 05</td><td><strong><a href="day08-machinelearning/README.md">Machine Learning I</a></strong></td><td>Statistics, scikit-learn</td></tr>
-<tr><td>Dec 12</td><td><strong>Statistical Analysis & Machine Learning II</strong></td><td>Deep learning, PyTorch</td></tr>
-<tr><td>Dec 19</td><td><strong>Numerical Simulation & Modeling</strong></td><td>Mathematical modeling</td></tr>
-<tr><td>Jan 09</td><td><strong>Specialized Tools & Domain Applications</strong></td><td>Neuroscience-specific tools</td></tr>
-<tr><td>Jan 16</td><td><strong>Professional Development & Advanced Topics</strong></td><td>Testing, CI/CD, career paths</td></tr>
+<tr><td>Dec 12</td><td><strong><a href="day09-project-description/README.md">Project Description and Organization</a></strong></td><td>Project planning, organization</td></tr>
+<tr><td>Dec 19</td><td><strong><a href="day10-neural-networks/README.md">Neural Networks & Deep Learning: From Theory to Biomedical Applications</a></strong></td><td>Deep learning, PyTorch, transformers</td></tr>
+<tr><td>Jan 09</td><td><strong>Numerical Simulation & Analysis</strong></td><td>Mathematical modeling, simulations</td></tr>
+<tr><td>Jan 16</td><td><strong>Student Projects</strong></td><td>Custom research solutions</td></tr>
 <tr><td>Jan 23</td><td><strong>Student Projects</strong></td><td>Custom research solutions</td></tr>
 <tr><td>Jan 30</td><td><strong>Student Presentations</strong></td><td>Project showcases</td></tr>
 </table>
