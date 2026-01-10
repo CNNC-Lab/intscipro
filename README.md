@@ -42,7 +42,7 @@ This advanced course is designed to equip students with the programming, computa
 <tr><td>Dec 05</td><td><strong><a href="day08-machinelearning/README.md">Machine Learning I</a></strong></td><td>Statistics, scikit-learn</td></tr>
 <tr><td>Dec 12</td><td><strong><a href="day09-project-description/README.md">Project Description and Organization</a></strong></td><td>Project planning, organization</td></tr>
 <tr><td>Dec 19</td><td><strong><a href="day10-neural-networks/README.md">Neural Networks & Deep Learning: From Theory to Biomedical Applications</a></strong></td><td>Deep learning, PyTorch, transformers</td></tr>
-<tr><td>Jan 09</td><td><strong>Numerical Simulation & Analysis</strong></td><td>Mathematical modeling, simulations</td></tr>
+<tr><td>Jan 09</td><td><strong><a href="day11-simulation/README.md">Simulation & Modeling in Neuroscience</a></strong></td><td>Differential equations, numerical methods, dynamical systems</td></tr>
 <tr><td>Jan 16</td><td><strong>Student Projects</strong></td><td>Custom research solutions</td></tr>
 <tr><td>Jan 23</td><td><strong>Student Projects</strong></td><td>Custom research solutions</td></tr>
 <tr><td>Jan 30</td><td><strong>Student Presentations</strong></td><td>Project showcases</td></tr>
