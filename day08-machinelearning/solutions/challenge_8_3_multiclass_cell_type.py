@@ -175,7 +175,7 @@ print("=" * 60)
 # Train a simple logistic regression for interpretability
 lr_pipeline = Pipeline([
     ('scaler', StandardScaler()),
-    ('classifier', LogisticRegression(multi_class='multinomial', random_state=42))
+    ('classifier', LogisticRegression(random_state=42))
 ])
 lr_pipeline.fit(X_train, y_train)
 

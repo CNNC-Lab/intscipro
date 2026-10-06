@@ -25,7 +25,7 @@ This day covers advanced data visualization and scientific communication tools f
   - Creating custom figure style templates
 
 ## Solutions
-Complete solutions are provided in a separate notebook [`day06_solutions.ipynb`](notebooks/day06_solutions.ipynb).
+Complete solutions are provided in a separate notebook [`solutions.ipynb`](notebooks/solutions.ipynb).
 
 ## Learning Objectives
 

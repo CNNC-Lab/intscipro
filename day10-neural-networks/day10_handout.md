@@ -2486,5 +2486,4 @@ Deep learning is a rapidly evolving field. Stay curious, keep learning, and reme
 ---
 *This handout is part of the "Introduction to Scientific Programming" course at CNC-UC, University of Coimbra. For questions or clarifications, please contact the course instructor.*
 **Document Version**: 1.0  
-**Last Updated**: December 2025  
 **License**: CC BY 4.0

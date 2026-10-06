@@ -1027,4 +1027,4 @@ Once comfortable with Week 8 exercises:
 **Remember: The goal is understanding, not just completing exercises. Take your time, experiment, and ask questions!**
 
 *Exercises prepared for CNC-UC Introduction to Scientific Programming*  
-*University of Coimbra, December 2025*
+*University of Coimbra*

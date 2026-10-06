@@ -1,5 +1,7 @@
 # Exercise 3 2 - Solution
 
+from _setup import *  # noqa: F401,F403 - data built in the exercise text
+
 from scipy import stats
 import matplotlib.pyplot as plt
 

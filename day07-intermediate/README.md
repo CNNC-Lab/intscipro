@@ -26,11 +26,11 @@ This day covers intermediate programming concepts essential for writing professi
 
 ## Solutions
 Complete solutions for all exercises are available in the [`solutions/`](solutions/) directory:
-- `exercise1_robust_data_loading.py` - Error handling and validation
-- `exercise2_lif_neuron.py` - OOP with type hints and properties
-- `exercise3_functional_programming.py` - Map, filter, reduce patterns
+- `exercise_1_robust_data_loading.py` - Error handling and validation
+- `exercise_2_lif_neuron.py` - OOP with type hints and properties
+- `exercise_3_functional_programming.py` - Map, filter, reduce patterns
 - `spike_analysis.py` + `test_spike_analysis.py` - Unit testing with pytest
-- `exercise5_refactored.py` - Professional refactoring example
+- `exercise_5_refactored.py` - Professional refactoring example
 - `bonus_complete_pipeline.py` - Complete analysis pipeline
 - `README.md` - Detailed documentation and usage examples
 - `SOLUTIONS_SUMMARY.md` - Summary of all solutions with test results

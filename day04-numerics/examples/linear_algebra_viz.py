@@ -15,6 +15,8 @@ A_inv = np.linalg.inv(A)
 
 # Eigenvalues and eigenvectors
 eigenvalues, eigenvectors = np.linalg.eig(A)
+# This matrix has real eigenvalues; recent NumPy versions may return a complex dtype
+eigenvalues, eigenvectors = np.real_if_close(eigenvalues), np.real_if_close(eigenvectors)
 
 # Solve linear system Ax = b
 b = np.array([1, 2])

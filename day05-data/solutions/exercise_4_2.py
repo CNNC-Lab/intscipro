@@ -1,5 +1,7 @@
 # Exercise 4 2 - Solution
 
+from _setup import *  # noqa: F401,F403 - data built in the exercise text
+
 # a) Basic group means
 print("=== BASIC GROUP AGGREGATIONS ===\n")
 

@@ -1,5 +1,7 @@
 # Exercise 5 2 - Solution
 
+from _setup import *  # noqa: F401,F403 - data built in the exercise text
+
 # a) Create additional datasets (code provided above)
 np.random.seed(42)
 
@@ -198,7 +200,7 @@ comt_groups_plot = [
     comt_data_for_plot[comt_data_for_plot['COMT_val158met'] == geno]['reaction_time']
     for geno in comt_data_for_plot['COMT_val158met'].unique()
 ]
-axes[1].boxplot(comt_groups_plot, labels=comt_data_for_plot['COMT_val158met'].unique())
+axes[1].boxplot(comt_groups_plot, tick_labels=comt_data_for_plot['COMT_val158met'].unique())
 axes[1].set_ylabel('Mean Reaction Time (ms)')
 axes[1].set_title('COMT Genotype Effect')
 axes[1].set_xlabel('COMT val158met Genotype')

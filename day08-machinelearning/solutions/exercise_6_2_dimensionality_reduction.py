@@ -181,7 +181,7 @@ for ax, perp in zip(axes, perplexity_values):
     print(f"\nComputing t-SNE with perplexity={perp}...")
     start_time = time.time()
     
-    tsne = TSNE(n_components=2, perplexity=perp, random_state=42, n_iter=1000)
+    tsne = TSNE(n_components=2, perplexity=perp, random_state=42, max_iter=1000)
     X_tsne = tsne.fit_transform(X_pca_pre)
     
     elapsed = time.time() - start_time

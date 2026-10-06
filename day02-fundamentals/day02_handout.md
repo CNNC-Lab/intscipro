@@ -186,7 +186,7 @@ print(f"Pi in scientific notation: {pi:.2e}")  # Pi in scientific notation: 3.14
 ## **Part 2**: Operators, Expressions, and Control Structures
 ### 2.1 Understanding Operators and Expressions
 An **operator** is a symbol that performs an operation on one or more **operands** (values or variables). Together, they form an **expression** that evaluates to a result.
-![[Pasted image 20251015140201.png]]
+
 Operators can be classified by:
 1. **Number of operands**: Unary (one operand), Binary (two operands), Ternary (three operands)
 2. **Type of operation**: Arithmetic, Logical, Comparison, etc.
@@ -1339,7 +1339,7 @@ def create_trial_data(trial_id, reaction_time, correct):
         "trial": trial_id,
         "rt": reaction_time,
         "correct": correct,
-        "timestamp": "2025-01-15"
+        "timestamp": "YYYY-MM-DD"
     }
 
 # Return None (implicitly - no return statement)
@@ -1709,4 +1709,4 @@ Write a recursive function to sum all numbers in a nested list:
 ---
 *This handout accompanies the "Introduction to Scientific Programming" course at the Center for Neuroscience and Cell Biology, University of Coimbra. It provides comprehensive coverage of programming fundamentals but is not intended as a standalone introduction to Python. For complete beginners, we recommend supplementing with additional resources and hands-on practice.*
 
-*Updated for Python 3.8+ with modern best practices | January 2025*
+*Updated for Python 3.11+ with modern best practices*

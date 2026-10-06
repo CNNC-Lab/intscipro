@@ -342,7 +342,7 @@ Complete the functions and create three example plots demonstrating the style.
 
 ## Solutions
 
-Solutions are provided in a separate notebook: `notebooks/day06_solutions.ipynb`
+Solutions are provided in a separate notebook: `notebooks/solutions.ipynb`
 
 ---
 
@@ -366,4 +366,4 @@ Remember: The goal is to learn, not just to complete exercises. Take time to und
 ---
 
 *Exercises prepared for CNC-UC Introduction to Scientific Programming*  
-*University of Coimbra, November 2025*
+*University of Coimbra*

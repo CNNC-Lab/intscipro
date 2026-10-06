@@ -1,5 +1,7 @@
 # Exercise 1 1 - Solution
 
+from _setup import *  # noqa: F401,F403 - data built in the exercise text
+
 # b) Initial inspection
 print("First 10 rows:")
 print(df.head(10))

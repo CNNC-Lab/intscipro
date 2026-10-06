@@ -142,7 +142,7 @@ conda install numpy pandas matplotlib seaborn scipy jupyter
 Create a test script to verify everything works:
 
 ```python
-# test_installation.py
+# check_installation.py
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt

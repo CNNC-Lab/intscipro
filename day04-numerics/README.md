@@ -24,10 +24,10 @@ This day covers the essential numerical computing tools that form the backbone o
 
 ## Solutions
 Complete solutions for all exercises are available in the [`solutions/`](solutions/) directory:
-- `ex1_1.py` through `ex1_4.py` - NumPy fundamentals
-- `ex2_1.py` through `ex2_2.py` - Statistics and linear algebra
-- `ex3_1.py` through `ex3_2.py` - SciPy applications
-- `ex4_1.py` through `ex4_3.py` - Matplotlib visualization
+- `exercise_1_1.py` through `exercise_1_4.py` - NumPy fundamentals
+- `exercise_2_1.py` through `exercise_2_2.py` - Statistics and linear algebra
+- `exercise_3_1.py` through `exercise_3_2.py` - SciPy applications
+- `exercise_4_1.py` through `exercise_4_3.py` - Matplotlib visualization
 - `bonus_challenge.py` - Integrated analysis project
 
 ## Learning Objectives
