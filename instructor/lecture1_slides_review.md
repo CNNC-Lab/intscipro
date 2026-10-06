@@ -1,6 +1,6 @@
 # Lecture 1 slide review
 
-Deck: *Scientific Programming 1: Introduction* (40 slides in 9 horizontal sections). The review is based on the text of every slide, and the full content of the "What about AI?", "evolution of programming assistance", "Current landscape" (two versions), "Organization and Outline" and "Reproducibility Crisis" slides. Nothing in the deck has been changed; the edits below are proposals.
+Deck: *Scientific Programming 1: Introduction* (40 slides in 9 horizontal sections). The review is based on the text of every slide, and the full content of the "What about AI?", "evolution of programming assistance", "Current landscape" (two versions), "Organization and Outline" and "Reproducibility Crisis" slides. The edits marked **applied** in the status section below have been made in the live deck; the rest are still proposals.
 
 ## What works well
 - Clear arc: why computing, reproducibility, why Python, good practice, AI assistance, practicalities.
@@ -30,6 +30,19 @@ Deck: *Scientific Programming 1: Introduction* (40 slides in 9 horizontal sectio
 7. **Notes.** Only one slide has speaker notes. Add notes with timing for each section; they double as a script for next year.
 8. **Practicalities.** Replace the third-party online consoles with the course's own `check_installation.py` as the first thing students run.
 9. **Accessibility.** Several slides rely on emoji and colour alone to carry meaning. Add text labels, and check contrast on the coloured era cards.
+
+## Status of the edits
+**Applied to the deck**
+- Must-fix 1: dates removed from the title slide and the organization slide.
+- Must-fix 2, 3, 4: organization slide now says 14 sessions (11 lectures, 2 project work sessions, 1 presentation session), links to `CNNC-Lab/intscipro`, and no longer says it is the first iteration.
+- Must-fix 5, 6: the invented "85% complete" bar is replaced by "More delegation, more verification", the era badges carry no years, and the development-cycle title no longer says a year.
+- Must-fix 7: the "Current landscape" slide is rebuilt as chat / in-editor assistants / agents that act, with Claude Code named as the live demo. The broken video embed and the Windsurf entry are gone, and the earlier build-up version of that slide was removed as redundant.
+- Must-fix 8 (partly): a footnote frames the reproducibility statistics as survey results that vary by study. The speaker note on that slide flags that a citation for each number is still needed.
+- Improvements 1, 2, 3, 4, 5: three new slides follow the landscape slide: *Delegate, verify, own*, *What can go wrong* (ending with "AI lowers the cost of writing code, not the cost of being wrong") and *Live demo preview*, each with speaker notes.
+
+**Still open**
+- Citations for the three reproducibility statistics.
+- Improvements 6 to 9: the "Python is slow" slide, section timing notes, replacing third-party consoles with `check_installation.py`, and the accessibility pass.
 
 ## Suggested new section order
 1. Why scientific computing
