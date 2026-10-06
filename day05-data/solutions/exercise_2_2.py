@@ -1,5 +1,7 @@
 # Exercise 2 2 - Solution
 
+from _setup import *  # noqa: F401,F403 - data built in the exercise text
+
 # a) Using .loc[]
 print("=== USING .loc[] ===\n")
 

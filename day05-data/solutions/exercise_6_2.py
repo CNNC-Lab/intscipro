@@ -1,5 +1,7 @@
 # Exercise 6 2 - Solution
 
+from _setup import *  # noqa: F401,F403 - data built in the exercise text
+
 from scipy import stats
 import numpy as np
 import matplotlib.pyplot as plt
@@ -92,7 +94,7 @@ print(f"  σ (std) = {sigma:.2f} ms")
 print()
 
 # Kolmogorov-Smirnov test
-ks_stat, ks_p = stats.kstest(rt_data, 'norm', args=(mu, sigma))
+ks_stat, ks_p = stats.kstest(rt_data, stats.norm(mu, sigma).cdf)
 print("Kolmogorov-Smirnov test (goodness of fit):")
 print(f"  KS statistic = {ks_stat:.4f}")
 print(f"  p-value = {ks_p:.4f}")
@@ -132,8 +134,8 @@ axes[1, 0].set_title('Comparing Distribution Fits')
 axes[1, 0].legend()
 
 # Goodness of fit comparison
-ks_normal = stats.kstest(rt_data, 'norm', args=(mu, sigma))
-ks_lognorm = stats.kstest(rt_data, 'lognorm', args=(shape, loc, scale))
+ks_normal = stats.kstest(rt_data, stats.norm(mu, sigma).cdf)
+ks_lognorm = stats.kstest(rt_data, stats.lognorm(shape, loc, scale).cdf)
 
 axes[1, 1].bar(['Normal', 'Log-normal'], [ks_normal[0], ks_lognorm[0]], color=['red', 'green'], alpha=0.7)
 axes[1, 1].set_ylabel('KS Statistic')

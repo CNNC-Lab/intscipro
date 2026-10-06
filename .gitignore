@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+*.egg-info/
+
+# Environments
+.venv/
+venv/
+env/
+.conda/
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Generated outputs (scripts and notebooks recreate these)
+outputs/
+*.log
+
+# Figures written by example/solution scripts when run in place
+day*/examples/*.png
+day*/solutions/*.png
+day*/solutions/*.pdf
+day*/notebooks/*.png
+day*/notebooks/*.pdf
+day*/notebooks/*.svg
+day*/notebooks/*.html

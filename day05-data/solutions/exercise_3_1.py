@@ -1,5 +1,7 @@
 # Exercise 3 1 - Solution
 
+from _setup import *  # noqa: F401,F403 - data built in the exercise text
+
 # a) Count and compare
 print("=== MISSING DATA ANALYSIS ===\n")
 

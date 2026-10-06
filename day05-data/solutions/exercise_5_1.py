@@ -1,5 +1,7 @@
 # Exercise 5 1 - Solution
 
+from _setup import *  # noqa: F401,F403 - data built in the exercise text
+
 # a) Basic pivot table
 print("=== BASIC PIVOT TABLE ===\n")
 
@@ -123,7 +125,7 @@ fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 axes[0].boxplot([
     pivot_for_diff['drug_a_vs_control'].dropna(),
     pivot_for_diff['drug_b_vs_control'].dropna()
-], labels=['Drug A', 'Drug B'])
+], tick_labels=['Drug A', 'Drug B'])
 axes[0].axhline(0, color='red', linestyle='--', label='No effect')
 axes[0].set_ylabel('RT Difference vs Control (ms)')
 axes[0].set_title('Distribution of Drug Effects')

@@ -1,0 +1,44 @@
+# Core environment for Days 1-9 and 11:  conda env create -f environment.yml
+# Deep learning (Day 10):                conda env create -f environment-dl.yml
+name: scientific-programming-dl
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+
+  # Scientific computing
+  - numpy>=1.26
+  - scipy>=1.11
+  - pandas>=2.1
+  - openpyxl>=3.1
+  - statsmodels>=0.14
+  - scikit-learn>=1.5
+
+  # Visualization
+  - matplotlib>=3.9
+  - seaborn>=0.13
+  - plotly>=5.18
+  - python-kaleido
+
+  # Notebooks
+  - jupyterlab>=4
+  - ipykernel
+
+  # Code quality and testing
+  - pytest>=8
+  - flake8>=7
+  - black>=24
+  - mypy>=1.8
+  - nbstripout
+  - pre-commit
+
+  # Deep learning (Day 10)
+  - pytorch>=2.2
+  - torchvision
+  - scikit-image>=0.22
+  - umap-learn
+  - requests
+  - py3dmol
+  - pip
+  - pip:
+      - transformers>=4.40

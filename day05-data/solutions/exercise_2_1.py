@@ -1,5 +1,7 @@
 # Exercise 2 1 - Solution
 
+from _setup import *  # noqa: F401,F403 - data built in the exercise text
+
 # a) Fast and accurate responses
 fast_responses = df[df['reaction_time'] < 300]
 print(f"Fast responses (<300ms): {len(fast_responses)}")

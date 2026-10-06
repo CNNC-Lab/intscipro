@@ -1,5 +1,7 @@
 # Exercise 6 1 - Solution
 
+from _setup import *  # noqa: F401,F403 - data built in the exercise text
+
 from scipy import stats
 import numpy as np
 import matplotlib.pyplot as plt
@@ -202,7 +204,7 @@ if p_anova < 0.05:
 # Visualize all three conditions
 fig, ax = plt.subplots(figsize=(10, 6))
 ax.boxplot([control_all, drug_a_all, drug_b_all], 
-           labels=['Control', 'Drug A', 'Drug B'])
+           tick_labels=['Control', 'Drug A', 'Drug B'])
 ax.set_ylabel('Reaction Time (ms)')
 ax.set_title(f'Comparison of All Conditions (ANOVA p={p_anova:.4f})')
 plt.show()

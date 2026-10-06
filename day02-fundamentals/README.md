@@ -17,7 +17,7 @@ This day covers the essential building blocks of Python programming that form th
   - Variables, data types, and basic I/O operations
   - Operators, expressions, and control flow structures
   - Functions, scope, and modular programming principles
-- **Solutions**: Complete solutions available in [day02_solutions/](day02_solutions/) directory
+- **Solutions**: Complete solutions available in [solutions/](solutions/) directory
 
 ## Learning Objectives
 By the end of this day, you will be able to:

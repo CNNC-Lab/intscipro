@@ -5,13 +5,12 @@
 **Advanced Course for PhD Students in Integrative Neuroscience**  
 **University of Coimbra • CNC-UC Polo I**
 
-📅 **October 10, 2025 – January 30, 2026**  
 🕐 **Friday Afternoons • 14 Sessions**  
 👨‍🏫 **Coordinator:** [Renato Duarte](mailto:renato.duarte@cnc.uc.pt)
 
 [![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://python.org)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![GitHub](https://img.shields.io/badge/GitHub-Repository-black.svg)](https://github.com)
+[![GitHub](https://img.shields.io/badge/GitHub-CNNC--Lab%2Fintscipro-black.svg)](https://github.com/CNNC-Lab/intscipro)
 
 ---
 
@@ -22,7 +21,7 @@
 This advanced course is designed to equip students with the programming, computational, and software development skills necessary to produce **reproducible, efficient, and modern scientific analyses**. The course bridges the gap between traditional research programming and professional software development, guiding students from fundamental coding principles to advanced applications in data analysis, visualization, simulation, and machine learning.
 
 ### 🔑 Key Features
-- **🤖 AI-Assisted Learning**: Integration of modern AI coding tools (GitHub Copilot, ChatGPT, Windsurf) with fundamental programming concepts
+- **🤖 AI-Assisted Learning**: Integration of modern AI coding tools (Claude Code, GitHub Copilot, ChatGPT) with fundamental programming concepts
 - **🔬 Domain-Specific Focus**: Tailored for neuroscience and biological research applications
 - **📊 Real-World Applications**: Using authentic research datasets and solving actual scientific problems
 - **👥 Collaborative Approach**: Shared GitHub repository with peer contributions and code review
@@ -31,21 +30,21 @@ This advanced course is designed to equip students with the programming, computa
 ## 🗓️ Course Schedule
 
 <table>
-<tr><th>📅 Date</th><th>📚 Session</th><th>🎯 Focus</th></tr>
-<tr><td>Oct 10</td><td><strong><a href="day01-introduction/README.md">Introduction & Modern Development Ecosystem</a></strong></td><td>AI-assisted coding, environment setup</td></tr>
-<tr><td>Oct 17</td><td><strong><a href="day02-fundamentals/README.md">Programming Fundamentals</a></strong></td><td>Python basics, data structures</td></tr>
-<tr><td>Oct 31</td><td><strong><a href="day03-workflows/README.md">Development Tools & Workflow</a></strong></td><td>Git, IDEs, collaboration</td></tr>
-<tr><td>Nov 07</td><td><strong><a href="day04-numerics/README.md">Numerical Computing Foundations</a></strong></td><td>NumPy, matplotlib, SciPy</td></tr>
-<tr><td>Nov 14</td><td><strong><a href="day05-data/README.md">Data Manipulation & Analysis</a></strong></td><td>Pandas, data cleaning</td></tr>
-<tr><td>Nov 21</td><td><strong><a href="day06-visualization/README.md">Visualization & Communication</a></strong></td><td>Publication-quality figures</td></tr>
-<tr><td>Nov 28</td><td><strong><a href="day07-intermediate/README.md">Intermediate Programming Concepts</a></strong></td><td>Error handling, documentation</td></tr>
-<tr><td>Dec 05</td><td><strong><a href="day08-machinelearning/README.md">Machine Learning I</a></strong></td><td>Statistics, scikit-learn</td></tr>
-<tr><td>Dec 12</td><td><strong><a href="day09-project-description/README.md">Project Description and Organization</a></strong></td><td>Project planning, organization</td></tr>
-<tr><td>Dec 19</td><td><strong><a href="day10-neural-networks/README.md">Neural Networks & Deep Learning: From Theory to Biomedical Applications</a></strong></td><td>Deep learning, PyTorch, transformers</td></tr>
-<tr><td>Jan 09</td><td><strong><a href="day11-simulation/README.md">Simulation & Modeling in Neuroscience</a></strong></td><td>Differential equations, numerical methods, dynamical systems</td></tr>
-<tr><td>Jan 16</td><td><strong>Student Projects</strong></td><td>Custom research solutions</td></tr>
-<tr><td>Jan 23</td><td><strong>Student Projects</strong></td><td>Custom research solutions</td></tr>
-<tr><td>Jan 30</td><td><strong>Student Presentations</strong></td><td>Project showcases</td></tr>
+<tr><th>#</th><th>📚 Session</th><th>🎯 Focus</th></tr>
+<tr><td>1</td><td><strong><a href="day01-introduction/README.md">Introduction & Modern Development Ecosystem</a></strong></td><td>AI-assisted coding, Claude Code demo, environment setup</td></tr>
+<tr><td>2</td><td><strong><a href="day02-fundamentals/README.md">Programming Fundamentals</a></strong></td><td>Python basics, data structures</td></tr>
+<tr><td>3</td><td><strong><a href="day03-workflows/README.md">Development Tools & Workflow</a></strong></td><td>Git, IDEs, collaboration</td></tr>
+<tr><td>4</td><td><strong><a href="day04-numerics/README.md">Numerical Computing Foundations</a></strong></td><td>NumPy, matplotlib, SciPy</td></tr>
+<tr><td>5</td><td><strong><a href="day05-data/README.md">Data Manipulation & Analysis</a></strong></td><td>Pandas, data cleaning</td></tr>
+<tr><td>6</td><td><strong><a href="day06-visualization/README.md">Visualization & Communication</a></strong></td><td>Publication-quality figures</td></tr>
+<tr><td>7</td><td><strong><a href="day07-intermediate/README.md">Intermediate Programming Concepts</a></strong></td><td>Error handling, documentation</td></tr>
+<tr><td>8</td><td><strong><a href="day08-machinelearning/README.md">Machine Learning</a></strong></td><td>Statistics, scikit-learn</td></tr>
+<tr><td>9</td><td><strong><a href="day09-project-description/README.md">Project Description and Organization</a></strong></td><td>Project planning, organization</td></tr>
+<tr><td>10</td><td><strong><a href="day10-neural-networks/README.md">Neural Networks & Deep Learning: From Theory to Biomedical Applications</a></strong></td><td>Deep learning, PyTorch, transformers</td></tr>
+<tr><td>11</td><td><strong><a href="day11-simulation/README.md">Simulation & Modeling in Neuroscience</a></strong></td><td>Differential equations, numerical methods, dynamical systems</td></tr>
+<tr><td>12</td><td><strong>Student Projects</strong></td><td>Custom research solutions</td></tr>
+<tr><td>13</td><td><strong>Student Projects</strong></td><td>Custom research solutions</td></tr>
+<tr><td>14</td><td><strong>Student Presentations</strong></td><td>Project showcases</td></tr>
 </table>
 
 ## 📖 Course Structure
@@ -66,17 +65,16 @@ Core tools for scientific data analysis
 - **Visualization**: matplotlib, seaborn, plotly for scientific figures
 - **Code Quality**: Error handling, type hints, debugging strategies
 
-### 🚀 **Part III: Advanced Applications** (Days 8-12)
+### 🚀 **Part III: Advanced Applications** (Days 8-11)
 Specialized tools and advanced techniques
 
-- **Statistical Analysis**: Foundations, hypothesis testing, effect sizes
-- **Machine Learning**: Supervised/unsupervised learning, scikit-learn
-- **Deep Learning**: Neural networks, PyTorch, TensorFlow basics
+- **Machine Learning**: Statistics, supervised/unsupervised learning, scikit-learn
+- **Deep Learning**: Neural networks, PyTorch, transformers
 - **Simulation & Modeling**: Differential equations, biological modeling
-- **Domain Applications**: Neuroscience-specific tools and workflows
+- **Project Organization**: Planning, structuring and documenting a research project
 
-### 👨‍🎓 **Part IV: Capstone Projects** (Days 13-14)
-Applying skills to real research problems
+### 👨‍🎓 **Part IV: Capstone Projects** (Days 12-14)
+Applying skills to real research problems: two project work sessions and a final presentation session
 
 ## 🛠️ Technology Stack
 
@@ -85,17 +83,39 @@ Applying skills to real research problems
 | Category | Tools |
 |----------|-------|
 | **🐍 Core Language** | Python 3.11+ |
-| **🔧 Development Environment** | VS Code, Anaconda, Git |
-| **🤖 AI Assistants** | GitHub Copilot, ChatGPT, Windsurf, Claude |
-| **📊 Data Science** | NumPy, Pandas, SciPy, matplotlib, seaborn |
-| **🧠 Machine Learning** | scikit-learn, PyTorch, TensorFlow |
-| **🔬 Neuroscience Tools** | Neo, Elephant, MNE, CAIman, DeepLabCut |
+| **🔧 Development Environment** | VS Code, Anaconda/conda, Git, Jupyter |
+| **🤖 AI Assistants** | Claude Code, GitHub Copilot, ChatGPT |
+| **📊 Data Science** | NumPy, Pandas, SciPy, statsmodels |
+| **🧠 Machine Learning** | scikit-learn, PyTorch, transformers |
 | **📈 Visualization** | matplotlib, seaborn, plotly |
-| **🧪 Professional Tools** | pytest, GitHub Actions, Jupyter |
+| **🧪 Professional Tools** | pytest, flake8, black, pre-commit, GitHub Actions |
 
 </div>
 
-## <!--- Repository Structure -->
+## 🗂️ Repository Structure
+
+```
+intscipro/
+├── README.md
+├── LICENSE
+├── environment.yml          # conda environment: Days 1-9 and 11
+├── environment-dl.yml       # conda environment: adds the deep learning stack (Day 10)
+├── requirements.txt         # pip equivalent of environment.yml
+├── requirements-dl.txt      # pip equivalent of environment-dl.yml
+├── datasets/                # small datasets shared across days (see datasets/README.md)
+├── resources/               # troubleshooting guide and reference material
+└── dayNN-<topic>/           # one folder per session
+    ├── README.md            # lecture slides link, session plan, learning goals
+    ├── dayNN_handout.md     # written reference for the session
+    ├── dayNN_exercises.md   # practice exercises
+    ├── notebooks/           # guided Jupyter notebooks (committed without outputs)
+    ├── examples/            # short runnable demo scripts
+    └── solutions/           # worked solutions
+```
+
+Not every day has every folder: Days 10 and 11 are practised through their notebooks, Day 3 exercises are command-line and Git tasks without code solutions, and Day 9 is project planning (README only).
+
+Notebooks are committed **without outputs** (enforced by [`nbstripout`](https://github.com/kynan/nbstripout), see `.pre-commit-config.yaml`); run them to regenerate results. Figures and files created by notebooks and scripts are written to an `outputs/` folder, which is git-ignored.
 
 ## 🎯 Learning Objectives
 
@@ -129,8 +149,8 @@ Upon completion of this course, students will be able to:
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/CNNC-Lab/intscipro-2025.git
-   cd intscipro-2025
+   git clone https://github.com/CNNC-Lab/intscipro.git
+   cd intscipro
    ```
 
 2. **Install Python environment**:
@@ -138,14 +158,17 @@ Upon completion of this course, students will be able to:
    # Option A: Using conda (recommended)
    conda env create -f environment.yml
    conda activate scientific-programming
-   
-   # Option B: Using pip
+
+   # Option B: Using pip (Python 3.11+)
+   python -m venv .venv && source .venv/bin/activate
    pip install -r requirements.txt
+
+   # Day 10 only (deep learning): use environment-dl.yml / requirements-dl.txt instead
    ```
 
 3. **Verify installation**:
    ```bash
-   python -c "import numpy, pandas, matplotlib; print('Setup successful!')"
+   python day01-introduction/demo_scripts/check_installation.py
    ```
 
 4. **Follow Day 1 setup tutorial**: [`day01-introduction/setup_tutorial.md`](day01-introduction/setup_tutorial.md)

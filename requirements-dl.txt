@@ -1,0 +1,9 @@
+# Core requirements plus the deep learning stack used on Day 10
+-r requirements.txt
+torch>=2.2
+torchvision
+scikit-image>=0.22
+umap-learn
+requests
+py3Dmol
+transformers>=4.40

@@ -229,6 +229,19 @@ df = dd.read_csv('large_file.csv')
 
 ## 🔧 Advanced Troubleshooting
 
+### Q: How do I set up the course environment?
+```bash
+conda env create -f environment.yml        # Days 1-9 and 11
+conda activate scientific-programming
+
+conda env create -f environment-dl.yml     # Day 10 (adds PyTorch and friends)
+conda activate scientific-programming-dl
+```
+No conda? Use `python -m venv .venv`, activate it, then `pip install -r requirements.txt` (or `requirements-dl.txt` for Day 10). Check the result with `python day01-introduction/demo_scripts/check_installation.py`.
+
+### Q: A script or notebook cannot save a figure, or I cannot find the output
+Scripts and notebooks write generated files to an `outputs/` folder next to where they run (it is created automatically and ignored by Git). Look there first.
+
 ### Q: Conda environments corrupted or broken
 **A:** Environment corruption can happen with interrupted installations.
 

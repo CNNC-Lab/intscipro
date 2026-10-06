@@ -919,7 +919,7 @@ This module requires external tools (MUSCLE, MAFFT) to be installed
 for sequence alignment functionality.
 
 Author: Your Name
-Date: 2025-10-31
+Date: YYYY-MM-DD
 License: MIT
 """
 
@@ -1670,7 +1670,7 @@ git log --author="Your Name"
 
 # By date
 git log --since="2 weeks ago"
-git log --until="2025-01-01"
+git log --until="YYYY-MM-DD"
 ```
 
 #### Viewing Changes
@@ -2660,7 +2660,7 @@ Analysis notebooks in `notebooks/`:
 
 If you use this code, please cite:
 
-> Your Name (2025). Project Title. GitHub: username/myproject
+> Your Name (YYYY). Project Title. GitHub: username/myproject
 
 ## License
 
@@ -2842,5 +2842,4 @@ The investment in learning these tools pays dividends throughout your research c
 ---
 *This handout is part of the "Introduction to Scientific Programming" course at CNC-UC, University of Coimbra. For questions or clarifications, please contact the course instructor.*
 **Document Version**: 1.0  
-**Last Updated**: October 2025  
 **License**: CC BY 4.0

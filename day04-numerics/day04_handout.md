@@ -1463,13 +1463,13 @@ data = [np.random.normal(100, 10, 100),
         np.random.normal(115, 8, 100)]
 
 # Box plot
-plt.boxplot(data, labels=['A', 'B', 'C', 'D'])
+plt.boxplot(data, tick_labels=['A', 'B', 'C', 'D'])
 plt.ylabel('Value')
 plt.title('Box Plot')
 plt.show()
 
 # Horizontal box plot
-plt.boxplot(data, labels=['A', 'B', 'C', 'D'], vert=False)
+plt.boxplot(data, tick_labels=['A', 'B', 'C', 'D'], vert=False)
 plt.xlabel('Value')
 plt.title('Horizontal Box Plot')
 plt.show()
@@ -1498,5 +1498,4 @@ plt.show()
 ---
 *This handout is part of the "Introduction to Scientific Programming" course at CNC-UC, University of Coimbra. For questions or clarifications, please contact the course instructor.*
 **Document Version**: 1.0  
-**Last Updated**: November 2025  
 **License**: CC BY 4.0

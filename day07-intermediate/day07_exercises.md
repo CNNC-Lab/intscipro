@@ -972,4 +972,4 @@ pytest --cov=your_module --cov-report=term
 
 
 *Exercises prepared for CNC-UC Introduction to Scientific Programming*  
-*University of Coimbra, December 2025*
+*University of Coimbra*

@@ -410,7 +410,7 @@ fig.show()
 
 ```python
 # Export as interactive HTML
-fig.write_html('interactive_plot.html')
+fig.write_html('outputs/interactive_plot.html')
 
 # Export as static image (requires kaleido)
 fig.write_image('static_plot.png', width=1200, height=600)
@@ -752,6 +752,5 @@ Before submitting a figure, verify:
 ---
 *This handout is part of the "Introduction to Scientific Programming" course at CNC-UC, University of Coimbra. For questions or clarifications, please contact the course instructor.*
 **Document Version**: 1.0  
-**Last Updated**: November 2025  
 **License**: CC BY 4.0
 

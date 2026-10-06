@@ -1,5 +1,7 @@
 # Exercise 4 1 - Solution
 
+from _setup import *  # noqa: F401,F403 - data built in the exercise text
+
 # Create copy to work with
 df_transformed = df.copy()
 

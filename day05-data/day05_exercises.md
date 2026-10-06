@@ -498,4 +498,4 @@ Remember: Data analysis is iterative. You'll often go back and forth between ste
 ---
 
 *Exercises prepared for CNC-UC Introduction to Scientific Programming*  
-*University of Coimbra, November 2025*
+*University of Coimbra*

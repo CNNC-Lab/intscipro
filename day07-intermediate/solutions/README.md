@@ -18,7 +18,7 @@ These solutions demonstrate:
 ## Files
 
 ### Exercise 1: Robust Data Loading
-**File:** `exercise1_robust_data_loading.py`
+**File:** `exercise_1_robust_data_loading.py`
 
 Implements a robust spike data loader with:
 - Custom exception class (`DataQualityError`)
@@ -29,11 +29,11 @@ Implements a robust spike data loader with:
 
 **Run:**
 ```bash
-python exercise1_robust_data_loading.py
+python exercise_1_robust_data_loading.py
 ```
 
 ### Exercise 2: LIF Neuron Class
-**File:** `exercise2_lif_neuron.py`
+**File:** `exercise_2_lif_neuron.py`
 
 Complete Leaky Integrate-and-Fire neuron implementation with:
 - Full type hints including `numpy.typing.NDArray`
@@ -44,11 +44,11 @@ Complete Leaky Integrate-and-Fire neuron implementation with:
 
 **Run:**
 ```bash
-python exercise2_lif_neuron.py
+python exercise_2_lif_neuron.py
 ```
 
 ### Exercise 3: Functional Programming
-**File:** `exercise3_functional_programming.py`
+**File:** `exercise_3_functional_programming.py`
 
 Demonstrates functional programming patterns:
 - Map, filter, reduce operations
@@ -59,7 +59,7 @@ Demonstrates functional programming patterns:
 
 **Run:**
 ```bash
-python exercise3_functional_programming.py
+python exercise_3_functional_programming.py
 ```
 
 ### Exercise 4: Unit Testing
@@ -88,7 +88,7 @@ pytest test_spike_analysis.py::TestFiringRate -v
 ```
 
 ### Exercise 5: Refactoring Challenge
-**File:** `exercise5_refactored.py`
+**File:** `exercise_5_refactored.py`
 
 Professional refactoring demonstrating:
 - Meaningful variable/function names
@@ -101,7 +101,7 @@ Professional refactoring demonstrating:
 
 **Run:**
 ```bash
-python exercise5_refactored.py
+python exercise_5_refactored.py
 ```
 
 ### Bonus Challenge: Complete Pipeline
@@ -128,19 +128,19 @@ All solutions include built-in tests. To run individual solutions:
 
 ```bash
 # Exercise 1
-python exercise1_robust_data_loading.py
+python exercise_1_robust_data_loading.py
 
 # Exercise 2
-python exercise2_lif_neuron.py
+python exercise_2_lif_neuron.py
 
 # Exercise 3
-python exercise3_functional_programming.py
+python exercise_3_functional_programming.py
 
 # Exercise 4 (requires pytest)
 pytest test_spike_analysis.py -v
 
 # Exercise 5
-python exercise5_refactored.py
+python exercise_5_refactored.py
 
 # Bonus
 python bonus_complete_pipeline.py
@@ -152,8 +152,8 @@ These solutions are designed to pass professional code quality tools:
 
 ```bash
 # Type checking with mypy
-mypy exercise1_robust_data_loading.py
-mypy exercise2_lif_neuron.py
+mypy exercise_1_robust_data_loading.py
+mypy exercise_2_lif_neuron.py
 mypy bonus_complete_pipeline.py
 
 # Code formatting with black
@@ -221,7 +221,7 @@ flake8 *.py
 ### Loading and Analyzing Spike Data
 
 ```python
-from exercise1_robust_data_loading import load_spike_data
+from exercise_1_robust_data_loading import load_spike_data
 import pandas as pd
 
 # Create sample data
@@ -236,7 +236,7 @@ print(f"Loaded {len(spikes)} spikes")  # Output: Loaded 3 spikes
 ### Simulating a Neuron
 
 ```python
-from exercise2_lif_neuron import LIFNeuron
+from exercise_2_lif_neuron import LIFNeuron
 import numpy as np
 
 # Create neuron
@@ -318,4 +318,4 @@ After working through these solutions, you should be able to:
 ---
 
 *Solutions prepared for CNC-UC Introduction to Scientific Programming*  
-*University of Coimbra, November 2025*
+*University of Coimbra*
