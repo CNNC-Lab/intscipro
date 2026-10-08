@@ -21,4 +21,4 @@ A small **synthetic** table of single-neuron recordings, used in the Day 1 AI-as
 
 ## Other datasets
 
-Later days generate synthetic data inside the notebooks or use small files stored next to them (for example `day05-data/notebooks/example_data.csv` and `gene_expression.xlsx`). The Day 1 Claude Code demo queries public databases live, so no data files are stored in this repository; see [`day01-introduction/claude_code_demo/`](../day01-introduction/claude_code_demo/).
+Later days generate synthetic data inside the notebooks or use small files stored next to them (for example `day05-data/notebooks/example_data.csv` and `gene_expression.xlsx`). The Day 1 Claude Code demo uses a real dataset that ships inside the `scanpy` package, so no data files are stored in this repository; see [`day01-introduction/claude_code_demo/`](../day01-introduction/claude_code_demo/).
