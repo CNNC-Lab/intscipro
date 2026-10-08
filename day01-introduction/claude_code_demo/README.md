@@ -1,50 +1,62 @@
 # Demo: an end-to-end analysis with Claude Code (15 minutes)
 
-An AI coding agent takes a **real single-cell RNA-seq dataset** from raw data to a short research report, live, while you watch critically. Everything runs inside one cloud session: nothing to download, no extra repository.
+An AI coding agent answers a real biomedical research question **by querying public databases live**, then writes a short research report. Nothing is downloaded and no data is stored in the repository: the agent sends small queries and works with the responses. Everything runs inside one cloud session.
 
-## The data
-**700 human blood cells (PBMCs), 765 genes**, a subset of the 10x Genomics 68k PBMC dataset (Zheng et al., *Nature Communications*). It ships inside the `scanpy` package, so loading it needs no internet access:
+## The question
+**Alzheimer's disease: which genes and proteins have the strongest evidence of association, what kind of evidence supports them, which already have drugs in development, and what do the top candidates actually do?**
 
-```python
-import scanpy as sc
-adata = sc.datasets.pbmc68k_reduced()
-```
-
-It contains an expression matrix, a reference cell-type label per cell (`obs['bulk_labels']`) and an earlier clustering (`obs['louvain']`). The matrix has already been processed (normalised and scaled), which is one of the things a careful analyst has to notice.
-
-## Questions
-1. How many distinct cell populations are there?
-2. Which genes mark each population, and do they match known immune biology?
-3. How well do unsupervised clusters agree with the reference labels?
+## The databases
+- **[Open Targets Platform](https://platform.opentargets.org)** (GraphQL API at `https://api.platform.opentargets.org/api/v4/graphql`): evidence linking genes to diseases (genetics, literature, animal models and more), plus known drugs and their clinical stage.
+- **[UniProt](https://www.uniprot.org)** (REST API at `https://rest.uniprot.org`): curated protein function and subcellular location.
 
 ## The prompt
 Paste this into a Claude Code session started in this repository:
 
 ```
-End-to-end analysis of a real single-cell RNA-seq dataset, ending in a short
-research report.
+Answer a real biomedical research question by querying public databases live.
+Do not download datasets or files; use small API queries only.
 
-Data: scanpy.datasets.pbmc68k_reduced() (700 human blood cells, 765 genes; it is
-bundled with the scanpy package, no download). Run `pip install scanpy igraph
-leidenalg` first if scanpy is missing. Write everything to
-day01-introduction/claude_code_demo/outputs/.
+Question: for Alzheimer's disease, (1) which genes have the strongest evidence of
+association, (2) what types of evidence support the top ones, (3) which of them
+already have drugs in clinical development, and (4) what do the top five proteins
+do (function and subcellular location)?
 
-Questions
-1. How many distinct cell populations are there?
-2. Which genes mark each population, and do they match known immune biology?
-3. How well do your unsupervised clusters agree with the reference labels in
-   obs['bulk_labels']?
+Databases
+- Open Targets Platform GraphQL API: https://api.platform.opentargets.org/api/v4/graphql
+- UniProt REST API: https://rest.uniprot.org
+Do not assume field names or identifiers: discover them (search for the disease,
+inspect the GraphQL schema) and show me what you found.
 
 Rules
 - Plan first and wait for my approval before running anything.
-- Check what preprocessing the data already had before applying any.
-- One script, analysis.py, that regenerates every figure and number.
-- At most 5 figures. Every number in the report must come from the script output.
+- One script, query.py, that reruns every query and saves the raw JSON responses
+  to day01-introduction/claude_code_demo/outputs/.
+- At most 3 figures. Every number in the report must come from a saved response.
+- Say which database each statement comes from.
 - Finish with a limitations section. Deliverable: report.md.
 ```
 
+## One-off requirement
+The cloud environment must be allowed to reach the two hosts above (see the instructor runbook). Without that, use the offline fallback below.
+
 ## What to look for while watching
-- Did the plan check what had already been done to the data?
-- Do the marker genes make biological sense? (For example `CD3D` for T cells, `MS4A1` and `CD79A` for B cells, `NKG7` for NK and cytotoxic cells, `LYZ` and `CST3` for monocytes and dendritic cells.)
-- Is agreement with the reference labels reported with a proper metric, and is a modest value discussed honestly? Reference labels are themselves imperfect.
-- Does every number in the report match the script output?
+- Did the agent look up the disease identifier and the schema, or guess field names?
+- Is an association score treated as evidence of causation? It should not be.
+- Does the report notice that heavily studied genes score high partly because they are heavily studied?
+- Are drug claims tied to a clinical phase from the database, with the source named?
+- Does every number in the report appear in a saved response?
+
+## Offline fallback (no network access needed)
+A real dataset that ships inside the `scanpy` package: 700 human blood cells (single-cell RNA-seq, 765 genes). Run `pip install scanpy igraph leidenalg` first.
+
+```
+End-to-end analysis of scanpy.datasets.pbmc68k_reduced() (700 human blood cells,
+765 genes, bundled with the package, no download), ending in a short research report.
+Questions: (1) how many distinct cell populations are there, (2) which genes mark
+each one and do they match known immune biology, (3) how well do unsupervised
+clusters agree with the reference labels in obs['bulk_labels']?
+Rules: plan first and wait for my approval; check what preprocessing the data already
+had before applying any; one script analysis.py; at most 5 figures; every number from
+the script output; finish with a limitations section. Write to
+day01-introduction/claude_code_demo/outputs/. Deliverable: report.md.
+```
