@@ -1,24 +1,50 @@
-# Demo: an end-to-end analysis with Claude Code
+# Demo: an end-to-end analysis with Claude Code (15 minutes)
 
-In this live demo the instructor directs an AI coding agent (**Claude Code**, running in the cloud) through a complete research workflow on a real dataset, from raw data to a finished research report. Your job is to watch critically: what does the agent decide on its own, what does it get right, and what does a scientist still have to check?
+An AI coding agent takes a **real single-cell RNA-seq dataset** from raw data to a short research report, live, while you watch critically. Everything runs inside one cloud session: nothing to download, no extra repository.
 
-## The dataset
-**Mouse cortex protein expression in a Down syndrome model** (UCI Machine Learning Repository, CC BY 4.0). 72 mice, 77 proteins measured in cortical nuclei, with three experimental factors: genotype (control vs Ts65Dn trisomic mice), drug treatment (memantine vs saline) and a learning paradigm (contextual fear conditioning vs a no-learning control). See [`template/data/README.md`](template/data/README.md) for the data dictionary.
+## The data
+**700 human blood cells (PBMCs), 765 genes**, a subset of the 10x Genomics 68k PBMC dataset (Zheng et al., *Nature Communications*). It ships inside the `scanpy` package, so loading it needs no internet access:
 
-> Higuera C, Gardiner KJ, Cios KJ. Self-organizing feature maps identify proteins critical to learning in a mouse model of Down syndrome. *PLoS ONE* 10(6): e0129126.
+```python
+import scanpy as sc
+adata = sc.datasets.pbmc68k_reduced()
+```
 
-## Research questions
-1. Which proteins differ between Ts65Dn and control mice?
-2. Does memantine change the protein profile, and does it move Ts65Dn mice towards the control profile?
-3. Does learning stimulation change expression, and does that depend on genotype or treatment?
-4. Can the experimental group be predicted from protein expression, and which proteins matter most?
+It contains an expression matrix, a reference cell-type label per cell (`obs['bulk_labels']`) and an earlier clustering (`obs['louvain']`). The matrix has already been processed (normalised and scaled), which is one of the things a careful analyst has to notice.
+
+## Questions
+1. How many distinct cell populations are there?
+2. Which genes mark each population, and do they match known immune biology?
+3. How well do unsupervised clusters agree with the reference labels?
+
+## The prompt
+Paste this into a Claude Code session started in this repository:
+
+```
+End-to-end analysis of a real single-cell RNA-seq dataset, ending in a short
+research report.
+
+Data: scanpy.datasets.pbmc68k_reduced() (700 human blood cells, 765 genes; it is
+bundled with the scanpy package, no download). Run `pip install scanpy igraph
+leidenalg` first if scanpy is missing. Write everything to
+day01-introduction/claude_code_demo/outputs/.
+
+Questions
+1. How many distinct cell populations are there?
+2. Which genes mark each population, and do they match known immune biology?
+3. How well do your unsupervised clusters agree with the reference labels in
+   obs['bulk_labels']?
+
+Rules
+- Plan first and wait for my approval before running anything.
+- Check what preprocessing the data already had before applying any.
+- One script, analysis.py, that regenerates every figure and number.
+- At most 5 figures. Every number in the report must come from the script output.
+- Finish with a limitations section. Deliverable: report.md.
+```
 
 ## What to look for while watching
-- What did the agent assume about the experimental design, and was it right?
-- How were missing values and repeated measurements handled?
-- Which results survive multiple-testing correction?
-- Do the numbers in the report match the saved result tables?
-- Which of the agent's choices would you have made differently?
-
-## The project brief
-[`template/`](template/) is the starting repository for the demo: the brief the agent reads first ([`CLAUDE.md`](template/CLAUDE.md)), the data dictionary, and the scripts that fetch and validate the data. Writing a good `CLAUDE.md` for your own project is the Day 1 take-home exercise.
+- Did the plan check what had already been done to the data?
+- Do the marker genes make biological sense? (For example `CD3D` for T cells, `MS4A1` and `CD79A` for B cells, `NKG7` for NK and cytotoxic cells, `LYZ` and `CST3` for monocytes and dendritic cells.)
+- Is agreement with the reference labels reported with a proper metric, and is a modest value discussed honestly? Reference labels are themselves imperfect.
+- Does every number in the report match the script output?
