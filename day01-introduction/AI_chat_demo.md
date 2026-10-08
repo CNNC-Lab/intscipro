@@ -118,3 +118,7 @@ plt.show()
 - Check that file paths and column names match exactly
 
 ---
+
+## Next: from a chat assistant to an agent
+
+In this demo you copied code from a chat window, ran it yourself and checked it. In the [Claude Code demo](claude_code_demo/README.md) an AI agent does the whole loop: it plans, queries real databases, writes and runs the code, and produces a report, while we direct it and verify the result.

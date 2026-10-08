@@ -10,30 +10,33 @@ An AI coding agent answers a real biomedical research question **by querying pub
 - **[UniProt](https://www.uniprot.org)** (REST API at `https://rest.uniprot.org`): curated protein function and subcellular location.
 
 ## The prompt
-Paste this into a Claude Code session started in this repository:
+Paste this into a Claude Code session started in this repository (in Plan mode):
 
 ```
-Answer a real biomedical research question by querying public databases live.
-Do not download datasets or files; use small API queries only.
+Question: which genes have the strongest evidence of association with Alzheimer's
+disease, what type of evidence supports the top ones, which of them already have
+drugs in clinical development, and what do the top five proteins do?
 
-Question: for Alzheimer's disease, (1) which genes have the strongest evidence of
-association, (2) what types of evidence support the top ones, (3) which of them
-already have drugs in clinical development, and (4) what do the top five proteins
-do (function and subcellular location)?
+Use only live queries to public databases (no file downloads):
+- Open Targets Platform, GraphQL API: https://api.platform.opentargets.org/api/v4/graphql
+- UniProt, REST API: https://rest.uniprot.org
+Discover identifiers and field names from the databases themselves. Do not guess.
 
-Databases
-- Open Targets Platform GraphQL API: https://api.platform.opentargets.org/api/v4/graphql
-- UniProt REST API: https://rest.uniprot.org
-Do not assume field names or identifiers: discover them (search for the disease,
-inspect the GraphQL schema) and show me what you found.
+Write one script, query.py, that reruns every query and saves the raw responses
+to day01-introduction/claude_code_demo/outputs/.
+Deliverable: report.md with at most 3 figures, every number traceable to a saved
+response, the source database named for each claim, and a limitations section.
 
-Rules
-- Plan first and wait for my approval before running anything.
-- One script, query.py, that reruns every query and saves the raw JSON responses
-  to day01-introduction/claude_code_demo/outputs/.
-- At most 3 figures. Every number in the report must come from a saved response.
-- Say which database each statement comes from.
-- Finish with a limitations section. Deliverable: report.md.
+First propose a plan: the queries, how you will rank the genes, and the main risks.
+Do not run anything until I approve it.
+```
+
+Once the plan has been reviewed, approve it with:
+
+```
+The plan is approved. Execute it end to end: run the queries, make the figures and
+write report.md. Then rerun query.py from scratch and confirm that every number in
+the report matches the saved responses.
 ```
 
 ## One-off requirement
@@ -46,8 +49,8 @@ The cloud environment must be allowed to reach the two hosts above (see the inst
 - Are drug claims tied to a clinical phase from the database, with the source named?
 - Does every number in the report appear in a saved response?
 
-## Offline fallback (no network access needed)
-A real dataset that ships inside the `scanpy` package: 700 human blood cells (single-cell RNA-seq, 765 genes). Run `pip install scanpy igraph leidenalg` first.
+## Offline fallback (no database access needed)
+A real dataset that ships inside the `scanpy` package: 700 human blood cells (single-cell RNA-seq, 765 genes). The agent installs it with `pip install scanpy igraph leidenalg`. Approve and execute with the same two steps as above.
 
 ```
 End-to-end analysis of scanpy.datasets.pbmc68k_reduced() (700 human blood cells,

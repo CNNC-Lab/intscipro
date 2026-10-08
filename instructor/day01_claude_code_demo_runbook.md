@@ -15,7 +15,12 @@ Quick check, as the first message of the new session: *"Run `curl -s -o /dev/nul
 
 If you cannot or do not want to change the network settings, use the **offline fallback** prompt in [`claude_code_demo/README.md`](../day01-introduction/claude_code_demo/README.md): real single-cell data that ships inside the `scanpy` package.
 
-Not yet tested end to end: the database hosts are blocked in the environment this runbook was written in, so the queries and the expected results below have not been run.
+Testing status: the offline fallback was run end to end (about 25 seconds of compute; results below). The database version could not be run, because the database hosts were blocked in the environment it was written in; the queries and the expected results for it are untested.
+
+## Session flow
+1. Start a new session on this repository in **Plan** mode and run the one-line `curl` check above. `200`: use the database prompt. Anything else: use the offline fallback prompt, which was tested end to end.
+2. Paste the prompt from the demo README and let the plan appear. Read it aloud and ask the room what they would change or check.
+3. Send the second message ("The plan is approved. Execute it end to end...") and switch to Auto or Accept edits.
 
 ## Before the session
 1. Open a Claude Code cloud session on this repository, in **Plan** mode (mode dropdown next to the prompt box).
@@ -45,6 +50,9 @@ Expectation to check, not a result: well-known Alzheimer's genes such as `APP`, 
 - *"Show me the exact query you sent and the field in the response that you used for this number."*
 - *"How much of this ranking could be explained by how much each gene has been studied?"*
 - *"Which of your claims is not supported by a saved response?"*
+
+## Offline fallback: what a correct run looks like
+The data has 700 cells and 765 genes, is already normalised and scaled (values from -2.03 to 28.4), and has the raw values in `adata.raw`. Leiden clustering at resolution 1.0 gives 11 clusters, with adjusted Rand index 0.38 against the reference labels (0.41 for the precomputed Louvain clusters). The index depends on the resolution: 0.51 with 8 clusters at the coarsest setting tested, 0.38 with 11. Markers per cluster include `FCGR3A`/`LST1` (monocytes), `NKG7`/`CTSW`/`GNLY` (NK and cytotoxic), `CD3D`/`CD3E` (T cells), `MS4A1`/`CD79A` (B cells), `MZB1` (plasma cells) and `FCER1A` (dendritic cells). Reference labels overlap, so modest agreement is expected and should be discussed.
 
 ## Keeping credits low
 Plan mode first, one session, three figures at most, no web search. The queries return small JSON, so the cost is the agent's reasoning, not computation. If time runs short, stop after the plan and discuss it.
