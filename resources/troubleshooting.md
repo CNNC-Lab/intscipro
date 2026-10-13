@@ -230,14 +230,33 @@ df = dd.read_csv('large_file.csv')
 ## 🔧 Advanced Troubleshooting
 
 ### Q: How do I set up the course environment?
+The environment is built in stages, so each day only uses what has been introduced.
 ```bash
-conda env create -f environment.yml        # Days 1-9 and 11
+conda env create -f environment-base.yml                  # Day 2: Python + IPython
 conda activate scientific-programming
+conda install jupyterlab                                  # Day 3
 
-conda env create -f environment-dl.yml     # Day 10 (adds PyTorch and friends)
+conda env update -n scientific-programming -f environment.yml    # Day 4 onwards
+
+conda env create -f environment-dl.yml                    # Day 10 (adds PyTorch and friends)
 conda activate scientific-programming-dl
 ```
-No conda? Use `python -m venv .venv`, activate it, then `pip install -r requirements.txt` (or `requirements-dl.txt` for Day 10). Check the result with `python day01-introduction/demo_scripts/check_installation.py`.
+No conda? Use `python -m venv .venv`, activate it, then `pip install -r requirements-base.txt` (later `requirements.txt`, and `requirements-dl.txt` for Day 10). Full instructions: [`day02-fundamentals/setup/setup_tutorial.md`](../day02-fundamentals/setup/setup_tutorial.md). Check Python with `python day02-fundamentals/setup/check_python.py`, and the scientific stack (from Day 4) with `python day04-numerics/examples/check_installation.py`.
+
+### Q: `ModuleNotFoundError: No module named '...'`
+Two causes, in this order of likelihood:
+1. **Wrong environment.** The terminal prompt should start with `(scientific-programming)`. If not, run `conda activate scientific-programming`. In VS Code, select the interpreter (Command Palette, **Python: Select Interpreter**).
+2. **Misspelled module name.** Compare with the documentation.
+Only then install the package in the active environment.
+
+### Q: `FileNotFoundError` when opening a file
+Python looks for the file starting from the terminal's **current folder**, not from where the script lives. Check it with `pwd` (macOS/Linux) or `cd` (Windows), and move with `cd`. Or run the script from the folder that contains the file.
+
+### Q: VS Code runs the wrong Python
+Command Palette (Ctrl+Shift+P / Cmd+Shift+P), **Python: Select Interpreter**, choose the one that mentions `scientific-programming`; the active interpreter is shown at the bottom right. Close the terminal panel and run again.
+
+### Q: Typing `python` opens the Microsoft Store (Windows)
+You are not in the Anaconda Prompt. Open **Anaconda Prompt** from the Start menu and use it for all course commands.
 
 ### Q: A script or notebook cannot save a figure, or I cannot find the output
 Scripts and notebooks write generated files to an `outputs/` folder next to where they run (it is created automatically and ignored by Git). Look there first.

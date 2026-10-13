@@ -5,12 +5,6 @@ Student: Solutions
 Analyzing the function y = x² - 2x using numerical methods.
 """
 
-import os
-os.makedirs("outputs", exist_ok=True)
-
-import numpy as np
-import matplotlib.pyplot as plt
-
 print("=" * 60)
 print("EXERCISE 10: Function Analysis")
 print("=" * 60)
@@ -19,28 +13,33 @@ print("=" * 60)
 print("\nPart a: Calculate and display y = x² - 2x")
 print("-" * 60)
 
-# Create x values from -5 to 5 in steps of 0.1
-x_values = np.arange(-5.0, 5.1, 0.1)
+# Create x values from -5 to 5 in steps of 0.1.
+# range() only works with integers, so loop over a counter and scale it.
+start = -5.0
+step = 0.1
+n_points = 101
 
-# Calculate y values
+x_values = []
 y_values = []
-for x in x_values:
+for i in range(n_points):
+    x = round(start + i * step, 1)   # round() avoids 0.30000000000000004
     y = x**2 - 2*x
+    x_values.append(x)
     y_values.append(y)
 
-# Plot the function
-plt.figure(figsize=(10, 6))
-plt.plot(x_values, y_values, 'b-', linewidth=2, label='y = x² - 2x')
-plt.axhline(y=0, color='k', linestyle='--', alpha=0.3)
-plt.axvline(x=0, color='k', linestyle='--', alpha=0.3)
-plt.grid(True, alpha=0.3)
-plt.xlabel('x')
-plt.ylabel('y')
-plt.title('Function Plot: y = x² - 2x')
-plt.legend()
-plt.savefig('outputs/ex10_part_a.png', dpi=150, bbox_inches='tight')
-plt.close()
-print("Plot saved as ex10_part_a.png")
+# Table (every 10th point)
+print(f"{'x':>6} {'y':>10}")
+for i in range(0, n_points, 10):
+    print(f"{x_values[i]:6.1f} {y_values[i]:10.3f}")
+
+# Text plot: one line per x, bar length proportional to y
+print("\nText plot of y = x² - 2x (each '#' = 2 units, negative values shown with '-')")
+for x, y in zip(x_values, y_values):
+    if y >= 0:
+        bar = "#" * int(y / 2)
+    else:
+        bar = "-" * int(-y * 4)      # y never goes below -1 here, so scale up
+    print(f"{x:5.1f} | {bar}")
 
 # Part b: Finding first root
 print("\n" + "=" * 60)
@@ -65,10 +64,10 @@ print("-" * 60)
 roots = []
 for i in range(1, len(y_values)):
     if (y_values[i-1] < 0 and y_values[i] >= 0):
-        roots.append((x_values[i], "positive to zero"))
+        roots.append((x_values[i], "negative to positive"))
         print(f"Root {len(roots)} at x ≈ {x_values[i]:.2f} (crossing from negative to positive)")
     elif (y_values[i-1] >= 0 and y_values[i] < 0):
-        roots.append((x_values[i], "negative to zero"))
+        roots.append((x_values[i], "positive to negative"))
         print(f"Root {len(roots)} at x ≈ {x_values[i]:.2f} (crossing from positive to negative)")
 
 print(f"\nTotal roots found: {len(roots)}")
@@ -89,6 +88,11 @@ for i in range(len(y_values) - 1):
 # Note: derivative has one fewer element, so we use x_values[:-1]
 x_for_derivative = x_values[:-1]
 
+# Table with function and derivative side by side (every 10th point)
+print(f"{'x':>6} {'y':>10} {'dy/dx':>10}")
+for i in range(0, len(derivative), 10):
+    print(f"{x_for_derivative[i]:6.1f} {y_values[i]:10.3f} {derivative[i]:10.3f}")
+
 # Find where derivative crosses zero (critical points)
 print("\nCritical points (where derivative = 0):")
 for i in range(1, len(derivative)):
@@ -99,28 +103,16 @@ for i in range(1, len(derivative)):
         print(f"  Critical point at x ≈ {critical_x:.2f}, y ≈ {critical_y:.2f}")
         print(f"  This is a {'minimum' if derivative[i] > derivative[i-1] else 'maximum'}")
 
-# Plot function and derivative together
-plt.figure(figsize=(12, 6))
-plt.plot(x_values, y_values, 'b-', linewidth=2, label='y = x² - 2x')
-plt.plot(x_for_derivative, derivative, 'r-', linewidth=2, label="y' = 2x - 2")
-plt.axhline(y=0, color='k', linestyle='--', alpha=0.3)
-plt.axvline(x=0, color='k', linestyle='--', alpha=0.3)
-
-# Mark roots
-for root_x, _ in roots:
-    plt.plot(root_x, 0, 'go', markersize=10, label='Root' if roots.index((root_x, _)) == 0 else '')
-
-# Mark critical point
-plt.plot(1, -1, 'rs', markersize=10, label='Critical Point')
-
-plt.grid(True, alpha=0.3)
-plt.xlabel('x')
-plt.ylabel('y')
-plt.title('Function and its Derivative')
-plt.legend()
-plt.savefig('outputs/ex10_all_parts.png', dpi=150, bbox_inches='tight')
-plt.close()
-print("\nCombined plot saved as ex10_all_parts.png")
+# Minimum and maximum of the function with a loop
+min_y, min_x = y_values[0], x_values[0]
+max_y, max_x = y_values[0], x_values[0]
+for x, y in zip(x_values, y_values):
+    if y < min_y:
+        min_y, min_x = y, x
+    if y > max_y:
+        max_y, max_x = y, x
+print(f"\nSmallest y on the grid: y({min_x:.1f}) = {min_y:.2f}")
+print(f"Largest y on the grid:  y({max_x:.1f}) = {max_y:.2f}")
 
 # Analytical verification
 print("\n" + "=" * 60)

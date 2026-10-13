@@ -17,12 +17,12 @@ This document contains hands-on exercises to practice the development tools and 
 - Create and navigate Jupyter notebooks
 - Use Markdown for documentation
 - Execute code cells and understand kernel state
-- Create visualizations
+- Generate and summarise data with plain Python and display results as text and rich output
 - Use magic commands
 ### Part A: Your First Notebook
-1. **Launch Jupyter**
+1. **Launch JupyterLab**
    ```bash
-   jupyter notebook
+   jupyter lab
    ```
 
 2. **Create a new notebook**
@@ -39,11 +39,11 @@ This document contains hands-on exercises to practice the development tools and 
    This notebook demonstrates basic data analysis techniques.
    ```
 
-4. **Import libraries** (Code cell):
+4. **Import modules** (Code cell):
    ```python
-   import numpy as np
-   import matplotlib.pyplot as plt
-   %matplotlib inline
+   import math
+   import random
+   import statistics
    ```
 
 5. **Test cell execution order**:
@@ -81,7 +81,7 @@ This document contains hands-on exercises to practice the development tools and 
 
 ### Part B: Data Analysis Practice 
 
-Continue in the same notebook:
+Continue in the same notebook. Everything in this part uses only plain Python and the standard library.
 
 7. **Add a section header** (Markdown):
    ```markdown
@@ -91,47 +91,62 @@ Continue in the same notebook:
 8. **Generate sample data** (Code):
    ```python
    # Set random seed for reproducibility
-   np.random.seed(42)
+   random.seed(42)
    
-   # Generate sample data: temperature measurements
-   days = np.arange(1, 31)  # 30 days
-   temperature = 20 + 5 * np.sin(days / 5) + np.random.normal(0, 1, 30)
+   # Generate sample data: temperature measurements for 30 days
+   days = list(range(1, 31))
+   temperature = [
+       round(20 + 5 * math.sin(day / 5) + random.gauss(0, 1), 1)
+       for day in days
+   ]
    
    print(f"Generated {len(days)} temperature measurements")
-   print(f"Temperature range: {temperature.min():.1f}°C to {temperature.max():.1f}°C")
+   print(f"Temperature range: {min(temperature):.1f}°C to {max(temperature):.1f}°C")
    ```
 
 9. **Basic statistics** (Code):
    ```python
-   mean_temp = temperature.mean()
-   std_temp = temperature.std()
+   mean_temp = statistics.mean(temperature)
+   median_temp = statistics.median(temperature)
+   std_temp = statistics.stdev(temperature)
    
    print(f"Mean temperature: {mean_temp:.2f}°C")
+   print(f"Median temperature: {median_temp:.2f}°C")
    print(f"Standard deviation: {std_temp:.2f}°C")
    ```
 
-10. **Create a visualization** (Code):
+10. **Sort and filter** (Code):
     ```python
-    plt.figure(figsize=(10, 6))
-    plt.plot(days, temperature, 'bo-', label='Measured')
-    plt.axhline(y=mean_temp, color='r', linestyle='--', label=f'Mean: {mean_temp:.1f}°C')
-    plt.fill_between(days, mean_temp - std_temp, mean_temp + std_temp, 
-                      alpha=0.2, color='red', label='±1 std dev')
-    plt.xlabel('Day')
-    plt.ylabel('Temperature (°C)')
-    plt.title('Temperature Measurements Over 30 Days')
-    plt.legend()
-    plt.grid(True, alpha=0.3)
-    plt.show()
+    # Five warmest days
+    records = list(zip(days, temperature))
+    warmest = sorted(records, key=lambda record: record[1], reverse=True)[:5]
+    print("Five warmest days:")
+    for day, temp in warmest:
+        print(f"  day {day:2d}: {temp:.1f}°C")
+    
+    # Days that are more than one standard deviation above the mean
+    hot_days = [day for day, temp in records if temp > mean_temp + std_temp]
+    print(f"Days above mean + 1 std dev: {hot_days}")
     ```
 
-11. **Document findings** (Markdown):
+11. **Print a table and a text bar chart** (Code):
+    ```python
+    print(f"{'Day':>4} | {'Temp (°C)':>9} | Bar")
+    print("-" * 50)
+    for day, temp in records:
+        bar = '#' * round(temp - 10)   # one '#' per degree above 10°C
+        print(f"{day:>4} | {temp:>9.1f} | {bar}")
+    
+    print(f"\nMean: {mean_temp:.1f}°C (±{std_temp:.1f}°C)")
+    ```
+
+12. **Document findings** (Markdown):
     ```markdown
     ## Results
     
     The temperature data shows:
-    - A sinusoidal pattern with a period of approximately 10 days
-    - Random fluctuations around the trend (±1-2°C)
+    - A slow, wave-like pattern (see the bars in the table)
+    - Random fluctuations around the pattern (±1-2°C)
     - Mean temperature of approximately 20°C
     
     This pattern could represent:
@@ -142,33 +157,43 @@ Continue in the same notebook:
 
 ### Part C: Magic Commands
 
-12. **Add a section** (Markdown):
+13. **Add a section** (Markdown):
     ```markdown
     ## Exploring Magic Commands
     ```
 
-13. **Time a computation**:
+14. **Time a computation**:
     ```python
-    # Time a single execution
+    # Time a single statement
     %timeit sum(range(10000))
     ```
     
+    Time a whole code block (the `%%` cell magic must be the **first line** of the cell):
     ```python
-    # Time a code block
     %%timeit
     total = 0
     for i in range(10000):
         total += i
     ```
+    
+    Time a cell once (instead of many repetitions):
+    ```python
+    %%time
+    squares = [i ** 2 for i in range(1_000_000)]
+    ```
 
-14. **View variables**:
+15. **View variables**:
+    ```python
+    %who
+    ```
+    
     ```python
     %whos
     ```
 
-15. **Save variables**:
+16. **Save variables**:
     ```python
-    # Save data to file
+    # Save data for use in other notebooks
     %store temperature
     %store days
     
@@ -176,7 +201,26 @@ Continue in the same notebook:
     %store
     ```
 
-16. **System commands**:
+17. **Run a Python file from the notebook**:
+    ```python
+    %%writefile helper.py
+    def celsius_to_fahrenheit(c):
+        return c * 9 / 5 + 32
+    
+    print("helper.py was executed")
+    print(celsius_to_fahrenheit(20))
+    ```
+    
+    ```python
+    %run helper.py
+    ```
+    
+    After `%run`, the functions defined in the file are available in the notebook:
+    ```python
+    celsius_to_fahrenheit(37)
+    ```
+
+18. **System commands**:
     ```python
     # List current directory (Unix/Mac)
     !ls -la
@@ -184,48 +228,76 @@ Continue in the same notebook:
     # Or on Windows
     !dir
     ```
+    
+    ```bash
+    %%bash
+    echo "This cell runs in bash"
+    python --version
+    ```
+    
+    List all available magics with `%lsmagic`.
 
-### Part D: Interactive Widgets 
+### Part D: Rich Display 
 
-17. **Install ipywidgets** (if not installed):
+Notebooks can show more than plain text. The `IPython.display` module (already available in your environment) lets you render Markdown, HTML and formulas from code.
+
+19. **Display Markdown from code**:
     ```python
-    # Run in terminal:
-    # pip install ipywidgets
+    from IPython.display import display, Markdown, HTML, Math, Latex
+    
+    display(Markdown(f"""
+    ### Summary
+    - **Mean**: {mean_temp:.2f} °C
+    - **Standard deviation**: {std_temp:.2f} °C
+    - **Number of days**: {len(days)}
+    """))
     ```
 
-18. **Create interactive plot**:
+20. **Display a formula**:
     ```python
-    import ipywidgets as widgets
-    from IPython.display import display
+    display(Math(r"\bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_i"))
+    display(Latex(r"The sample standard deviation is $s = \sqrt{\frac{1}{n-1}\sum (x_i - \bar{x})^2}$"))
+    ```
+
+21. **Build an HTML table with a function**:
+    ```python
+    def html_table(rows, headers):
+        """Return an HTML table (as a string) for a list of rows."""
+        html = ['<table>', '<tr>']
+        html += [f'<th>{h}</th>' for h in headers]
+        html.append('</tr>')
+        for row in rows:
+            html.append('<tr>')
+            for value in row:
+                text = f'{value:.1f}' if isinstance(value, float) else value
+                html.append(f'<td>{text}</td>')
+            html.append('</tr>')
+        html.append('</table>')
+        return ''.join(html)
     
-    def plot_sine(frequency, amplitude):
-        x = np.linspace(0, 10, 1000)
-        y = amplitude * np.sin(frequency * x)
-        
-        plt.figure(figsize=(10, 4))
-        plt.plot(x, y)
-        plt.ylim(-10, 10)
-        plt.xlabel('x')
-        plt.ylabel('y')
-        plt.title(f'Sine wave: amplitude={amplitude}, frequency={frequency}')
-        plt.grid(True, alpha=0.3)
-        plt.show()
+    display(HTML(html_table(warmest, ['Day', 'Temperature (°C)'])))
+    ```
+
+22. **Colour the output** (Code):
+    ```python
+    def coloured_value(value, threshold):
+        colour = 'red' if value > threshold else 'steelblue'
+        return f'<span style="color: {colour}; font-weight: bold">{value:.1f}</span>'
     
-    widgets.interact(plot_sine, 
-                     frequency=(0.1, 5.0, 0.1),
-                     amplitude=(0.1, 10.0, 0.5))
+    cells = ' '.join(coloured_value(t, mean_temp + std_temp) for t in temperature)
+    display(HTML(f"<p>Values above mean + 1 std dev are red:</p><p>{cells}</p>"))
     ```
 
 ### Part E: Best Practices 
 
-19. **Clean up and prepare for sharing**:
-    - Click **Kernel → Restart & Clear Output**
-    - Click **Kernel → Restart & Run All**
+23. **Clean up and prepare for sharing**:
+    - Click **Kernel → Restart Kernel and Clear Outputs of All Cells**
+    - Click **Kernel → Restart Kernel and Run All Cells**
     - Check that all cells execute without errors
     - Save the notebook: **Ctrl+S**
 
-20. **Export notebook**:
-    - **File → Download as → HTML**
+24. **Export notebook**:
+    - **File → Save and Export Notebook As → HTML**
     - Open the HTML file in a browser to see the static version
 
 ### Questions to Answer:
@@ -242,8 +314,11 @@ Continue in the same notebook:
 **Learning Objectives:**
 - Create and manage virtual environments
 - Install and manage packages
+- Pin package versions
 - Export and recreate environments
 - Compare venv and conda
+
+In this exercise we use the small, popular package `requests` (an HTTP library) purely as an example of something to install. You do not need to use it for anything else.
 
 ### Part A: Python venv 
 
@@ -282,9 +357,9 @@ Continue in the same notebook:
    
    **Question**: Is this the system Python or the venv Python?
 
-5. **Install packages**:
+5. **Install a package**:
    ```bash
-   pip install numpy pandas matplotlib
+   pip install requests
    ```
 
 6. **List installed packages**:
@@ -303,7 +378,7 @@ Continue in the same notebook:
 
 8. **Test the environment**:
    ```bash
-   python -c "import numpy; print(numpy.__version__)"
+   python -c "import requests; print(requests.__version__)"
    ```
 
 9. **Deactivate**:
@@ -313,9 +388,9 @@ Continue in the same notebook:
    
    Your prompt should return to normal.
 
-10. **Try importing numpy now**:
+10. **Try importing requests now**:
     ```bash
-    python -c "import numpy"
+    python -c "import requests"
     ```
     
     **Question**: What happens? Why?
@@ -325,7 +400,7 @@ Continue in the same notebook:
 11. **Create a second environment**:
     ```bash
     python -m venv venv_test
-    source venv_test/bin/activate  # or activate on Windows
+    source venv_test/bin/activate  # or venv_test\Scripts\activate on Windows
     ```
 
 12. **Install from requirements**:
@@ -342,55 +417,69 @@ Continue in the same notebook:
 
 14. **Test imports**:
     ```bash
-    python -c "import numpy, pandas, matplotlib; print('Success!')"
+    python -c "import requests; print('Success!', requests.__version__)"
     ```
 
-15. **Clean up**:
+15. **Pin a specific version** (still in `venv_test`):
+    ```bash
+    pip install requests==2.28.2
+    python -c "import requests; print(requests.__version__)"
+    ```
+    
+    Now upgrade again and check the version:
+    ```bash
+    pip install --upgrade requests
+    python -c "import requests; print(requests.__version__)"
+    ```
+    
+    **Question**: Which version do you have now? Why would you want to *pin* a version in a project?
+
+16. **Clean up**:
     ```bash
     deactivate
     ```
 
 ### Part C: Conda Environments
 
-16. **Verify conda installation**:
+17. **Verify conda installation**:
     ```bash
     conda --version
     ```
     
     If not installed, download Miniconda: https://docs.conda.io/en/latest/miniconda.html
 
-17. **Create conda environment**:
+18. **Create conda environment**:
     ```bash
     conda create -n analysis_env python=3.10
     ```
     
     Type `y` when prompted.
 
-18. **Activate environment**:
+19. **Activate environment**:
     ```bash
     conda activate analysis_env
     ```
 
-19. **Install packages with conda**:
+20. **Install packages with conda**:
     ```bash
-    conda install numpy pandas matplotlib scipy scikit-learn
+    conda install requests
     ```
 
-20. **List installed packages**:
+21. **List installed packages**:
     ```bash
     conda list
     ```
     
     **Question**: Compare the output to `pip list`. What differences do you notice?
 
-21. **Export environment**:
+22. **Export environment**:
     ```bash
     conda env export > environment.yml
     ```
     
     Open `environment.yml` and examine the structure.
 
-22. **Create environment from file**:
+23. **Create environment from file**:
     ```bash
     conda deactivate
     conda env create -f environment.yml -n analysis_clone
@@ -400,7 +489,7 @@ Continue in the same notebook:
     
     **Question**: Is the package list identical to `analysis_env`?
 
-23. **Test different Python versions**:
+24. **Test different Python versions**:
     ```bash
     conda deactivate
     conda create -n py39 python=3.9
@@ -414,12 +503,12 @@ Continue in the same notebook:
     python --version
     ```
 
-24. **List all environments**:
+25. **List all environments**:
     ```bash
     conda env list
     ```
 
-25. **Clean up**:
+26. **Clean up**:
     ```bash
     conda deactivate
     conda env remove -n analysis_clone
@@ -429,18 +518,15 @@ Continue in the same notebook:
 
 ### Part D: Comparison Exercise
 
-26. **Create a curated `requirements.txt`**:
+27. **Create a curated `requirements.txt`**:
     
     Create a file named `requirements_minimal.txt`:
     ```
-    numpy>=1.24.0
-    pandas>=2.0.0
-    matplotlib>=3.7.0
-    scipy>=1.10.0
-    jupyter>=1.0.0
+    requests>=2.28.0
+    jupyterlab>=4.0.0
     ```
 
-27. **Create environments with both tools**:
+28. **Create environments with both tools**:
     
     **venv**:
     ```bash
@@ -455,12 +541,12 @@ Continue in the same notebook:
     ```bash
     conda create -n conda_minimal python=3.10
     conda activate conda_minimal
-    conda install numpy pandas matplotlib scipy jupyter
+    conda install requests jupyterlab
     conda list > conda_packages.txt
     conda deactivate
     ```
 
-28. **Compare package lists**:
+29. **Compare package lists**:
     ```bash
     wc -l venv_packages.txt conda_packages.txt
     ```
@@ -469,40 +555,50 @@ Continue in the same notebook:
 
 ### Part E: Real-World Scenario 
 
-29. **Scenario**: A colleague shares a project with this `environment.yml`:
+30. **Scenario**: A colleague shares a project with this `environment.yml`. It pins an exact version of `requests` so that everybody gets the same behaviour:
     
     Create `project_environment.yml`:
     ```yaml
-    name: genomics_analysis
+    name: shared_project
     channels:
       - conda-forge
-      - bioconda
       - defaults
     dependencies:
       - python=3.10
-      - numpy=1.24
-      - pandas=2.0
-      - matplotlib=3.7
-      - biopython=1.81
-      - scikit-learn=1.3
-      - jupyter=1.0
+      - requests=2.31
+      - jupyterlab
       - pip
-      - pip:
-        - genomics-toolkit==2.1.0
     ```
 
-30. **Set up the environment**:
+31. **Set up the environment**:
     ```bash
     conda env create -f project_environment.yml
-    conda activate genomics_analysis
+    conda activate shared_project
     ```
 
-31. **Verify installation**:
+32. **Verify installation**:
     ```bash
-    python -c "import Bio; print(f'Biopython version: {Bio.__version__}')"
+    python -c "import requests; print(f'requests version: {requests.__version__}')"
     ```
+    
+    **Question**: Does the printed version match the one pinned in the file (2.31.x)?
 
-32. **Document the setup**:
+33. **Two projects, two versions**: Another (older) project of yours needs a different version of `requests`. Create a `requirements.txt` for it using `venv`:
+    ```bash
+    conda deactivate
+    mkdir old_project
+    cd old_project
+    python -m venv venv
+    source venv/bin/activate        # or venv\Scripts\activate on Windows
+    echo "requests==2.28.2" > requirements.txt
+    pip install -r requirements.txt
+    python -c "import requests; print(requests.__version__)"
+    deactivate
+    ```
+    
+    **Question**: Why can both versions exist on the same computer without conflict?
+
+34. **Document the setup**:
     
     Create `SETUP.md`:
     ```markdown
@@ -519,12 +615,12 @@ Continue in the same notebook:
     
     2. Activate environment:
        ```bash
-       conda activate genomics_analysis
+       conda activate shared_project
        ```
     
     3. Verify installation:
        ```bash
-       python -c "import Bio; print('Success!')"
+       python -c "import requests; print('Success!')"
        ```
     
     ## Updating
@@ -553,6 +649,8 @@ Continue in the same notebook:
 - Use branches
 - Merge changes
 - Resolve conflicts
+
+The code in this exercise is plain Python (functions like the ones you saw on Day 2). You are not asked to write it from scratch: **copy the code exactly as shown** and focus on the Git commands. The project is a tiny DNA sequence toolkit; no external packages are needed.
 
 ### Part A: Basic Git Operations 
 
@@ -980,6 +1078,65 @@ Continue in the same notebook:
 - Collaborate using forks
 - Use GitHub features (Issues, Releases)
 
+This exercise continues with the `gene_analysis` project from Exercise 3 (plain Python, no external packages). If you skipped Exercise 3, create a folder `gene_analysis`, run `git init`, and save the following file there as `sequence_analyzer.py` before you start (it is the state of the file at the end of Exercise 3, with the validation of Part D already merged); then run `git add .` and `git commit -m "Add sequence analyzer"` and also create the `README.md` shown in Exercise 3, step 9.
+
+```python
+"""
+DNA Sequence Analyzer
+Simple tools for analyzing DNA sequences.
+"""
+
+def gc_content(sequence):
+    """Calculate GC content percentage of DNA sequence.
+
+    Returns value between 0 and 100.
+    """
+    if len(sequence) == 0:
+        return 0
+
+    sequence = sequence.upper()
+    g_count = sequence.count('G')
+    c_count = sequence.count('C')
+    total = len(sequence)
+    return (g_count + c_count) / total * 100
+
+
+def reverse_complement(sequence):
+    """Return the reverse complement of a DNA sequence."""
+    complement = {'A': 'T', 'T': 'A', 'G': 'C', 'C': 'G'}
+    sequence = sequence.upper()
+    rev_comp = ''.join([complement[base] for base in sequence[::-1]])
+    return rev_comp
+
+
+def translate(sequence):
+    """Translate DNA sequence to protein."""
+    codon_table = {
+        'ATG': 'M', 'TGG': 'W',
+        'TTT': 'F', 'TTC': 'F',
+        'TAA': '*', 'TAG': '*', 'TGA': '*',
+        # Add more codons as needed
+    }
+
+    protein = []
+    for i in range(0, len(sequence) - 2, 3):
+        codon = sequence[i:i+3].upper()
+        aa = codon_table.get(codon, 'X')  # X for unknown
+        protein.append(aa)
+        if aa == '*':  # Stop codon
+            break
+
+    return ''.join(protein)
+
+
+if __name__ == "__main__":
+    test_seq = "ATGTTTTAA"
+    print(f"Original: {test_seq}")
+    print(f"GC content: {gc_content(test_seq):.1f}%")
+    print(f"Reverse complement: {reverse_complement(test_seq)}")
+    print(f"Translation: {translate(test_seq)}")
+```
+
 ### Part A: Creating a GitHub Repository 
 
 1. **Go to GitHub**: https://github.com
@@ -1248,18 +1405,45 @@ Continue in the same notebook:
     def reverse_complement(sequence):
         """Return the reverse complement of a DNA sequence."""
         validate_sequence(sequence)
-        # ... rest of function
+        complement = {'A': 'T', 'T': 'A', 'G': 'C', 'C': 'G'}
+        sequence = sequence.upper()
+        rev_comp = ''.join([complement[base] for base in sequence[::-1]])
+        return rev_comp
     
     def translate(sequence):
         """Translate DNA sequence to protein."""
         validate_sequence(sequence)
-        # ... rest of function
+        codon_table = {
+            'ATG': 'M', 'TGG': 'W',
+            'TTT': 'F', 'TTC': 'F',
+            'TAA': '*', 'TAG': '*', 'TGA': '*',
+            # Add more codons as needed
+        }
+        
+        protein = []
+        for i in range(0, len(sequence) - 2, 3):
+            codon = sequence[i:i+3].upper()
+            aa = codon_table.get(codon, 'X')  # X for unknown
+            protein.append(aa)
+            if aa == '*':  # Stop codon
+                break
+        
+        return ''.join(protein)
     
     def at_gc_ratio(sequence):
         """Calculate ratio of AT content to GC content."""
         validate_sequence(sequence)
-        # ... rest of function
+        sequence = sequence.upper()
+        at_count = sequence.count('A') + sequence.count('T')
+        gc_count = sequence.count('G') + sequence.count('C')
+        
+        if gc_count == 0:
+            return float('inf') if at_count > 0 else 0
+        
+        return at_count / gc_count
     ```
+    
+    Make sure `validate_sequence` is defined *above* the functions that call it (or at least before they are called in the `if __name__ == "__main__":` block at the bottom of the file).
 
 27. **Commit and push updates**:
     ```bash
@@ -1418,7 +1602,7 @@ Continue in the same notebook:
 
 ### Project: Temperature Data Analysis
 
-You'll create a complete analysis project with proper structure, version control, environments, and documentation.
+You'll create a complete analysis project with proper structure, version control, environments, and documentation. All the analysis code is written in plain Python (standard library only): data are generated with `random`, stored with the `csv` module and summarised with `statistics`. The only external dependency is the tiny package `tabulate`, which is there to practise pinning a dependency in `requirements.txt`.
 
 ### Part A: Project Setup
 
@@ -1445,11 +1629,10 @@ You'll create a complete analysis project with proper structure, version control
    .venv/
    env/
    
-   # Data (will be downloaded)
+   # Data (will be generated by the script)
    data/raw/
    
    # Results
-   figures/
    results/
    
    # IDE
@@ -1459,27 +1642,28 @@ You'll create a complete analysis project with proper structure, version control
 
 4. **Create project structure**:
    ```bash
-   mkdir -p data/{raw,processed} notebooks src figures results
+   mkdir -p data/{raw,processed} notebooks src results
    touch README.md requirements.txt
    touch src/__init__.py
-   touch notebooks/.gitkeep figures/.gitkeep results/.gitkeep
+   touch notebooks/.gitkeep results/.gitkeep
    ```
+   
+   (On Windows, create the folders and empty files with your file explorer or editor.)
 
 5. **Create README.md**:
    ```markdown
    # Temperature Analysis Project
    
-   Analysis of temperature trends over time.
+   Analysis of temperature trends over time, using plain Python.
    
    ## Project Structure
    ```
    temperature_analysis/
    ├── data/
-   │   ├── raw/          # Original data (not in git)
+   │   ├── raw/          # Generated data (not in git)
    │   └── processed/    # Cleaned data
    ├── notebooks/        # Jupyter notebooks
    ├── src/              # Source code
-   ├── figures/          # Generated plots
    └── results/          # Analysis results
    ```
    
@@ -1492,17 +1676,23 @@ You'll create a complete analysis project with proper structure, version control
    pip install -r requirements.txt
    ```
    
-   ### Download Data
+   ### Generate Data
    ```bash
    python src/download_data.py
    ```
    
    ## Usage
    
-   Run the analysis notebooks in order:
+   Process the data and run the analysis:
+   ```bash
+   python src/data_processing.py
+   python -m src.analysis
+   ```
+   
+   Or run the analysis notebooks in order:
    1. `01_data_exploration.ipynb`
    2. `02_statistical_analysis.ipynb`
-   3. `03_visualization.ipynb`
+   3. `03_decomposition.ipynb`
    
    ## Author
    Your Name
@@ -1518,18 +1708,16 @@ You'll create a complete analysis project with proper structure, version control
 
 7. **Create requirements.txt**:
    ```
-   numpy>=1.24.0
-   pandas>=2.0.0
-   matplotlib>=3.7.0
-   scipy>=1.10.0
-   jupyter>=1.0.0
-   seaborn>=0.12.0
+   tabulate==0.9.0
+   jupyterlab>=4.0.0
    ```
+   
+   `tabulate` is a small pure-Python package that prints nicely formatted text tables. We pin its exact version (`==`) so that everybody uses the same one. `jupyterlab` is needed to run the notebooks inside this environment.
 
 8. **Create virtual environment**:
    ```bash
    python -m venv venv
-   source venv/bin/activate
+   source venv/bin/activate   # On Windows: venv\Scripts\activate
    ```
 
 9. **Install dependencies**:
@@ -1545,61 +1733,90 @@ You'll create a complete analysis project with proper structure, version control
 
 ### Part C: Data Acquisition
 
-11. **Create data download script**:
+11. **Create data generation script**:
     
-    Create `src/download_data.py`:
+    Create `src/download_data.py`. It simulates one year (day index 1 to 365) of daily temperatures with a fixed random seed, adds a few missing values and one duplicated record (like real data), and writes everything with the `csv` module:
     ```python
     """
-    Download temperature data for analysis.
+    Generate sample temperature data for analysis.
+
+    The data are simulated with the standard library only, using a fixed
+    random seed so that everybody gets exactly the same file.
     """
-    import numpy as np
-    import pandas as pd
+    import csv
+    import math
+    import random
     from pathlib import Path
-    
-    def generate_sample_data():
-        """Generate sample temperature data."""
-        np.random.seed(42)
-        
-        # Generate 365 days of data
-        dates = pd.date_range('2023-01-01', periods=365, freq='D')
-        
-        # Seasonal component (sine wave with period of 365 days)
-        day_of_year = dates.dayofyear
-        seasonal = 15 * np.sin(2 * np.pi * day_of_year / 365 - np.pi/2)
-        
-        # Trend (slight warming)
-        trend = np.linspace(0, 2, 365)
-        
-        # Random noise
-        noise = np.random.normal(0, 3, 365)
-        
-        # Combine components
-        temperature = 15 + seasonal + trend + noise
-        
-        # Create DataFrame
-        df = pd.DataFrame({
-            'date': dates,
-            'temperature': temperature,
-            'location': 'City_A'
-        })
-        
-        return df
-    
+
+    N_DAYS = 365
+    FIELDNAMES = ['day', 'temperature', 'location']
+
+
+    def generate_sample_data(n_days=N_DAYS, seed=42):
+        """
+        Generate sample temperature data.
+
+        Parameters
+        ----------
+        n_days : int
+            Number of days to simulate (day index 1..n_days).
+        seed : int
+            Seed for the random number generator.
+
+        Returns
+        -------
+        list of dict
+            One dictionary per day with keys 'day', 'temperature', 'location'.
+        """
+        random.seed(seed)
+        rows = []
+        for day in range(1, n_days + 1):
+            # Seasonal component: sine wave with a period of 365 days
+            seasonal = 10 * math.sin(2 * math.pi * day / 365 - math.pi / 2)
+            # Slight warming trend (0 to 2 degrees over the period)
+            trend = 2 * (day - 1) / (n_days - 1)
+            # Random measurement noise
+            noise = random.gauss(0, 3)
+            temperature = 18 + seasonal + trend + noise
+            rows.append({
+                'day': day,
+                'temperature': round(temperature, 2),
+                'location': 'City_A',
+            })
+
+        # Make the data a little bit messy, like real data:
+        # a few missing measurements and one duplicated record
+        for day in (50, 120, 200):
+            rows[day - 1]['temperature'] = ''
+        rows.append(dict(rows[99]))
+
+        return rows
+
+
+    def save_csv(rows, filepath):
+        """Write a list of dictionaries to a CSV file."""
+        with open(filepath, 'w', newline='') as f:
+            writer = csv.DictWriter(f, fieldnames=FIELDNAMES)
+            writer.writeheader()
+            writer.writerows(rows)
+
+
     def main():
-        """Download/generate and save data."""
+        """Generate and save data."""
         print("Generating sample data...")
-        df = generate_sample_data()
-        
+        rows = generate_sample_data()
+
         # Create data directory if needed
         data_dir = Path('data/raw')
         data_dir.mkdir(parents=True, exist_ok=True)
-        
+
         # Save data
         output_file = data_dir / 'temperature_data.csv'
-        df.to_csv(output_file, index=False)
+        save_csv(rows, output_file)
         print(f"Data saved to {output_file}")
-        print(f"Generated {len(df)} records")
-    
+        print(f"Generated {len(rows)} records")
+
+
     if __name__ == "__main__":
         main()
     ```
@@ -1608,11 +1825,13 @@ You'll create a complete analysis project with proper structure, version control
     ```bash
     python src/download_data.py
     ```
+    
+    You should see `Generated 366 records` (365 days plus one duplicate). Open `data/raw/temperature_data.csv` in a text editor to look at the data.
 
 13. **Commit the script** (but not the data!):
     ```bash
     git add src/download_data.py
-    git commit -m "Add data download script"
+    git commit -m "Add data generation script"
     ```
 
 ### Part D: Data Processing Module 
@@ -1622,125 +1841,224 @@ You'll create a complete analysis project with proper structure, version control
     Create `src/data_processing.py`:
     ```python
     """
-    Data processing utilities.
+    Data processing utilities (standard library only).
     """
-    import pandas as pd
-    import numpy as np
+    import csv
+    import statistics
     from pathlib import Path
-    
+
+    PROCESSED_FIELDS = ['day', 'temperature', 'location', 'block',
+                        'temp_7day_ma', 'temp_30day_ma']
+
+
     def load_raw_data(filepath):
         """
         Load raw temperature data.
-        
+
         Parameters
         ----------
         filepath : str or Path
             Path to CSV file.
-        
+
         Returns
         -------
-        DataFrame
-            Loaded data with parsed dates.
+        list of dict
+            One dictionary per row. 'day' is an int, 'temperature' is a
+            float (or None if the measurement is missing).
         """
-        df = pd.read_csv(filepath, parse_dates=['date'])
-        return df
-    
-    def clean_data(df):
+        rows = []
+        with open(filepath, newline='') as f:
+            for record in csv.DictReader(f):
+                temperature = record['temperature']
+                rows.append({
+                    'day': int(record['day']),
+                    'temperature': float(temperature) if temperature else None,
+                    'location': record['location'],
+                })
+        return rows
+
+
+    def clean_data(rows):
         """
         Clean temperature data.
-        
+
         Parameters
         ----------
-        df : DataFrame
+        rows : list of dict
             Raw data.
-        
+
         Returns
         -------
-        DataFrame
-            Cleaned data.
+        list of dict
+            Data without duplicates or missing values, sorted by day.
         """
-        # Remove duplicates
-        df = df.drop_duplicates()
-        
-        # Remove missing values
-        df = df.dropna()
-        
-        # Sort by date
-        df = df.sort_values('date')
-        
-        # Reset index
-        df = df.reset_index(drop=True)
-        
-        return df
-    
-    def add_features(df):
+        cleaned = []
+        seen = set()
+        for row in rows:
+            # Remove missing values
+            if row['temperature'] is None:
+                continue
+            # Remove duplicates
+            key = (row['day'], row['location'])
+            if key in seen:
+                continue
+            seen.add(key)
+            cleaned.append(dict(row))
+
+        # Sort by day
+        cleaned.sort(key=lambda row: row['day'])
+        return cleaned
+
+
+    def moving_average(values, window):
+        """
+        Trailing moving average computed with a plain loop.
+
+        The first (window - 1) positions have no full window and are None.
+        """
+        result = []
+        for i in range(len(values)):
+            if i < window - 1:
+                result.append(None)
+            else:
+                chunk = values[i - window + 1:i + 1]
+                result.append(sum(chunk) / window)
+        return result
+
+
+    def add_features(rows, block_size=30):
         """
         Add derived features.
-        
+
         Parameters
         ----------
-        df : DataFrame
+        rows : list of dict
             Cleaned data.
-        
+        block_size : int
+            Number of days per block (a "month-like" period of 30 days).
+
         Returns
         -------
-        DataFrame
-            Data with additional features.
+        list of dict
+            Data with the additional keys 'block', 'temp_7day_ma' and
+            'temp_30day_ma'.
         """
-        # Extract date components
-        df['year'] = df['date'].dt.year
-        df['month'] = df['date'].dt.month
-        df['day_of_year'] = df['date'].dt.dayofyear
-        
-        # Calculate moving averages
-        df['temp_7day_ma'] = df['temperature'].rolling(window=7, center=True).mean()
-        df['temp_30day_ma'] = df['temperature'].rolling(window=30, center=True).mean()
-        
-        return df
-    
+        temperatures = [row['temperature'] for row in rows]
+        ma7 = moving_average(temperatures, 7)
+        ma30 = moving_average(temperatures, 30)
+
+        for row, m7, m30 in zip(rows, ma7, ma30):
+            row['block'] = (row['day'] - 1) // block_size + 1
+            row['temp_7day_ma'] = m7
+            row['temp_30day_ma'] = m30
+        return rows
+
+
+    def save_processed(rows, filepath):
+        """Save processed rows to CSV (None becomes an empty field)."""
+        filepath = Path(filepath)
+        filepath.parent.mkdir(parents=True, exist_ok=True)
+        with open(filepath, 'w', newline='') as f:
+            writer = csv.DictWriter(f, fieldnames=PROCESSED_FIELDS)
+            writer.writeheader()
+            for row in rows:
+                writer.writerow({k: ('' if row[k] is None else row[k])
+                                 for k in PROCESSED_FIELDS})
+
+
+    def load_processed(filepath):
+        """Load a processed CSV file written by save_processed()."""
+        rows = []
+        with open(filepath, newline='') as f:
+            for record in csv.DictReader(f):
+                row = {'day': int(record['day']),
+                       'location': record['location'],
+                       'block': int(record['block'])}
+                for key in ('temperature', 'temp_7day_ma', 'temp_30day_ma'):
+                    row[key] = float(record[key]) if record[key] else None
+                rows.append(row)
+        return rows
+
+
+    def summarise(rows):
+        """
+        Summary statistics of the temperature column.
+
+        Returns
+        -------
+        dict
+            Keys: 'n', 'mean', 'median', 'stdev', 'min', 'max'.
+        """
+        values = [row['temperature'] for row in rows
+                  if row['temperature'] is not None]
+        return {
+            'n': len(values),
+            'mean': statistics.mean(values),
+            'median': statistics.median(values),
+            'stdev': statistics.stdev(values),
+            'min': min(values),
+            'max': max(values),
+        }
+
+
     def process_data(input_path, output_path):
         """
         Complete data processing pipeline.
-        
+
         Parameters
         ----------
         input_path : str or Path
             Path to raw data.
         output_path : str or Path
             Path to save processed data.
-        
+
         Returns
         -------
-        DataFrame
+        list of dict
             Processed data.
         """
         print("Loading data...")
-        df = load_raw_data(input_path)
-        
+        rows = load_raw_data(input_path)
+        print(f"  {len(rows)} raw records")
+
         print("Cleaning data...")
-        df = clean_data(df)
-        
+        rows = clean_data(rows)
+        print(f"  {len(rows)} records after cleaning")
+
         print("Adding features...")
-        df = add_features(df)
-        
-        # Save processed data
-        output_path = Path(output_path)
-        output_path.parent.mkdir(parents=True, exist_ok=True)
-        df.to_csv(output_path, index=False)
+        rows = add_features(rows)
+
+        save_processed(rows, output_path)
         print(f"Processed data saved to {output_path}")
-        
-        return df
-    
+
+        return rows
+
+
     if __name__ == "__main__":
-        process_data(
+        processed = process_data(
             'data/raw/temperature_data.csv',
             'data/processed/temperature_processed.csv'
         )
+        stats = summarise(processed)
+        print(f"Mean: {stats['mean']:.2f} C, "
+              f"median: {stats['median']:.2f} C, "
+              f"stdev: {stats['stdev']:.2f} C")
     ```
 
 15. **Test the module**:
     ```bash
     python src/data_processing.py
+    ```
+    
+    Expected output (the numbers are identical for everybody because the random seed is fixed):
+    ```
+    Loading data...
+      366 raw records
+    Cleaning data...
+      362 records after cleaning
+    Adding features...
+    Processed data saved to data/processed/temperature_processed.csv
+    Mean: 19.24 C, median: 18.99 C, stdev: 7.89 C
     ```
 
 16. **Commit**:
@@ -1751,12 +2069,143 @@ You'll create a complete analysis project with proper structure, version control
 
 ### Part E: Analysis Notebooks
 
-17. **Start Jupyter**:
+17. **Create the analysis module**:
+    
+    Create `src/analysis.py`. It computes summaries for blocks of 30 days and a linear trend, and prints text tables and text bar charts:
+    ```python
+    """
+    Analysis functions (standard library plus tabulate).
+    """
+    import statistics
+
+    from tabulate import tabulate
+
+
+    def block_summary(rows, block_size=30):
+        """
+        Summarise the temperature in blocks of days.
+
+        Parameters
+        ----------
+        rows : list of dict
+            Cleaned data, each row with 'day' and 'temperature'.
+        block_size : int
+            Number of days per block.
+
+        Returns
+        -------
+        list of dict
+            One dictionary per block with 'block', 'first_day', 'last_day',
+            'mean', 'min' and 'max'.
+        """
+        blocks = {}
+        for row in rows:
+            number = (row['day'] - 1) // block_size + 1
+            blocks.setdefault(number, []).append(row)
+
+        summary = []
+        for number in sorted(blocks):
+            members = blocks[number]
+            values = [row['temperature'] for row in members]
+            summary.append({
+                'block': number,
+                'first_day': members[0]['day'],
+                'last_day': members[-1]['day'],
+                'mean': statistics.mean(values),
+                'min': min(values),
+                'max': max(values),
+            })
+        return summary
+
+
+    def linear_trend(rows):
+        """
+        Least-squares straight line through the temperature data.
+
+        Returns
+        -------
+        tuple
+            (slope, intercept) where slope is in degrees per day.
+        """
+        x = [row['day'] for row in rows]
+        y = [row['temperature'] for row in rows]
+        x_mean = sum(x) / len(x)
+        y_mean = sum(y) / len(y)
+        numerator = sum((xi - x_mean) * (yi - y_mean) for xi, yi in zip(x, y))
+        denominator = sum((xi - x_mean) ** 2 for xi in x)
+        slope = numerator / denominator
+        intercept = y_mean - slope * x_mean
+        return slope, intercept
+
+
+    def text_bar_chart(labels, values, width=40):
+        """
+        Build a simple horizontal bar chart made of '#' characters.
+
+        Bars are scaled so that the largest value has `width` characters.
+        """
+        largest = max(values)
+        lines = []
+        for label, value in zip(labels, values):
+            bar = '#' * round(value / largest * width) if largest > 0 else ''
+            lines.append(f"{label:>10} | {bar} {value:.1f}")
+        return '\n'.join(lines)
+
+
+    def table_text(rows, headers):
+        """Format rows (a list of lists) as a plain-text table."""
+        return tabulate(rows, headers=headers, floatfmt=".2f")
+
+
+    def html_table(rows, headers):
+        """Format rows (a list of lists) as an HTML table string."""
+        html = ['<table>', '<tr>']
+        html += [f'<th>{h}</th>' for h in headers]
+        html.append('</tr>')
+        for row in rows:
+            html.append('<tr>')
+            for value in row:
+                text = f'{value:.2f}' if isinstance(value, float) else value
+                html.append(f'<td>{text}</td>')
+            html.append('</tr>')
+        html.append('</table>')
+        return ''.join(html)
+
+
+    if __name__ == "__main__":
+        # Run from the project root with:  python -m src.analysis
+        from src.data_processing import load_processed
+
+        data = load_processed('data/processed/temperature_processed.csv')
+        summary = block_summary(data)
+
+        table = [[s['block'], s['first_day'], s['last_day'],
+                  s['mean'], s['min'], s['max']] for s in summary]
+        print(table_text(table, ['Block', 'From', 'To', 'Mean', 'Min', 'Max']))
+        print()
+        print(text_bar_chart([f"block {s['block']}" for s in summary],
+                             [s['mean'] for s in summary]))
+        slope, intercept = linear_trend(data)
+        print(f"\nOverall trend: {slope * 365:.2f} C per 365 days")
+    ```
+    
+    Try it from the project root:
     ```bash
-    jupyter notebook
+    python -m src.analysis
+    ```
+    
+    Commit it:
+    ```bash
+    git add src/analysis.py
+    git commit -m "Add analysis module"
     ```
 
-18. **Create exploration notebook**:
+18. **Start JupyterLab**:
+    ```bash
+    jupyter lab
+    ```
+
+19. **Create exploration notebook**:
     
     Create `notebooks/01_data_exploration.ipynb`:
     
@@ -1772,72 +2221,72 @@ You'll create a complete analysis project with proper structure, version control
     
     **Cell 2** (Code - Setup):
     ```python
-    import numpy as np
-    import pandas as pd
-    import matplotlib.pyplot as plt
-    import seaborn as sns
-    
-    %matplotlib inline
-    sns.set_style('whitegrid')
-    
-    # Import our modules
     import sys
     sys.path.append('../')
-    from src.data_processing import load_raw_data, process_data
+    
+    from IPython.display import display, Markdown, HTML
+    from src.data_processing import load_raw_data, summarise
+    from src.analysis import html_table, text_bar_chart
     ```
     
     **Cell 3** (Code - Load):
     ```python
     # Load raw data
-    df_raw = load_raw_data('../data/raw/temperature_data.csv')
-    print(f"Loaded {len(df_raw)} records")
-    df_raw.head()
+    rows = load_raw_data('../data/raw/temperature_data.csv')
+    print(f"Loaded {len(rows)} records")
+    
+    # Show the first five rows as an HTML table
+    first = [[r['day'], r['temperature'], r['location']] for r in rows[:5]]
+    display(HTML(html_table(first, ['Day', 'Temperature', 'Location'])))
     ```
     
     **Cell 4** (Code - Summary):
     ```python
     # Summary statistics
-    df_raw['temperature'].describe()
+    stats = summarise(rows)
+    display(Markdown(
+        f"**Records with a measurement**: {stats['n']}  \n"
+        f"**Mean**: {stats['mean']:.2f} °C  \n"
+        f"**Median**: {stats['median']:.2f} °C  \n"
+        f"**Standard deviation**: {stats['stdev']:.2f} °C  \n"
+        f"**Range**: {stats['min']:.1f} to {stats['max']:.1f} °C"
+    ))
     ```
     
-    **Cell 5** (Code - Plot):
+    **Cell 5** (Code - First days as text bars):
     ```python
-    # Plot time series
-    plt.figure(figsize=(12, 6))
-    plt.plot(df_raw['date'], df_raw['temperature'], alpha=0.7)
-    plt.xlabel('Date')
-    plt.ylabel('Temperature (°C)')
-    plt.title('Raw Temperature Data')
-    plt.xticks(rotation=45)
-    plt.tight_layout()
-    plt.show()
+    # The first 20 days (skipping missing values)
+    first_days = [r for r in rows[:20] if r['temperature'] is not None]
+    print(text_bar_chart([f"day {r['day']}" for r in first_days],
+                         [r['temperature'] for r in first_days]))
     ```
     
     **Cell 6** (Code - Distribution):
     ```python
-    # Distribution
-    plt.figure(figsize=(10, 6))
-    plt.hist(df_raw['temperature'], bins=50, edgecolor='black')
-    plt.xlabel('Temperature (°C)')
-    plt.ylabel('Frequency')
-    plt.title('Temperature Distribution')
-    plt.axvline(df_raw['temperature'].mean(), color='red', 
-                linestyle='--', label='Mean')
-    plt.legend()
-    plt.show()
+    # Distribution: count the measurements in 5-degree bins
+    bin_width = 5
+    counts = {}
+    for r in rows:
+        if r['temperature'] is not None:
+            low = int(r['temperature'] // bin_width) * bin_width
+            counts[low] = counts.get(low, 0) + 1
+    
+    lows = sorted(counts)
+    print(text_bar_chart([f"{low} to {low + bin_width}" for low in lows],
+                         [counts[low] for low in lows]))
     ```
     
     **Cell 7** (Markdown):
     ```markdown
     ## Observations
     
-    - Data shows clear seasonal pattern
+    - Data shows a clear seasonal pattern
     - Some random fluctuations visible
-    - Distribution appears roughly normal
-    - Mean temperature around 15-20°C
+    - The distribution is wide and fairly flat (it mixes cold and warm seasons)
+    - Mean temperature around 19°C
     ```
 
-19. **Process data and create analysis notebook**:
+20. **Process data and create analysis notebook**:
     
     Create `notebooks/02_statistical_analysis.ipynb`:
     
@@ -1850,72 +2299,56 @@ You'll create a complete analysis project with proper structure, version control
     
     **Cell 2** (Code - Setup):
     ```python
-    import numpy as np
-    import pandas as pd
-    import matplotlib.pyplot as plt
-    from scipy import stats
-    
     import sys
     sys.path.append('../')
-    from src.data_processing import process_data
     
-    %matplotlib inline
+    from IPython.display import display, Markdown, HTML
+    from src.data_processing import process_data
+    from src.analysis import (block_summary, linear_trend, html_table,
+                              text_bar_chart)
     ```
     
-    **Cell 3** (Code - Load processed):
+    **Cell 3** (Code - Process data):
     ```python
     # Process data
-    df = process_data(
+    rows = process_data(
         '../data/raw/temperature_data.csv',
         '../data/processed/temperature_processed.csv'
     )
-    df.head()
+    
+    # Moving averages around day 30 (the first 29 values of the 30-day average are empty)
+    display(HTML(html_table(
+        [[r['day'], r['temperature'], r['temp_7day_ma'], r['temp_30day_ma']]
+         for r in rows[28:34]],
+        ['Day', 'Temperature', '7-day MA', '30-day MA'])))
     ```
     
-    **Cell 4** (Code - Monthly analysis):
+    **Cell 4** (Code - Block analysis):
     ```python
-    # Monthly statistics
-    monthly_stats = df.groupby('month')['temperature'].agg([
-        'mean', 'std', 'min', 'max'
-    ]).round(2)
-    monthly_stats
+    # Statistics for blocks of 30 days
+    summary = block_summary(rows, block_size=30)
+    table = [[s['block'], s['first_day'], s['last_day'],
+              s['mean'], s['min'], s['max']] for s in summary]
+    display(HTML(html_table(table, ['Block', 'From', 'To', 'Mean', 'Min', 'Max'])))
     ```
     
     **Cell 5** (Code - Trend analysis):
     ```python
     # Linear trend
-    x = np.arange(len(df))
-    y = df['temperature'].values
-    slope, intercept, r_value, p_value, std_err = stats.linregress(x, y)
-    
-    print(f"Trend: {slope:.4f} °C/day")
-    print(f"R-squared: {r_value**2:.4f}")
-    print(f"P-value: {p_value:.4e}")
+    slope, intercept = linear_trend(rows)
+    display(Markdown(
+        f"**Linear trend**: {slope:.4f} °C/day "
+        f"({slope * 365:.2f} °C per 365 days)"
+    ))
     ```
     
-    **Cell 6** (Code - Plot with trend):
+    **Cell 6** (Code - Text bar chart of block means):
     ```python
-    plt.figure(figsize=(12, 6))
-    plt.plot(df['date'], df['temperature'], alpha=0.5, label='Data')
-    plt.plot(df['date'], df['temp_30day_ma'], 
-             label='30-day MA', linewidth=2)
-    
-    # Add trend line
-    trend_line = slope * x + intercept
-    plt.plot(df['date'], trend_line, 'r--', 
-             label=f'Trend ({slope*365:.2f}°C/year)')
-    
-    plt.xlabel('Date')
-    plt.ylabel('Temperature (°C)')
-    plt.title('Temperature with Trend')
-    plt.legend()
-    plt.xticks(rotation=45)
-    plt.tight_layout()
-    plt.savefig('../figures/temperature_trend.png', dpi=300)
-    plt.show()
+    print(text_bar_chart([f"block {s['block']}" for s in summary],
+                         [s['mean'] for s in summary]))
     ```
 
-20. **Save notebooks and commit**:
+21. **Save notebooks and commit**:
     ```bash
     git add notebooks/
     git commit -m "Add exploration and analysis notebooks"
@@ -1923,20 +2356,20 @@ You'll create a complete analysis project with proper structure, version control
 
 ### Part F: Create GitHub Repository
 
-21. **Create repository on GitHub**:
+22. **Create repository on GitHub**:
     - Name: `temperature-analysis`
     - Description: "Statistical analysis of temperature trends"
     - Public
     - Don't initialize
 
-22. **Connect and push**:
+23. **Connect and push**:
     ```bash
     git remote add origin https://github.com/YOUR_USERNAME/temperature-analysis.git
     git branch -M main
     git push -u origin main
     ```
 
-23. **Add LICENSE**:
+24. **Add LICENSE**:
     - On GitHub, click "Add file" → "Create new file"
     - Name: `LICENSE`
     - Click "Choose a license template"
@@ -1944,213 +2377,191 @@ You'll create a complete analysis project with proper structure, version control
     - Fill in year and name
     - Commit
 
-24. **Pull license locally**:
+25. **Pull license locally**:
     ```bash
     git pull origin main
     ```
 
 ### Part G: Collaborative Feature 
 
-25. **Create issue**:
+26. **Create issue**:
     - On GitHub: Issues → New issue
-    - Title: "Add seasonal decomposition analysis"
-    - Body: "Decompose temperature into trend, seasonal, and residual components"
+    - Title: "Add trend and residual decomposition"
+    - Body: "Split the temperature series into a slow trend (moving average) and residual fluctuations"
     - Submit
 
-26. **Create feature branch**:
+27. **Create feature branch**:
     ```bash
-    git switch -c seasonal-decomposition
+    git switch -c trend-decomposition
     ```
 
-27. **Add analysis function**:
+28. **Add analysis function**:
     
-    Create `src/analysis.py`:
+    Add to `src/analysis.py`, before the `if __name__ == "__main__":` block:
     ```python
-    """
-    Statistical analysis functions.
-    """
-    import numpy as np
-    import pandas as pd
-    from scipy import signal
-    
-    def seasonal_decomposition(series, period=365):
+    def decompose(values, window=31):
         """
-        Decompose time series into components.
-        
+        Split a series into a slow trend and fast residual fluctuations.
+
+        The trend is a centred moving average over `window` points
+        (`window` must be odd). The first and last window // 2 positions
+        have no full window, so trend and residual are None there.
+
         Parameters
         ----------
-        series : array-like
+        values : list of float
             Time series data.
-        period : int
-            Period for seasonal component.
-        
+        window : int
+            Odd number of points in the moving average.
+
         Returns
         -------
         dict
-            Dictionary with 'trend', 'seasonal', 'residual' components.
+            Dictionary with 'trend' and 'residual' lists (same length as
+            `values`).
         """
-        # Simple moving average for trend
-        trend = pd.Series(series).rolling(
-            window=period, center=True
-        ).mean().values
-        
-        # Detrended data
-        detrended = series - trend
-        
-        # Average seasonal pattern
-        seasonal = np.tile(
-            np.nanmean(
-                detrended.reshape(-1, period), axis=0
-            ),
-            len(series) // period + 1
-        )[:len(series)]
-        
-        # Residual
-        residual = series - trend - seasonal
-        
-        return {
-            'trend': trend,
-            'seasonal': seasonal,
-            'residual': residual
-        }
+        half = window // 2
+        trend = []
+        residual = []
+        for i, value in enumerate(values):
+            if i < half or i >= len(values) - half:
+                trend.append(None)
+                residual.append(None)
+            else:
+                chunk = values[i - half:i + half + 1]
+                smooth = sum(chunk) / window
+                trend.append(smooth)
+                residual.append(value - smooth)
+        return {'trend': trend, 'residual': residual}
     ```
 
-28. **Create notebook to test**:
+29. **Create notebook to test**:
     
-    Create `notebooks/03_seasonal_decomposition.ipynb`:
+    Create `notebooks/03_decomposition.ipynb`:
     
     ```python
     # Setup
-    import numpy as np
-    import pandas as pd
-    import matplotlib.pyplot as plt
     import sys
     sys.path.append('../')
-    from src.analysis import seasonal_decomposition
+    
+    import statistics
+    from IPython.display import display, Markdown
+    from src.data_processing import load_processed
+    from src.analysis import decompose, text_bar_chart
     
     # Load data
-    df = pd.read_csv('../data/processed/temperature_processed.csv',
-                     parse_dates=['date'])
+    rows = load_processed('../data/processed/temperature_processed.csv')
+    temperatures = [r['temperature'] for r in rows]
     
     # Decompose
-    components = seasonal_decomposition(
-        df['temperature'].values, period=365
-    )
+    components = decompose(temperatures, window=31)
     
-    # Plot
-    fig, axes = plt.subplots(4, 1, figsize=(12, 10))
+    residuals = [x for x in components['residual'] if x is not None]
+    display(Markdown(
+        f"Residual standard deviation: **{statistics.stdev(residuals):.2f} °C**"
+    ))
     
-    axes[0].plot(df['date'], df['temperature'])
-    axes[0].set_title('Original')
-    axes[0].set_ylabel('Temperature (°C)')
-    
-    axes[1].plot(df['date'], components['trend'])
-    axes[1].set_title('Trend')
-    axes[1].set_ylabel('Temperature (°C)')
-    
-    axes[2].plot(df['date'], components['seasonal'])
-    axes[2].set_title('Seasonal')
-    axes[2].set_ylabel('Temperature (°C)')
-    
-    axes[3].plot(df['date'], components['residual'])
-    axes[3].set_title('Residual')
-    axes[3].set_ylabel('Temperature (°C)')
-    axes[3].set_xlabel('Date')
-    
-    plt.tight_layout()
-    plt.savefig('../figures/seasonal_decomposition.png', dpi=300)
-    plt.show()
+    # Trend sampled every 30 days
+    labels, values = [], []
+    for i in range(0, len(rows), 30):
+        if components['trend'][i] is not None:
+            labels.append(f"day {rows[i]['day']}")
+            values.append(components['trend'][i])
+    print(text_bar_chart(labels, values))
     ```
 
-29. **Commit and push**:
+30. **Commit and push**:
     ```bash
-    git add src/analysis.py notebooks/03_seasonal_decomposition.ipynb
-    git commit -m "Add seasonal decomposition analysis
+    git add src/analysis.py notebooks/03_decomposition.ipynb
+    git commit -m "Add trend and residual decomposition
 
-    Implements #1: Decompose temperature into trend, seasonal, residual"
-    git push -u origin seasonal-decomposition
+    Implements #1: Split temperature into trend and residual"
+    git push -u origin trend-decomposition
     ```
 
-30. **Create Pull Request**:
+31. **Create Pull Request**:
     - On GitHub: Create PR
-    - Title: "Add seasonal decomposition"
+    - Title: "Add trend and residual decomposition"
     - Description: Link to issue, explain changes
     - Create PR
 
-31. **Merge (if working alone, or wait for review)**:
+32. **Merge (if working alone, or wait for review)**:
     - Review files changed
     - Merge pull request
     - Delete branch on GitHub
 
-32. **Update local**:
+33. **Update local**:
     ```bash
     git switch main
     git pull origin main
-    git branch -d seasonal-decomposition
+    git branch -d trend-decomposition
     ```
 
 ### Part H: Finalize and Release 
 
-33. **Update README with results**:
+34. **Update README with results**:
     
     Add to README.md:
     ```markdown
     ## Results
     
     ### Key Findings
-    - Clear seasonal pattern with 365-day period
-    - Slight warming trend of ~2°C/year
-    - Random variations of ±3°C
+    - Clear seasonal pattern with a 365-day period (warmest around day 180)
+    - Slight warming trend of about 1.6°C per 365 days (fitted line)
+    - Random variations of about ±3°C around the slow trend
     
-    ### Figures
+    ### Example output
     
-    ![Temperature Trend](figures/temperature_trend.png)
+    Mean temperature per 30-day block (`python -m src.analysis`):
     
-    ![Seasonal Decomposition](figures/seasonal_decomposition.png)
+        block 1 | ############ 8.6
+        block 2 | ############### 11.3
+        block 3 | ##################### 15.7
+        ...
     
     ## Reproducibility
     
     All analyses are fully reproducible:
     1. Clone repository
     2. Set up environment
-    3. Run data download script
-    4. Execute notebooks in order
+    3. Run data generation script
+    4. Run `src/data_processing.py` and the notebooks in order
     ```
 
-34. **Create final summary notebook**:
+35. **Create final summary notebook**:
     
     `notebooks/00_summary.ipynb`:
     ```markdown
     # Temperature Analysis: Summary
     
     ## Project Overview
-    Analysis of temperature trends over one year.
+    Analysis of temperature trends over one year (day 1 to day 365).
     
     ## Methodology
     1. Data generation/collection
     2. Data cleaning and feature engineering
     3. Statistical analysis
-    4. Seasonal decomposition
+    4. Trend and residual decomposition
     
     ## Key Results
-    - **Trend**: +2°C/year warming
+    - **Trend**: about +1.6°C per 365 days
     - **Seasonality**: Clear 365-day cycle
     - **Variability**: ±3°C random fluctuations
     
     ## Notebooks
     - `01_data_exploration.ipynb`: Initial exploration
     - `02_statistical_analysis.ipynb`: Trend analysis
-    - `03_seasonal_decomposition.ipynb`: Component analysis
+    - `03_decomposition.ipynb`: Trend and residual components
     ```
 
-35. **Commit everything**:
+36. **Commit everything**:
     ```bash
     git add .
     git commit -m "Final updates: README and summary"
     git push origin main
     ```
 
-36. **Create release**:
+37. **Create release**:
     - GitHub: Releases → Create new release
     - Tag: `v1.0.0`
     - Title: "Version 1.0.0 - Complete Analysis"
@@ -2159,10 +2570,10 @@ You'll create a complete analysis project with proper structure, version control
     ## Complete temperature analysis package
     
     ### Features
-    - Data acquisition and processing
-    - Statistical trend analysis
-    - Seasonal decomposition
-    - Comprehensive visualization
+    - Data generation and processing
+    - Block summaries and linear trend
+    - Trend and residual decomposition
+    - Text tables and text bar charts
     - Fully reproducible workflow
     
     ### How to Use
@@ -2170,7 +2581,7 @@ You'll create a complete analysis project with proper structure, version control
     ```
     - Publish release
 
-37. **Add DOI (optional)**:
+38. **Add DOI (optional)**:
     - Go to Zenodo.org
     - Connect to GitHub
     - Enable repository
@@ -2178,7 +2589,7 @@ You'll create a complete analysis project with proper structure, version control
 
 ### Part I: Documentation Review 
 
-38. **Create checklist**:
+39. **Create checklist**:
     
     Create `CHECKLIST.md`:
     ```markdown
@@ -2186,18 +2597,18 @@ You'll create a complete analysis project with proper structure, version control
     
     - [x] Code in version control (Git/GitHub)
     - [x] Dependencies documented (requirements.txt)
-    - [x] Data acquisition documented (download script)
+    - [x] Data generation documented (script)
     - [x] Analysis steps documented (notebooks)
-    - [x] Random seeds set (in download script)
+    - [x] Random seeds set (in data generation script)
     - [x] README explains workflow
     - [x] Results can be reproduced
-    - [x] Figures generated from code
+    - [x] Tables and charts generated from code
     - [x] Environment can be recreated
     - [x] Licensed (MIT)
     - [x] Released (v1.0.0)
     ```
 
-39. **Test full reproducibility**:
+40. **Test full reproducibility**:
     
     In a new directory:
     ```bash
@@ -2207,7 +2618,9 @@ You'll create a complete analysis project with proper structure, version control
     source venv/bin/activate
     pip install -r requirements.txt
     python src/download_data.py
-    jupyter notebook
+    python src/data_processing.py
+    python -m src.analysis
+    jupyter lab
     # Run all notebooks
     ```
 
@@ -2223,20 +2636,20 @@ You'll create a complete analysis project with proper structure, version control
 
 ## Additional Challenges
 
-### Challenge 1: Add Testing
-Create `tests/test_data_processing.py` with unit tests for all functions.
+### Challenge 1: Command-Line Arguments
+Make `src/download_data.py` accept the number of days and the random seed from the command line using `sys.argv` (for example `python src/download_data.py 200 7`), with the current values as defaults.
 
-### Challenge 2: Add CI/CD
-Create `.github/workflows/tests.yml` to run tests automatically on push.
+### Challenge 2: Input Validation
+Add input validation with `try/except` to `load_raw_data()`: report a clear error message if the file does not exist, and skip (and count) rows whose temperature cannot be converted to a number or lies outside a plausible range.
 
-### Challenge 3: Add Interactive Dashboard
-Use Plotly or Streamlit to create interactive visualizations.
+### Challenge 3: A Second Summary
+Add a function that finds the warmest and the coldest 30-day block and the standard deviation within each block, print it as a table, and save it to `results/block_summary.csv` with the `csv` module.
 
 ### Challenge 4: Improve Documentation
-Use Sphinx to generate HTML documentation from docstrings.
+Add examples with expected output to the README, make sure every function has a complete docstring, and add a `CHANGELOG.md` that describes what changed in each release.
 
-### Challenge 5: Add Data Validation
-Use libraries like `pandera` or `great_expectations` to validate data quality.
+### Challenge 5: Add a Pinned Dependency
+Add `requests==2.31.0` to `requirements.txt`, write a small script that uses it to download a plain CSV file from a URL of your choice into `data/raw/`, and document the new step in the README. Recreate your environment from scratch to check that everything still works.
 
 ---
 

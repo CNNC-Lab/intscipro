@@ -5,11 +5,7 @@ Student: Solutions
 Approximating integrals using the Riemann sum method.
 """
 
-import os
-os.makedirs("outputs", exist_ok=True)
-
-import numpy as np
-import matplotlib.pyplot as plt
+import math
 
 print("=" * 60)
 print("EXERCISE 11: Riemann Sum Integration")
@@ -19,54 +15,53 @@ print("=" * 60)
 print("\nPart a: Visualizing rectangles under exp(x)")
 print("-" * 60)
 
-# Parameters
+# Parameters (a coarse step keeps the text picture readable)
 a = 0.0
 b = 4.0
-step = 0.1
+step = 0.5
+n_rectangles = int((b - a) / step)
 
-# Generate x values and calculate y = exp(x)
-x_values = np.arange(a, b, step)
-y_values = np.exp(x_values)
-
-# Create plot
-plt.figure(figsize=(10, 6))
-
-# Plot the curve
-x_smooth = np.linspace(a, b, 1000)
-y_smooth = np.exp(x_smooth)
-plt.plot(x_smooth, y_smooth, 'b-', linewidth=2, label='y = exp(x)')
-
-# Plot the rectangles
-plt.bar(x_values, y_values, width=step, align='edge', 
-        alpha=0.5, edgecolor='black', label='Riemann rectangles')
-
-plt.xlabel('x')
-plt.ylabel('y')
-plt.title('Riemann Sum Approximation of ∫exp(x)dx from 0 to 4')
-plt.legend()
-plt.grid(True, alpha=0.3)
-plt.savefig('outputs/ex11_part_a.png', dpi=150, bbox_inches='tight')
-plt.close()
-print("Visualization saved as ex11_part_a.png")
+print(f"{'x':>5} {'height':>9} {'area':>8}  rectangle (1 '#' = 1 unit of height)")
+for i in range(n_rectangles):
+    x = a + i * step
+    height = math.exp(x)
+    area = height * step
+    print(f"{x:5.1f} {height:9.3f} {area:8.3f}  {'#' * int(height)}")
 
 # Part b: Calculating the total area
 print("\n" + "=" * 60)
 print("Part b: Calculating total area")
 print("-" * 60)
 
+step = 0.1
+n_rectangles = int(round((b - a) / step))
+
 total_area = 0
-for i, x in enumerate(x_values):
-    y = y_values[i]
+for i in range(n_rectangles):
+    x = a + i * step
+    y = math.exp(x)
     rectangle_area = y * step
     total_area += rectangle_area
 
 print(f"Sum of rectangle areas: {total_area:.6f}")
 
 # Analytical solution for comparison
-analytical = np.exp(b) - np.exp(a)
+analytical = math.exp(b) - math.exp(a)
 print(f"Analytical solution: ∫₀⁴ exp(x)dx = exp(4) - exp(0) = {analytical:.6f}")
 print(f"Error: {abs(total_area - analytical):.6f}")
 print(f"Relative error: {abs(total_area - analytical)/analytical * 100:.4f}%")
+
+# Extension: left, right and midpoint rules for increasing numbers of rectangles
+print("\nLeft / right / midpoint rules for increasing numbers of rectangles:")
+print(f"{'n':>7} {'rule':<9} {'approximation':>14} {'exact':>12} {'error':>12}")
+for n in [10, 100, 1000, 10000]:
+    width = (b - a) / n
+    for rule, offset in [("left", 0.0), ("right", 1.0), ("midpoint", 0.5)]:
+        approx = 0.0
+        for i in range(n):
+            approx += math.exp(a + (i + offset) * width) * width
+        print(f"{n:7d} {rule:<9} {approx:14.6f} {analytical:12.6f} {abs(approx - analytical):12.6f}")
+print("The error shrinks roughly like 1/n for left/right and like 1/n² for midpoint.")
 
 # Part c: Finding the upper limit
 print("\n" + "=" * 60)
@@ -77,14 +72,8 @@ target_area = 25.0
 total_area = 0
 x = 0.0
 
-# Store values for plotting
-x_list = []
-y_list = []
-
 while total_area < target_area:
-    y = np.exp(x)
-    x_list.append(x)
-    y_list.append(y)
+    y = math.exp(x)
     total_area += y * step
     x += step
 
@@ -93,26 +82,9 @@ print(f"Total area: {total_area:.6f}")
 
 # Analytical solution: ∫₀ᵃ exp(x)dx = 25
 # exp(a) - 1 = 25 → exp(a) = 26 → a = ln(26)
-analytical_limit = np.log(26)
+analytical_limit = math.log(26)
 print(f"Analytical solution: a = ln(26) ≈ {analytical_limit:.6f}")
 print(f"Error: {abs(x - analytical_limit):.6f}")
-
-# Visualize result
-plt.figure(figsize=(10, 6))
-x_smooth = np.linspace(0, x, 1000)
-y_smooth = np.exp(x_smooth)
-plt.plot(x_smooth, y_smooth, 'b-', linewidth=2, label='y = exp(x)')
-plt.bar(x_list, y_list, width=step, align='edge', 
-        alpha=0.5, edgecolor='black', label='Rectangles')
-plt.axvline(x=x, color='r', linestyle='--', linewidth=2, label=f'Upper limit: x ≈ {x:.2f}')
-plt.xlabel('x')
-plt.ylabel('y')
-plt.title(f'Riemann Sum ≈ {target_area} (Area under exp(x))')
-plt.legend()
-plt.grid(True, alpha=0.3)
-plt.savefig('outputs/ex11_part_c.png', dpi=150, bbox_inches='tight')
-plt.close()
-print("Visualization saved as ex11_part_c.png")
 
 # Part d: Alternative implementations
 print("\n" + "=" * 60)
@@ -123,9 +95,8 @@ print("-" * 60)
 print("\nPart b using while-loop:")
 total_area = 0
 i = 0
-x_values_b = np.arange(a, b, step)
-while i < len(x_values_b):
-    y = np.exp(x_values_b[i])
+while i < n_rectangles:
+    y = math.exp(a + i * step)
     total_area += y * step
     i += 1
 print(f"Total area: {total_area:.6f}")
@@ -134,11 +105,11 @@ print(f"Total area: {total_area:.6f}")
 print("\nPart c using for-loop with break:")
 target_area = 25.0
 total_area = 0
-max_x = 10.0  # Upper limit for range
-x_values_c = np.arange(0.0, max_x, step)
+max_steps = 100  # Safety limit: at most 100 steps of 0.1 (x up to 10)
 
-for x in x_values_c:
-    y = np.exp(x)
+for i in range(max_steps):
+    x = i * step
+    y = math.exp(x)
     total_area += y * step
     if total_area >= target_area:
         print(f"Upper limit found: x ≈ {x:.2f}")

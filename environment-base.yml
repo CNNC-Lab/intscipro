@@ -1,0 +1,12 @@
+# Minimal environment for Days 2 and 3: Python and IPython only.
+#   conda env create -f environment-base.yml
+#   conda activate scientific-programming
+# From Day 4 the same environment is extended with the scientific stack:
+#   conda env update -n scientific-programming -f environment.yml
+name: scientific-programming
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - ipython
+  - pip

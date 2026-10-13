@@ -11,6 +11,45 @@ Before starting these exercises, open the handout for Day 2 and familiarize your
 > - Don't hesitate to use `help()` or `dir()` to explore Python's capabilities
 > - Search online for documentation, but try not to use LLMs; it is important to understand these principles
 ---
+## **Part 0**: Setting up and running Python
+These exercises are the checkpoint of the first hour. Work in pairs: one person types, the other reads the output and error messages, then swap. The scripts are in the [`setup/`](setup/) folder; the guide is [`setup/setup_tutorial.md`](setup/setup_tutorial.md).
+
+### Exercise 0.1: *Find your way around the terminal*
+Open **Anaconda Prompt** (Windows) or **Terminal** (macOS, Linux).
+1. Print the current folder. What is it?
+2. List the files in it.
+3. Go to the course folder you downloaded, then into `day02-fundamentals/setup`. List the files there. How many `.py` files do you see, and what are they called?
+4. Create a folder called `my_work`, go into it, then go back up one folder.
+5. Which command shows which Python the terminal would use? What does it print?
+
+### Exercise 0.2: *Environment and running code four ways*
+1. Create and activate the environment (`environment-base.yml`, see the guide). How do you know it is active?
+2. From the course folder run `python day02-fundamentals/setup/check_python.py`. Does it end with `RESULT: ... ready`? If a line says `WARN` or `FAIL`, fix it with the guide or ask for help.
+3. **Interactive prompt.** Start `python`. Compute `2 + 3`. Create a variable `name` with your name and print a greeting using an f-string. Leave with `exit()`. Then try `ipython` and repeat. What differs?
+4. **Script from the terminal.** Go into `day02-fundamentals/setup` and run `python hello.py`.
+5. **Wrong folder on purpose.** Go back to the course folder and run `python hello.py`. What error do you get and why? Fix it with the right command.
+6. **VS Code.** Open the course folder in VS Code, open `hello.py`, select the interpreter, and run it with the play button. Where does the output appear?
+7. Edit `hello.py` so it also asks for your favourite brain region and prints a sentence with it. Run it again, from VS Code and from the terminal.
+
+### Exercise 0.3: *Fix the broken scripts*
+The four scripts `setup/broken_1.py` to `broken_4.py` each contain one mistake. For each script: run it, **read the error from the bottom**, say what type of error it is and what it means, then fix it and run it again. Notes for broken_4: first run it from the main course folder (`python day02-fundamentals/setup/broken_4.py`), then think about where Python looks for `recording_notes.txt`.
+
+| Script | Error type you see | What was wrong |
+|---|---|---|
+| `broken_1.py` | | |
+| `broken_2.py` | | |
+| `broken_3.py` | | |
+| `broken_4.py` | | |
+
+### Exercise 0.4: *Checkpoint*
+Tick all five. If one fails after 10 minutes, raise your hand or switch to Plan B (Google Colab) and we will fix your computer after class.
+- [ ] `python --version` works in the terminal
+- [ ] the environment `scientific-programming` is active (its name is in the prompt)
+- [ ] `check_python.py` ends with `RESULT: ... ready`
+- [ ] `hello.py` runs from the terminal and from VS Code
+- [ ] the four broken scripts are fixed
+
+---
 ## **Part 1**: Variables, Data Types, and Basic I/O
 ### Exercise 1: *Value and Type of Expressions*
 Using your Python interpreter (interactive mode or a script), check the value and type of the following expressions and determine which cause errors.
@@ -379,29 +418,22 @@ Example output:
 ### Exercise 10: *Function Analysis with Loops*
 **Save as `ex10.py`**
 
-**Important:** Start your program with:
-```python
-import numpy as np
-import matplotlib.pyplot as plt
-```
+**Note:** No imports are needed. `range()` only works with integers, so to build a grid of floats loop over an integer counter `i` and compute `x = start + i * step`. Round the result (`round(x, 1)`) to avoid values like `0.30000000000000004`.
 
-We will study these libraries in detail later on, but for now, we need some of the functionality they provide, namely:
-- Create ranges of floats: `x_data = np.arange(start, stop, step)`
-- Plot data: `plt.plot(x_data, y_data)`
-- Display the plot: `plt.show()`
 #### Part a) Calculate and Display a Function
 
 Write a program that:
 1. Calculates y = x² - 2x from x = -5 to x = 5 in steps of 0.1
 2. Stores x values in one list and y values in another
-3. Plots y against x
-4. Displays the plot
+3. Prints a table of x and y (every 10th point is enough) using f-strings with aligned columns
+4. Draws a simple text plot: one line per x value, with a bar of `#` characters whose length is proportional to y (ignore negative values or mark them with `-`)
 
 **Hints:**
-- Use `np.arange(-5.0, 5.1, 0.1)` for x values
+- Use `for i in range(101)` and `x = round(-5.0 + i * 0.1, 1)` for x values
 - Create an empty list for y values
 - Use a for-loop to calculate each y value
 - Append y values to your list
+- Bar length: `int(y / 2)` characters gives a compact plot, `"#" * length`
 #### Part b) Finding a Root
 A **root** of an equation y = f(x) is a value of x where y = 0.
 
@@ -424,7 +456,7 @@ $$\frac{dy}{dx} ≈ \frac{\Delta y}{\Delta x} = \frac{(y[i+1] - y[i])}{(x[i+1] -
 
 Add code to:
 1. Calculate the derivative at each point
-2. Plot both the original function and its derivative
+2. Print a table with x, y and the derivative side by side (every 10th point)
 3. Observe where the derivative crosses zero - what does this mean?
 
 **Hint:** The derivative list will have one fewer element than the original function.
@@ -437,37 +469,37 @@ We'll approximate the area under a curve by dividing it into rectangles - this i
 
 Start with:
 ```python
-import numpy as np
-import matplotlib.pyplot as plt
+import math
 ```
 #### Part a) Visualizing the Riemann Sum
 
 Write a program that:
-1. Calculates y = exp(x) from x = 0 to x = 4 with step size 0.1
-2. Plots the function as a line
-3. Uses `plt.bar()` to display rectangles with:
-   - Width: 0.1 (your step size)
-   - Height: exp(x) at each point
-   - Position: each x value
+1. Calculates y = exp(x) (use `math.exp`) from x = 0 to x = 4 with step size 0.5
+2. Prints one line per rectangle with its x position, its height and its area (width × height)
+3. Displays each rectangle as a text bar: a line of `#` characters whose length is proportional to its height
 
-The bars should approximate the area under the curve.
+The bars should show how the rectangles follow the curve.
 
 **Hint:**
 ```python
-x_values = np.arange(0.0, 4.0, 0.1)
-y_values = np.exp(x_values)
-plt.bar(x_values, y_values, width=0.1)
-plt.show()
+step = 0.5
+n = int(4.0 / step)              # number of rectangles
+for i in range(n):
+    x = i * step
+    height = math.exp(x)
+    print(f"x = {x:4.1f}  {'#' * int(height)}")
 ```
 
 #### Part b) Calculating the Total Area
-Modify your program to calculate the total area of all rectangles.
+Modify your program to calculate the total area of all rectangles, now with step size 0.1.
 
 **Formula:** Total area = Σ (height × width) = Σ (y_i × Δx)
 
-Use a for-loop to sum up the areas of all rectangles and print the result.
+Use a for-loop to sum up the areas of all rectangles and print the result. Compare it with the exact value `math.exp(4) - math.exp(0)`, and print the error.
 
 **Note:** This approximates the following integral:  $\int_{0}^{4} \exp(x) \, dx$
+
+**Extension:** Repeat the calculation for 10, 100, 1000 and 10000 rectangles, and for the left (`x = a + i*step`), right (`x = a + (i+1)*step`) and midpoint (`x = a + (i+0.5)*step`) choices of the sample point. Print a table with the approximation, the exact value and the error. How does the error shrink as the number of rectangles grows?
 
 #### Part c) Finding the Upper Limit
 Write a program that adds up rectangles under y = exp(x) until the total area exceeds 25.
@@ -673,10 +705,12 @@ Build progressively more sophisticated versions of a Riemann sum calculator.
 
 Convert your code from Exercise 11 into a function that:
 - Calculates the Riemann sum for exp(x) from 0 to 4 with step 0.1
-- Displays the bar chart
+- Prints a text bar chart (one line of `#` characters per rectangle, as in Exercise 11 part a)
 - Returns the calculated sum
 
 ```python
+import math
+
 def riemann_sum():
     """Calculate Riemann sum for exp(x) from 0 to 4."""
     # TODO Your code here
@@ -765,12 +799,12 @@ def quadratic(x):
 
 def exponential(x):
     """Calculate exp(x)"""
-    return np.exp(x)
+    return math.exp(x)
 
 # Test with different functions:
 print(riemann_sum(exponential, 0, 4))
 print(riemann_sum(quadratic, 0, 2))
-print(riemann_sum(np.sin, 0, np.pi))  # sin from 0 to π should be ~2
+print(riemann_sum(math.sin, 0, math.pi))  # sin from 0 to π should be ~2
 ```
 ---
 ### Exercise 16: *Neuroscience Functions*
@@ -1075,8 +1109,9 @@ Write a function that simulates a Poisson spike train given a firing rate and du
 - Python Tutor (visualize code execution): https://pythontutor.com/
 - Practice Python: https://www.practicepython.org/
 - Project Euler: https://projecteuler.net/
-### Scientific Python
-- NumPy Tutorial: https://numpy.org/doc/stable/user/quickstart.html
-- Matplotlib Tutorial: https://matplotlib.org/stable/tutorials/index.html
+### Standard Library
+- The Python Tutorial: https://docs.python.org/3/tutorial/
+- Python Standard Library Reference: https://docs.python.org/3/library/
+- math module: https://docs.python.org/3/library/math.html
 ---
 >**Good luck with the exercises! Remember: programming is learned by doing. Don't be afraid to experiment, make mistakes, and ask questions.**

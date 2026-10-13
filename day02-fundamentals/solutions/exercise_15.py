@@ -5,11 +5,7 @@ Student: Solutions
 Building progressively sophisticated Riemann sum calculators.
 """
 
-import os
-os.makedirs("outputs", exist_ok=True)
-
-import numpy as np
-import matplotlib.pyplot as plt
+import math
 
 print("=" * 60)
 print("EXERCISE 15: Riemann Sum Function")
@@ -33,34 +29,25 @@ def riemann_sum_basic():
     step = 0.1
     
     # Calculate values
-    x_values = np.arange(a, b, step)
-    y_values = np.exp(x_values)
+    n_rectangles = int(round((b - a) / step))
     
     # Calculate sum
     total = 0.0
-    for y in y_values:
+    print("  Rectangles (every 4th shown, 1 '#' = 1 unit of height):")
+    for i in range(n_rectangles):
+        x = a + i * step
+        y = math.exp(x)
         total += y * step
-    
-    # Plot
-    plt.figure(figsize=(10, 6))
-    plt.bar(x_values, y_values, width=step, alpha=0.5, 
-            edgecolor='black', label='Riemann rectangles')
-    x_smooth = np.linspace(a, b, 1000)
-    plt.plot(x_smooth, np.exp(x_smooth), 'b-', linewidth=2, label='y = exp(x)')
-    plt.xlabel('x')
-    plt.ylabel('y')
-    plt.title(f'Riemann Sum ≈ {total:.4f}')
-    plt.legend()
-    plt.grid(True, alpha=0.3)
-    plt.savefig('outputs/ex15_basic.png', dpi=150, bbox_inches='tight')
-    plt.close()
+        
+        # Text bar chart
+        if i % 4 == 0:
+            print(f"  x = {x:4.1f} {'#' * int(y)}")
     
     return total
 
 result = riemann_sum_basic()
 print(f"Riemann sum (0 to 4): {result:.6f}")
-print(f"Analytical value: {np.exp(4) - np.exp(0):.6f}")
-print("Plot saved as ex15_basic.png")
+print(f"Analytical value: {math.exp(4) - math.exp(0):.6f}")
 
 # Part b: Parameterized boundaries
 print("\n" + "=" * 60)
@@ -86,26 +73,10 @@ def riemann_sum_bounds(a, b):
     step = 0.1
     
     # Calculate values
-    x_values = np.arange(a, b, step)
-    y_values = np.exp(x_values)
+    n_rectangles = int(round((b - a) / step))
     
     # Calculate sum
-    total = sum(y * step for y in y_values)
-    
-    # Plot
-    plt.figure(figsize=(10, 6))
-    plt.bar(x_values, y_values, width=step, alpha=0.5, 
-            edgecolor='black', label='Riemann rectangles')
-    x_smooth = np.linspace(a, b, 1000)
-    plt.plot(x_smooth, np.exp(x_smooth), 'b-', linewidth=2, label='y = exp(x)')
-    plt.xlabel('x')
-    plt.ylabel('y')
-    plt.title(f'Riemann Sum from {a} to {b} ≈ {total:.4f}')
-    plt.legend()
-    plt.grid(True, alpha=0.3)
-    plt.tight_layout()
-    plt.savefig('outputs/ex15_bounds.png', dpi=150, bbox_inches='tight')
-    plt.close()
+    total = sum(math.exp(a + i * step) * step for i in range(n_rectangles))
     
     return total
 
@@ -114,7 +85,7 @@ test_cases = [(0, 4), (1, 3), (-1, 1), (0, 2)]
 print("\nTesting different bounds:")
 for a, b in test_cases:
     result = riemann_sum_bounds(a, b)
-    analytical = np.exp(b) - np.exp(a)
+    analytical = math.exp(b) - math.exp(a)
     error = abs(result - analytical)
     print(f"  [{a:2}, {b:2}]: {result:8.4f} (error: {error:.6f})")
 
@@ -142,11 +113,10 @@ def riemann_sum(a, b, step=0.1):
         Approximation of integral
     """
     # Calculate values
-    x_values = np.arange(a, b, step)
-    y_values = np.exp(x_values)
+    n_rectangles = int(round((b - a) / step))
     
     # Calculate sum
-    total = sum(y * step for y in y_values)
+    total = sum(math.exp(a + i * step) * step for i in range(n_rectangles))
     
     return total
 
@@ -156,7 +126,7 @@ print(f"{'Step':<10} {'Result':<12} {'Analytical':<12} {'Error':<12} {'Rectangle
 print("-" * 60)
 
 a, b = 0, 4
-analytical = np.exp(b) - np.exp(a)
+analytical = math.exp(b) - math.exp(a)
 
 for step in [1.0, 0.5, 0.1, 0.01]:
     result = riemann_sum(a, b, step)
@@ -171,7 +141,7 @@ print("\n" + "=" * 60)
 print("Part d: Generic function integration")
 print("-" * 60)
 
-def riemann_sum_generic(func, a, b, step=0.1, plot=False):
+def riemann_sum_generic(func, a, b, step=0.1, show_bars=False):
     """
     Calculate Riemann sum for any function.
     
@@ -185,38 +155,25 @@ def riemann_sum_generic(func, a, b, step=0.1, plot=False):
         Upper bound
     step : float, optional
         Step size (default: 0.1)
-    plot : bool, optional
-        Whether to create a plot (default: False)
+    show_bars : bool, optional
+        Whether to print a text bar chart of the rectangles (default: False)
     
     Returns:
     --------
     float
         Approximation of integral
     """
-    # Generate points
-    x_values = np.arange(a, b, step)
-    y_values = np.array([func(x) for x in x_values])
+    n_rectangles = int(round((b - a) / step))
     
-    # Calculate sum
-    total = sum(y * step for y in y_values)
-    
-    # Optional plotting
-    if plot:
-        plt.figure(figsize=(10, 6))
-        plt.bar(x_values, y_values, width=step, alpha=0.5, 
-                edgecolor='black', label='Riemann rectangles')
-        x_smooth = np.linspace(a, b, 1000)
-        y_smooth = np.array([func(x) for x in x_smooth])
-        plt.plot(x_smooth, y_smooth, 'b-', linewidth=2, 
-                 label=f'{func.__name__}(x)')
-        plt.xlabel('x')
-        plt.ylabel('y')
-        plt.title(f'Riemann Sum ≈ {total:.4f}')
-        plt.legend()
-        plt.grid(True, alpha=0.3)
-        plt.tight_layout()
-        plt.savefig('outputs/ex15_generic.png', dpi=150, bbox_inches='tight')
-        plt.close()
+    total = 0.0
+    for i in range(n_rectangles):
+        x = a + i * step
+        y = func(x)
+        total += y * step
+        
+        # Optional text bar chart (every 10th rectangle, bar length = height * 10)
+        if show_bars and i % 10 == 0 and y > 0:
+            print(f"  x = {x:5.2f} {'#' * int(y * 10)}")
     
     return total
 
@@ -227,11 +184,11 @@ def quadratic(x):
 
 def exponential(x):
     """Calculate exp(x)"""
-    return np.exp(x)
+    return math.exp(x)
 
 def gaussian(x):
     """Calculate Gaussian function"""
-    return np.exp(-x**2)
+    return math.exp(-x**2)
 
 # Test with different functions
 print("\nTesting with different functions:")
@@ -240,7 +197,7 @@ print("-" * 70)
 
 # Exponential
 result = riemann_sum_generic(exponential, 0, 4, step=0.01)
-analytical = np.exp(4) - np.exp(0)
+analytical = math.exp(4) - math.exp(0)
 print(f"{'exp(x)':<20} {'[0, 4]':<12} {result:<15.6f} {analytical:.6f}")
 
 # Quadratic (∫(x²-2x)dx = x³/3 - x²)
@@ -249,43 +206,30 @@ analytical = (2**3/3 - 2**2) - (0**3/3 - 0**2)
 print(f"{'x² - 2x':<20} {'[0, 2]':<12} {result:<15.6f} {analytical:.6f}")
 
 # Sine
-result = riemann_sum_generic(np.sin, 0, np.pi, step=0.01)
-analytical = -np.cos(np.pi) - (-np.cos(0))  # = 2
+result = riemann_sum_generic(math.sin, 0, math.pi, step=0.01)
+analytical = -math.cos(math.pi) - (-math.cos(0))  # = 2
 print(f"{'sin(x)':<20} {'[0, π]':<12} {result:<15.6f} {analytical:.6f}")
 
 # Gaussian (no simple analytical solution)
-result = riemann_sum_generic(gaussian, -3, 3, step=0.01, plot=True)
+result = riemann_sum_generic(gaussian, -3, 3, step=0.01, show_bars=True)
 print(f"{'exp(-x²)':<20} {'[-3, 3]':<12} {result:<15.6f} {'√π ≈ 1.772'}")
 
-print("\nPlot saved as ex15_generic.png")
 
-# Bonus: Comparison of integration methods
+# Bonus: Comparison of step sizes against the exact value
 print("\n" + "=" * 60)
-print("BONUS: Comparison with scipy.integrate")
+print("BONUS: Convergence with decreasing step size")
 print("-" * 60)
 
-from scipy import integrate
+def compare_steps(func, a, b, exact, func_name="f(x)"):
+    """Compare Riemann sums for several step sizes with the exact value."""
+    print(f"\nFunction: {func_name}, bounds: [{a}, {b}], exact = {exact:.8f}")
+    for step in [0.1, 0.01, 0.001]:
+        riemann = riemann_sum_generic(func, a, b, step=step)
+        print(f"  step={step:<6} sum={riemann:.8f}  error={abs(riemann - exact):.2e}")
 
-def compare_methods(func, a, b, func_name="f(x)"):
-    """Compare Riemann sum with scipy integration."""
-    # Riemann sum
-    riemann = riemann_sum_generic(func, a, b, step=0.01)
-    
-    # Scipy integration
-    scipy_result, error = integrate.quad(func, a, b)
-    
-    # Compare
-    difference = abs(riemann - scipy_result)
-    
-    print(f"\nFunction: {func_name}, bounds: [{a}, {b}]")
-    print(f"  Riemann sum (step=0.01): {riemann:.8f}")
-    print(f"  scipy.integrate.quad:    {scipy_result:.8f}")
-    print(f"  Difference:              {difference:.8e}")
-    print(f"  Scipy estimated error:   {error:.8e}")
-
-compare_methods(np.exp, 0, 1, "exp(x)")
-compare_methods(lambda x: x**2, 0, 1, "x²")
-compare_methods(np.sin, 0, np.pi, "sin(x)")
+compare_steps(math.exp, 0, 1, math.e - 1, "exp(x)")
+compare_steps(lambda x: x**2, 0, 1, 1/3, "x²")
+compare_steps(math.sin, 0, math.pi, 2.0, "sin(x)")
 
 print("\n" + "=" * 60)
 print("SUMMARY")
@@ -296,7 +240,7 @@ Progressive function development:
   2. Add parameters for flexibility
   3. Add default parameters for convenience
   4. Make it generic (accept functions as parameters)
-  5. Add optional features (plotting, verbosity)
+  5. Add optional features (text output, verbosity)
 
 This Riemann sum function can now integrate ANY function!
 """)

@@ -1,0 +1,3 @@
+Recording notes
+Neuron 1: regular spiking, stable baseline
+Neuron 2: bursting, check electrode after the break

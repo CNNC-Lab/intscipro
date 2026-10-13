@@ -5,8 +5,6 @@ Student: Solutions
 Collection of functions for common neuroscience calculations.
 """
 
-import numpy as np
-
 print("=" * 60)
 print("EXERCISE 16: Neuroscience Functions")
 print("=" * 60)
@@ -64,7 +62,7 @@ def calculate_isi_statistics(spike_times):
     
     Parameters:
     -----------
-    spike_times : list or array
+    spike_times : list
         List of spike times in seconds (must be sorted)
     
     Returns:

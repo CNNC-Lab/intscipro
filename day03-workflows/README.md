@@ -1,12 +1,22 @@
 # Day 3: *Development Tools & Workflows*
 
+> Day 3 uses only the Python standard library and the tools themselves; the scientific libraries are introduced from Day 4.
+
+## Before the session
+Activate your environment and add JupyterLab (we install and use it today):
+```bash
+conda activate scientific-programming
+conda install jupyterlab
+```
+(pip users: `pip install jupyterlab`.) If Day 2 ran out of time, we start today with the end of Day 2: functions and modular programming.
+
 ## Overview
-This day covers the essential tools and workflows that enable efficient scientific programming and reproducible research. We explore five fundamental topics:
+This day covers the essential tools and workflows that enable efficient scientific programming and reproducible research. We explore six fundamental topics:
 
 1. **Code Editors and IDEs** - Choosing and using the right development environment
 2. **Notebooks & Interactive Programming** - Using Jupyter for exploratory analysis and documentation
 3. **Documentation with Markdown and Docstrings** - Writing clear, maintainable documentation
-4. **Virtual Environments** - Managing project dependencies and reproducibility
+4. **Virtual Environments** - Managing project dependencies and reproducibility (venv and conda)
 5. **Git Fundamentals and GitHub Workflows** - Version control and collaborative development
 6. **Computational Research Workflows** - Best practices for organizing scientific projects
 
@@ -26,7 +36,7 @@ This day covers the essential tools and workflows that enable efficient scientif
 ## Learning Objectives
 By the end of this day, you will be able to:
 - Choose and configure appropriate development tools for scientific programming
-- Create and use Jupyter notebooks for interactive data analysis
+- Create and use Jupyter notebooks for interactive computing and documentation
 - Write effective documentation using Markdown and docstrings
 - Set up and manage virtual environments for project isolation
 - Use Git for version control and track changes in your code

@@ -1,4 +1,5 @@
-# check_installation.py
+# check_installation.py: run after extending the environment for Day 4
+#   conda env update -n scientific-programming -f environment.yml
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt

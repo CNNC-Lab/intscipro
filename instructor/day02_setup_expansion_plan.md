@@ -4,6 +4,14 @@
 
 **Rule for all materials:** a day may only use what has already been introduced. Day 2 is pure Python (standard library only). Day 3 may use tools and the standard library, but not NumPy, pandas, matplotlib, SciPy, seaborn, scikit-learn or ipywidgets (those arrive on Days 4 to 8).
 
+## Status (built)
+- **Part 0 deck** (new): "Scientific Programming 2, Part 0: Setting up and running Python", 20 slides with speaker notes, at https://slides.com/renatocfduarte/scientific-programming-2-part-0-setting-up-and-running-python (currently private; share it and add the link to `day02-fundamentals/README.md`).
+- **Day 2:** Part 0 added to the handout and exercises (Exercises 0.1 to 0.4), `setup/` folder (`hello.py`, `check_python.py`, `broken_1.py` to `broken_4.py`, `recording_notes.txt`), `setup/setup_tutorial.md` (moved from Day 1 and rewritten), fixed scripts and answer notes in `solutions/`, README updated. The handout, exercises and solutions are standard-library only.
+- **Day 3:** handout, exercises (including a rewritten pure-Python Exercise 5), README and `test_notebook.ipynb` use only the standard library, `requests` and `tabulate`; JupyterLab is installed at the start of the day.
+- **Environments:** `environment-base.yml` and `requirements-base.txt` (Day 2), `environment.yml` extends the same environment from Day 4 (`conda env update`). `check_installation.py` moved to `day04-numerics/examples/`.
+- **Other:** `resources/before_day2.md` (pre-work), troubleshooting entries, root README and Day 1 README updated.
+- **Still to do by hand:** see `manual_slide_edits.md` (dates on decks 2 to 8, 10, 11, and the library mentions inside decks 2 and 3), the GitHub repo description, and the PDF exports.
+
 ## 1. Why the problem happened
 - The Day 2 deck's only run-it guidance is one bullet ("make sure you have python installed … preferably ipython").
 - The Day 3 tools deck has no terminal, "run a script" or "read an error" content either, so swapping would not have fixed it.

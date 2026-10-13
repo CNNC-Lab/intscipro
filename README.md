@@ -98,10 +98,12 @@ Applying skills to real research problems: two project work sessions and a final
 intscipro/
 ├── README.md
 ├── LICENSE
-├── environment.yml          # conda environment: Days 1-9 and 11
-├── environment-dl.yml       # conda environment: adds the deep learning stack (Day 10)
-├── requirements.txt         # pip equivalent of environment.yml
-├── requirements-dl.txt      # pip equivalent of environment-dl.yml
+├── environment-base.yml     # conda environment for Days 2-3 (Python + IPython)
+├── environment.yml          # full environment, from Day 4 (scientific packages)
+├── environment-dl.yml       # adds the deep learning stack (Day 10)
+├── requirements-base.txt    # pip equivalents of the three files above
+├── requirements.txt
+├── requirements-dl.txt
 ├── datasets/                # small datasets shared across days (see datasets/README.md)
 ├── resources/               # troubleshooting guide and reference material
 └── dayNN-<topic>/           # one folder per session
@@ -147,31 +149,27 @@ Upon completion of this course, students will be able to:
 
 ### 📥 **Setup Instructions**
 
-1. **Clone the repository**:
+1. **Get the course materials**. With Git (Day 3 teaches it):
    ```bash
    git clone https://github.com/CNNC-Lab/intscipro.git
    cd intscipro
    ```
+   Before then, use the green **Code** button on GitHub, then **Download ZIP**, and unzip it.
 
-2. **Install Python environment**:
+2. **Set up Python (Day 2, Part 0)**: follow [`day02-fundamentals/setup/setup_tutorial.md`](day02-fundamentals/setup/setup_tutorial.md). In short:
    ```bash
-   # Option A: Using conda (recommended)
-   conda env create -f environment.yml
+   conda env create -f environment-base.yml      # Days 2 and 3: Python + IPython
    conda activate scientific-programming
-
-   # Option B: Using pip (Python 3.11+)
-   python -m venv .venv && source .venv/bin/activate
-   pip install -r requirements.txt
-
-   # Day 10 only (deep learning): use environment-dl.yml / requirements-dl.txt instead
+   python day02-fundamentals/setup/check_python.py
    ```
+   No conda? `python -m venv .venv`, activate it, then `pip install -r requirements-base.txt`.
 
-3. **Verify installation**:
+3. **Extend the environment (Day 4 onwards)**, when the scientific packages are introduced:
    ```bash
-   python day01-introduction/demo_scripts/check_installation.py
+   conda env update -n scientific-programming -f environment.yml
+   python day04-numerics/examples/check_installation.py
    ```
-
-4. **Follow Day 1 setup tutorial**: [`day01-introduction/setup_tutorial.md`](day01-introduction/setup_tutorial.md)
+   (pip: `pip install -r requirements.txt`.) For Day 10 (deep learning) use `environment-dl.yml` / `requirements-dl.txt` instead.
 
 ### 🎯 **Quick Start Examples**
 

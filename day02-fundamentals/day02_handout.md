@@ -1,11 +1,89 @@
 # Day 2: Programming Fundamentals
 *PhD Course in Integrative Neurosciences - Introduction to Scientific Programming*
 ## Overview
-Today we understand the foundations of Python programming to explore the core concepts that allow you to write powerful, flexible programs. This lecture covers three fundamental topics:
+Today we start writing Python. First we make sure everyone can **run** Python on their own computer, then we cover the foundations of Python programming that allow you to write powerful, flexible programs:
+0. **Setting up and running Python** - install the tools, use the terminal, create an environment, run code four ways, read errors
 1. **Variables, Data Structures, and Basic I/O** - How to store and organize data effectively
 2. **Operators, Expressions, and Control Structures** - How to manipulate data and control program flow
 3. **Functions and Modular Programming** - How to organize code into reusable, maintainable components
+
+Today uses **pure Python** only (the standard library). Packages for numerical work are introduced from Day 4. If the session runs out of time, Part 3 continues at the start of Day 3.
+
 By the end of this lecture, you'll have all the essential building blocks needed to write real scientific programs. Every program ever written consists of these components - it's how you combine them that distinguishes well-written, robust code from poorly-written, difficult-to-maintain code.
+---
+## **Part 0**: Setting up and running Python
+This part is a condensed reference. The full step-by-step guide for Windows, macOS and Linux, with troubleshooting, is [`setup/setup_tutorial.md`](setup/setup_tutorial.md), and the install checklist to do **before** class is [`resources/before_day2.md`](../resources/before_day2.md).
+
+### 0.1 The three pieces
+| Piece | What it is | Example |
+|-------|------------|---------|
+| **Interpreter** | the program that reads and runs Python code | `python` |
+| **Editor** | where you write code, which is just text | VS Code |
+| **Terminal** | where you type commands to run programs and manage environments | Anaconda Prompt (Windows), Terminal (macOS, Linux) |
+
+Almost every setup problem is about these three not finding each other: the terminal cannot find Python, or the editor runs a different Python than the one you expect.
+
+### 0.2 Installing
+1. **Python with conda (Miniconda):** installs Python and `conda`, a tool for environments. On Windows always use **Anaconda Prompt** afterwards.
+2. **VS Code** (<https://code.visualstudio.com/>) with the **Python** extension.
+3. Check in a terminal: `python --version` and `conda --version` both print a version.
+
+### 0.3 The terminal
+The terminal always has a **current folder**. Files and scripts are found relative to it, so most "file not found" errors mean you are in the wrong folder.
+
+| What you want | Windows (Anaconda Prompt) | macOS / Linux |
+|---|---|---|
+| Where am I? | `cd` | `pwd` |
+| List files | `dir` | `ls` |
+| Go into a folder / up one | `cd name` / `cd ..` | `cd name` / `cd ..` |
+| Make a folder | `mkdir name` | `mkdir name` |
+| Which Python? | `where python` | `which python` |
+| Stop a program | Ctrl+C | Ctrl+C |
+
+Press **Tab** to complete names and the **up arrow** to repeat the previous command.
+
+### 0.4 Environments
+An **environment** is an isolated workspace with its own Python and packages. The name of the active one appears in brackets at the start of the prompt.
+```bash
+conda env create -f environment-base.yml     # once
+conda activate scientific-programming        # every time you start working
+python --version                             # Python 3.11.x
+conda deactivate                             # leave it
+```
+Without conda: `python -m venv .venv`, activate it (`.venv\Scripts\activate` on Windows, `source .venv/bin/activate` elsewhere), then `pip install -r requirements-base.txt`. The environment is minimal on purpose; Day 3 adds JupyterLab, and from Day 4 it is extended with the scientific packages.
+
+### 0.5 Four ways to run Python
+1. **Interactive prompt:** type `python` (or `ipython`) and then code lines; `exit()` to leave. Quick tests, nothing is saved.
+2. **Script from the terminal:** `cd` to its folder, then `python hello.py`.
+3. **VS Code:** open the folder, select the interpreter (Command Palette, **Python: Select Interpreter**, the `scientific-programming` one), click the play button.
+4. **Notebook:** code, results and text in one document. We use Jupyter from Day 3.
+
+| | Interactive prompt | Script | Notebook |
+|---|---|---|---|
+| Saved as a file | no | yes | yes |
+| Good for | quick tests | programs you rerun | exploring, documenting |
+| Starts fresh each run | n/a | yes | no (the kernel keeps variables) |
+
+### 0.6 Reading an error message
+Read from the **bottom**: the last line is the error type and what went wrong; the line above gives the file and line number; then look at that line.
+```text
+Traceback (most recent call last):
+  File "broken_2.py", line 4, in <module>
+    print("Twice as many:", neuron_cont * 2)
+NameError: name 'neuron_cont' is not defined
+```
+| Message | Usually means | Try |
+|---|---|---|
+| `SyntaxError` | not valid Python (missing `:`, bracket or quote) | the line shown and the one before it |
+| `NameError` | misspelled name, or used before it is defined | compare spelling, run earlier lines first |
+| `ModuleNotFoundError` | wrong module name, or not installed in this environment | check spelling and that the environment is active |
+| `FileNotFoundError` | Python cannot find the file from the current folder | `cd` to the right folder |
+| `IndentationError` | inconsistent indentation | 4 spaces per level |
+| `TypeError` | the operation does not fit the types, e.g. `"5" + 3` | print the values and their `type()` |
+
+### 0.7 Checkpoint and Plan B
+You are ready for Part 1 when: `python --version` works, the environment is active, `setup/check_python.py` ends with `RESULT: ... ready`, `hello.py` runs from the terminal and from VS Code, and you fixed the broken scripts (Exercise 0.3). If you are stuck, use **Plan B**: Google Colab (<https://colab.research.google.com/>) runs Python in your browser, and we fix your computer after class.
+
 ---
 ## **Part 1**: Variables, Data Structures, and Basic I/O
 ### 1.1 Variables 
@@ -931,79 +1009,100 @@ Python's standard library and third-party packages provide powerful functionalit
 #### Import Methods
 **1. Import entire module:**
 ```python
-import numpy
+import math
 
 # Use functions with module prefix
-array = numpy.arange(0.0, 10.0, 0.5)
-mean_value = numpy.mean(array)
+root = math.sqrt(16.0)
+circle_area = math.pi * 2.0 ** 2
 ```
 
-**2. Import with alias (recommended):**
+**2. Import with alias (recommended for long names):**
 ```python
-import numpy as np
+import math as m
 
 # Use shorter alias
-array = np.arange(0.0, 10.0, 0.5)
-mean_value = np.mean(array)
+root = m.sqrt(16.0)
+circle_area = m.pi * 2.0 ** 2
 
-# Standard aliases in scientific Python:
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
+# Other common aliases from the standard library:
+import statistics as stats
+import collections as col
 ```
 
 **3. Import specific functions:**
 ```python
-from numpy import arange, mean, std
+from math import sqrt, pi
 
 # Use functions directly (no prefix needed)
-array = arange(0.0, 10.0, 0.5)
-mean_value = mean(array)
-std_value = std(array)
+root = sqrt(16.0)
+circle_area = pi * 2.0 ** 2
 ```
 
 **4. Import everything (NOT recommended):**
 ```python
-from numpy import *
+from math import *
 
-# Can use all numpy functions without prefix
+# Can use all math functions without prefix
 # BUT: risk of name conflicts, hard to track where functions come from
-array = arange(0.0, 10.0, 0.5)
+root = sqrt(16.0)
+
+# Danger: math has hundreds of names (pow, e, floor, ...). If you also
+# define a variable or function with one of those names, one silently
+# overwrites the other, and nobody reading the code can tell where
+# sqrt() or pi came from.
 ```
 
 **Practical Example:**
 ```python
-import numpy as np
+import statistics
 
-# Create an array of floats (range() only works with integers)
-spike_times = np.arange(10.0, 20.0, 0.1)
+# Spike times from 10.0 to 19.9 ms in steps of 0.1 ms
+# (range() only works with integers, so we scale and divide)
+spike_times = [10.0 + i * 0.1 for i in range(100)]
 
 # Calculate statistics
-mean_time = np.mean(spike_times)
-std_time = np.std(spike_times)
+mean_time = statistics.mean(spike_times)
+std_time = statistics.pstdev(spike_times)   # population standard deviation
 
-print(f"Spike times from {spike_times[0]} to {spike_times[-1]} ms")
+print(f"Spike times from {spike_times[0]:.1f} to {spike_times[-1]:.1f} ms")
 print(f"Mean: {mean_time:.2f} ms, SD: {std_time:.2f} ms")
 ```
 
-**Common Scientific Modules:** A lot of your programs will start with these imports
+**Useful Standard Library Modules:** Many of your programs will start with some of these imports
 ```python
-# Numerical computing
-import numpy as np
+# Mathematical functions and constants
+import math
 
-# Data analysis and manipulation
-import pandas as pd
+# Random numbers (seed it for reproducible results!)
+import random
+random.seed(42)
+print(random.random())          # float in [0, 1)
+print(random.randint(1, 6))     # integer between 1 and 6, inclusive
 
-# Plotting and visualization
-import matplotlib.pyplot as plt
+# Basic descriptive statistics
+import statistics
+print(statistics.median([3, 1, 4, 1, 5]))
 
-# Scientific computing (statistics, optimization, etc.)
-import scipy
-from scipy import stats
+# Specialised containers (counting things, default values)
+from collections import Counter
+print(Counter("abracadabra"))
 
-# Machine learning
-import sklearn
+# Dates and durations
+from datetime import timedelta
+print(timedelta(hours=1, minutes=30).total_seconds())
+
+# Paths that work on any operating system
+from pathlib import Path
+data_file = Path("data") / "recording.txt"
+print(data_file.suffix)         # .txt
 ```
+
+**Organising your imports:** put all imports at the top of the file, in three groups separated by a blank line:
+1. Standard library modules (`math`, `random`, `statistics`, ...), which come with Python
+2. Third-party packages, which you install with `pip` (we cover this soon)
+3. Your own local modules (other `.py` files in your project)
+
+Besides the standard library, the Python ecosystem offers many third-party packages for scientific work. For now, the standard library is all you need.
 ---
 ## **Part 3**: Functions and Modular Programming
 ### 3.1 What is a Function?
@@ -1699,8 +1798,8 @@ Write a recursive function to sum all numbers in a nested list:
 
 **Learning Resources:**
 - Real Python: https://realpython.com/
-- Python for Scientists: https://scipy-lectures.org/
-- Python Data Science Handbook: https://jakevdp.github.io/PythonDataScienceHandbook/
+- Python Standard Library Reference: https://docs.python.org/3/library/
+- Python Module of the Week: https://pymotw.com/3/
 
 **Practice:**
 - Python Challenge: http://www.pythonchallenge.com/
