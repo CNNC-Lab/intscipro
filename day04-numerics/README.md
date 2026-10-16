@@ -7,6 +7,15 @@ This day covers the essential numerical computing tools that form the backbone o
 2. **SciPy** - Scientific computing, statistics, signal processing, and optimization
 3. **Matplotlib** - Data visualization and publication-quality figures
 
+## Before the session
+Extend your environment with the scientific packages introduced today, then check it:
+```bash
+conda activate scientific-programming
+conda env update -n scientific-programming -f environment.yml
+python examples/check_installation.py
+```
+(pip users: `pip install -r requirements.txt` from the course folder.)
+
 ## Lecture Materials
 - **Slides**: Available from [this link](https://slides.com/renatocfduarte/scientific-programming-4-numericalcore/scroll?token=LRfvwh_i&chrome=hidden) (download as HTML)
 - **PDF**: Download from [this link](https://drive.google.com/file/d/1IxbXeuslgZb3_nU68hOp4JVjaG8ciOSk/view?usp=sharing)

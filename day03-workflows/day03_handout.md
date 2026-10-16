@@ -56,12 +56,12 @@ Jupyter Notebooks are **web-based interactive computing platforms** that combine
 - **Live code execution**
 - **Rich text narratives** (Markdown)
 - **Equations** (LaTeX)
-- **Visualizations** (plots, charts)
-- **Interactive widgets**
+- **Rich output** (tables, formatted text, images)
+- **Interactive exploration** (cell-by-cell execution)
 
 This makes them ideal for:
 - **Exploratory data analysis**
-- **Data visualization**
+- **Prototyping and testing small pieces of code**
 - **Teaching and learning**
 - **Sharing research findings**
 - **Reproducible research**
@@ -73,7 +73,7 @@ This makes them ideal for:
 
 **Key Benefits:**
 1. **Interactive Development**: Execute code cell-by-cell, see results immediately
-2. **Rich Output**: Display tables, plots, images, videos, LaTeX equations
+2. **Rich Output**: Display tables, formatted text, images, videos, LaTeX equations
 3. **Documentation**: Mix code with explanations in a single document
 4. **Reproducibility**: Share complete analysis workflow
 5. **Experimentation**: Quickly test ideas without creating separate files
@@ -89,15 +89,23 @@ jupyter notebook
 
 **Via pip (Minimal installation):**
 ```bash
-pip install jupyter
-jupyter notebook
-```
-
-**JupyterLab (Next-generation interface):**
-```bash
 pip install jupyterlab
 jupyter lab
 ```
+
+**Via conda:**
+```bash
+conda install jupyterlab
+jupyter lab
+```
+
+**Classic Notebook interface (optional):**
+```bash
+pip install notebook
+jupyter notebook
+```
+
+JupyterLab is the next-generation interface and also includes everything needed to open and run `.ipynb` files.
 
 ### Jupyter Notebook Interface
 
@@ -187,19 +195,14 @@ print("Hello, Jupyter!")
 ```
 
 ```python
-# Import libraries
-import numpy as np
-import matplotlib.pyplot as plt
+# Import from the standard library
+import math
 
-# Code with visualization
-x = np.linspace(0, 2*np.pi, 100)
-y = np.sin(x)
-
-plt.plot(x, y)
-plt.title('Sine Wave')
-plt.xlabel('x')
-plt.ylabel('sin(x)')
-plt.show()
+# Code with a simple text "visualization"
+for angle in range(0, 361, 45):
+    value = math.sin(math.radians(angle))
+    bar = '#' * round(abs(value) * 20)
+    print(f"{angle:>3} deg  {value:+.2f}  {bar}")
 ```
 
 #### The Kernel
@@ -248,9 +251,6 @@ Jupyter includes special commands called "magics":
 #### Line Magics (prefix with `%`)
 
 ```python
-# Display matplotlib plots inline
-%matplotlib inline
-
 # Time execution of a single line
 %timeit sum(range(1000))
 
@@ -259,6 +259,9 @@ Jupyter includes special commands called "magics":
 
 # List all variables
 %whos
+
+# Short list of variable names
+%who
 
 # Display system command output
 %ls  # or !ls on Unix
@@ -275,6 +278,13 @@ for i in range(1000):
 ```
 
 ```python
+%%time
+# Time a single run of the entire cell
+total = sum(i * i for i in range(1_000_000))
+print(total)
+```
+
+```python
 %%bash
 # Run cell as bash script
 echo "Hello from bash"
@@ -286,47 +296,60 @@ pwd
 #### Built-in Display
 
 ```python
-from IPython.display import Image, HTML, Math, display
+from IPython.display import Image, HTML, Markdown, Math, display
 
 # Display image
 display(Image('path/to/image.png'))
 
 # Display HTML
-HTML('<h2>Formatted HTML</h2>')
+display(HTML('<h2>Formatted HTML</h2>'))
+
+# Display Markdown generated from Python
+display(Markdown('**Bold** text and a list:\n\n- first\n- second'))
 
 # Display LaTeX math
-Math(r'F(k) = \int_{-\infty}^{\infty} f(x) e^{2\pi i k x} dx')
+display(Math(r'\bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i'))
 ```
 
-#### Inline Plotting
+#### Tables from Plain Python Data
+
+A list of dictionaries can be turned into an HTML table and displayed as a formatted table, using only the standard library and `IPython.display`:
 
 ```python
-%matplotlib inline
-import matplotlib.pyplot as plt
-import numpy as np
+from statistics import mean
+from IPython.display import HTML, display
 
-# Create plot
-fig, ax = plt.subplots(figsize=(8, 4))
-x = np.linspace(0, 10, 100)
-ax.plot(x, np.exp(-x/10)*np.sin(x))
-ax.set_title('Damped Sine Wave')
-plt.show()
+trials = [
+    {"trial": 1, "condition": "A", "reaction_time": 0.52},
+    {"trial": 2, "condition": "B", "reaction_time": 0.61},
+    {"trial": 3, "condition": "A", "reaction_time": 0.48},
+    {"trial": 4, "condition": "B", "reaction_time": 0.66},
+]
+
+header = "".join(f"<th>{key}</th>" for key in trials[0])
+rows = "".join(
+    "<tr>" + "".join(f"<td>{value}</td>" for value in row.values()) + "</tr>"
+    for row in trials
+)
+display(HTML(f"<table><tr>{header}</tr>{rows}</table>"))
+
+print("Mean reaction time:", round(mean(t["reaction_time"] for t in trials), 3))
 ```
 
-#### Interactive Plots (with widgets)
+#### Text Bar Charts
+
+When you only need a quick look at your data, a text bar chart made with `#` characters works anywhere (including a plain terminal):
 
 ```python
-%matplotlib widget
-import ipywidgets as widgets
-from IPython.display import display
+import random
+from collections import Counter
 
-def plot_function(a):
-    x = np.linspace(-5, 5, 100)
-    plt.clf()
-    plt.plot(x, a * x**2)
-    plt.ylim(-25, 25)
+random.seed(42)  # fixed seed: same numbers every run
+rolls = [random.randint(1, 6) for _ in range(60)]
+counts = Counter(rolls)
 
-widgets.interact(plot_function, a=(-2.0, 2.0, 0.1))
+for face in range(1, 7):
+    print(f"{face} | {'#' * counts[face]} ({counts[face]})")
 ```
 
 ### Best Practices for Notebooks
@@ -357,18 +380,17 @@ widgets.interact(plot_function, a=(-2.0, 2.0, 0.1))
 
 ```python
 # Good practice: Setup cell at top
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
+import csv
+import random
+import statistics
+from pathlib import Path
 
 # Set random seed for reproducibility
-np.random.seed(42)
+random.seed(42)
 
-# Configure plotting
-%matplotlib inline
-sns.set_style('whitegrid')
-plt.rcParams['figure.figsize'] = (10, 6)
+# Configuration in one place
+DATA_DIR = Path("data")
+N_SAMPLES = 100
 ```
 
 #### 5. Before Sharing
@@ -675,7 +697,7 @@ Here's a sentence with a footnote.[^1]
 
 ### Python Docstrings
 
-Docstrings are string literals that appear as the first statement in a module, class, method, or function. They document what your code does.
+Docstrings are string literals that appear as the first statement in a module or a function (and, later in the course, in classes and methods, which have not been introduced yet). They document what your code does.
 
 #### Why Use Docstrings?
 
@@ -729,158 +751,70 @@ def add(a, b):
     return a + b
 ```
 
-**Complex Function (NumPy Style):**
+**Complex Function (Sectioned Style):**
 ```python
-def calculate_statistics(data, method='mean', axis=None):
+import statistics
+
+
+def calculate_statistics(data, method='mean'):
     """
-    Calculate statistical measures for the given data.
-    
-    This function computes various statistical measures including mean,
-    median, and standard deviation for numerical data arrays.
-    
+    Calculate a statistical measure for the given data.
+
+    This function computes the mean, median, or standard deviation
+    of a list of numbers.
+
     Parameters
     ----------
-    data : array_like
-        Input data array. Can be any shape.
+    data : list of float
+        Input values. Must contain at least two values for 'std'.
     method : {'mean', 'median', 'std'}, optional
         Statistical method to compute. Default is 'mean'.
-    axis : int or None, optional
-        Axis along which to compute statistics. If None,
-        compute over flattened array. Default is None.
-    
+
     Returns
     -------
-    result : float or ndarray
-        Computed statistic. Returns float if axis is None,
-        otherwise returns array.
-    
+    result : float
+        The computed statistic.
+
     Raises
     ------
     ValueError
         If method is not one of the allowed values.
     TypeError
-        If data cannot be converted to numeric array.
-    
+        If data contains non-numeric values.
+
     See Also
     --------
-    numpy.mean : Arithmetic mean
-    numpy.median : Median value
-    numpy.std : Standard deviation
-    
+    statistics.mean : Arithmetic mean
+    statistics.median : Median value
+    statistics.stdev : Sample standard deviation
+
     Notes
     -----
-    Missing values (NaN) are ignored in calculations.
-    
-    The algorithm uses Welford's online algorithm for
-    numerical stability when computing variance.
-    
+    The standard deviation is the sample standard deviation
+    (n - 1 in the denominator).
+
     Examples
     --------
-    >>> data = [1, 2, 3, 4, 5]
-    >>> calculate_statistics(data, method='mean')
-    3.0
-    
-    >>> data = [[1, 2], [3, 4]]
-    >>> calculate_statistics(data, method='mean', axis=0)
-    array([2., 3.])
-    
-    References
-    ----------
-    .. [1] Welford, B.P. (1962). "Note on a method for calculating
-           corrected sums of squares and products".
+    >>> calculate_statistics([1, 2, 3, 4, 5], method='mean')
+    3
+    >>> calculate_statistics([1, 2, 3, 4], method='median')
+    2.5
     """
-    # Implementation here
-    pass
+    if method not in ('mean', 'median', 'std'):
+        raise ValueError(f"Unknown method: {method!r}")
+    if not all(isinstance(x, (int, float)) for x in data):
+        raise TypeError("data must contain only numbers")
+
+    if method == 'mean':
+        return statistics.mean(data)
+    if method == 'median':
+        return statistics.median(data)
+    return statistics.stdev(data)
 ```
 
-#### Class Docstrings
+The `>>>` lines in the `Examples` section are not just decoration: the standard library module `doctest` can run them and check that the documented output is still correct (`python -m doctest my_module.py`).
 
-```python
-class DataProcessor:
-    """
-    Process and analyze experimental data.
-    
-    This class provides methods for loading, cleaning, and analyzing
-    scientific data from various sources. It handles missing values,
-    outliers, and data normalization.
-    
-    Parameters
-    ----------
-    data_source : str or Path
-        Path to data file or directory.
-    format : {'csv', 'excel', 'hdf5'}, optional
-        Data format. Auto-detected if not specified.
-    
-    Attributes
-    ----------
-    data : DataFrame
-        Loaded and processed data.
-    metadata : dict
-        Metadata about the data source and processing steps.
-    n_samples : int
-        Number of samples in the dataset.
-    
-    Methods
-    -------
-    load_data()
-        Load data from source.
-    clean_data(strategy='drop')
-        Clean missing values and outliers.
-    analyze(method='pca')
-        Perform statistical analysis.
-    
-    Examples
-    --------
-    >>> processor = DataProcessor('data.csv')
-    >>> processor.load_data()
-    >>> processor.clean_data(strategy='interpolate')
-    >>> results = processor.analyze(method='pca')
-    
-    Notes
-    -----
-    This class is designed for biological data but can be adapted
-    for other scientific domains.
-    
-    See Also
-    --------
-    pandas.DataFrame : Underlying data structure
-    """
-    
-    def __init__(self, data_source, format=None):
-        """
-        Initialize the DataProcessor.
-        
-        Parameters
-        ----------
-        data_source : str or Path
-            Path to data file or directory.
-        format : {'csv', 'excel', 'hdf5'}, optional
-            Data format. Auto-detected if not specified.
-        """
-        self.data_source = data_source
-        self.format = format
-        self.data = None
-        self.metadata = {}
-    
-    def load_data(self):
-        """
-        Load data from the specified source.
-        
-        Returns
-        -------
-        self
-            Returns self for method chaining.
-        
-        Raises
-        ------
-        FileNotFoundError
-            If data source file does not exist.
-        IOError
-            If file cannot be read.
-        """
-        # Implementation
-        return self
-```
+> **Note on classes:** docstrings are also written for classes and their methods. Classes are introduced later in the course, so here we only use module-level and function-level docstrings.
 
 #### Module Docstrings
 
@@ -891,41 +825,42 @@ Place at the very beginning of the file:
 Data Analysis Utilities
 ========================
 
-This module provides utility functions for analyzing biological data,
-including sequence alignment, phylogenetic analysis, and statistical
-testing.
+This module provides utility functions for summarizing experimental
+measurements, including basic descriptive statistics.
 
 Available Functions
 -------------------
-align_sequences : Perform multiple sequence alignment
-calculate_phylogeny : Build phylogenetic tree
-statistical_test : Perform hypothesis testing
+summarize : Compute mean, median and standard deviation
 
 Dependencies
 ------------
-- numpy >= 1.20
-- scipy >= 1.7
-- biopython >= 1.79
+Python standard library only (statistics, collections).
 
 Examples
 --------
 >>> import data_utils
->>> sequences = data_utils.load_sequences('sequences.fasta')
->>> alignment = data_utils.align_sequences(sequences)
+>>> data_utils.summarize([1, 2, 3, 4, 5])
+{'mean': 3, 'median': 3, 'std': 1.5811388300841898}
 
 Notes
 -----
-This module requires external tools (MUSCLE, MAFFT) to be installed
-for sequence alignment functionality.
+All functions expect plain Python lists of numbers.
 
 Author: Your Name
-Date: YYYY-MM-DD
 License: MIT
 """
 
-import numpy as np
-from scipy import stats
-from Bio import SeqIO
+import statistics
+from collections import Counter
+
+
+def summarize(values):
+    """Return the mean, median and standard deviation of a list of numbers."""
+    return {
+        'mean': statistics.mean(values),
+        'median': statistics.median(values),
+        'std': statistics.stdev(values),
+    }
 ```
 
 #### Docstring Formats Comparison
@@ -950,7 +885,7 @@ def function(arg1, arg2):
     """
 ```
 
-**NumPy Style:**
+**Sectioned Style (underlined section headings):**
 ```python
 def function(arg1, arg2):
     """
@@ -995,7 +930,7 @@ def function(arg1, arg2):
     """
 ```
 
-**Recommendation for Scientific Python**: Use **NumPy style** as it's widely used in scientific packages (NumPy, SciPy, pandas, scikit-learn).
+**Recommendation for Scientific Python**: Use the **sectioned style** (the underlined `Parameters` / `Returns` headings), as it is widely used in scientific Python packages. Whichever style you choose, use it consistently within a project.
 
 #### Accessing Docstrings
 
@@ -1014,7 +949,7 @@ function_name??    # Source code + docstring
 ### Documentation Best Practices
 
 1. **Be concise but complete**: Include necessary information without verbosity
-2. **Use examples**: Show how to use the function/class
+2. **Use examples**: Show how to use the function
 3. **Document parameters**: Type and description for each
 4. **Explain return values**: What is returned and when
 5. **List exceptions**: What can go wrong
@@ -1040,19 +975,21 @@ A virtual environment is an isolated Python installation with its own:
 - Package library (site-packages)
 - Scripts and executables
 
-### Three Main Tools: venv, conda, uv
+### Two Main Tools: venv and conda
 
-| Feature | venv | conda | uv |
-|---------|------|-------|-----|
-| **Built-in** | Yes (Python 3.3+) | No | No |
-| **Installation** | None needed | Install Miniconda/Anaconda | `pip install uv` |
-| **Python versions** | Uses system Python | Manages Python versions | Manages Python versions |
-| **Non-Python packages** | No | Yes (R, C libraries) | Limited |
-| **Speed** | Fast | Slow | Very fast |
-| **Ecosystem** | PyPI only | conda-forge, defaults | PyPI |
-| **Scientific packages** | Limited | Excellent | Good |
-| **Complexity** | Simple | Moderate | Simple |
-| **Best for** | Pure Python projects | Data science, research | Modern Python dev |
+| Feature | venv | conda |
+|---------|------|-------|
+| **Built-in** | Yes (Python 3.3+) | No |
+| **Installation** | None needed | Install Miniconda/Anaconda |
+| **Python versions** | Uses system Python | Manages Python versions |
+| **Non-Python packages** | No | Yes (R, C libraries) |
+| **Speed** | Fast | Slower |
+| **Ecosystem** | PyPI only | conda-forge, defaults |
+| **Scientific packages** | Limited | Excellent |
+| **Complexity** | Simple | Moderate |
+| **Best for** | Pure Python projects | Data science, research |
+
+Other tools exist (see [Optional: other environment tools](#optional-other-environment-tools) below), but venv and conda are the two you need to know.
 
 ### Python venv (Built-in)
 
@@ -1104,7 +1041,7 @@ When activated, you'll see:
 source myenv/bin/activate
 
 # Install packages
-pip install numpy pandas matplotlib
+pip install requests
 
 # List installed packages
 pip list
@@ -1163,7 +1100,7 @@ conda --version
 conda create -n myenv python=3.10
 
 # Create with packages
-conda create -n dataenv python=3.10 numpy pandas matplotlib
+conda create -n webenv python=3.10 requests
 
 # Create from environment file
 conda env create -f environment.yml
@@ -1186,22 +1123,22 @@ conda env list
 
 ```bash
 # Install package
-conda install numpy
+conda install requests
 
 # Install specific version
-conda install numpy=1.24.0
+conda install requests=2.31.0
 
 # Install from specific channel
-conda install -c conda-forge scipy
+conda install -c conda-forge requests
 
 # Install multiple packages
-conda install numpy pandas matplotlib
+conda install requests jupyterlab
 
 # Update package
-conda update numpy
+conda update requests
 
 # Remove package
-conda remove numpy
+conda remove requests
 
 # List installed packages
 conda list
@@ -1226,12 +1163,8 @@ channels:
   - defaults
 dependencies:
   - python=3.10
-  - numpy=1.24
-  - pandas=2.0
-  - matplotlib=3.7
+  - requests=2.31
   - pip
-  - pip:
-    - some-pip-package==1.0
 ```
 
 **Method 2: Explicit spec file (Exact reproduction)**
@@ -1272,58 +1205,21 @@ conda config --set channel_priority strict
 conda config --show
 ```
 
-### uv: Modern Fast Alternative
+### Optional: other environment tools
 
-`uv` is a new, extremely fast Python package installer and resolver, written in Rust.
+*This section is optional. venv and conda are all you need for this course; the tools below are mentioned so that you recognize them when you meet them.*
 
-#### Installing uv
-
-```bash
-# Via pip
-pip install uv
-
-# Via curl (Unix)
-curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# Verify
-uv --version
-```
-
-#### Creating Environments with uv
-
-```bash
-# Create virtual environment
-uv venv myenv
-
-# Create with specific Python version
-uv venv --python 3.10 myenv
-
-# Activate (same as venv)
-source myenv/bin/activate  # Linux/Mac
-```
-
-#### Installing Packages with uv
-
-```bash
-# Install package (much faster than pip)
-uv pip install numpy pandas matplotlib
-
-# Install from requirements
-uv pip install -r requirements.txt
-
-# Install specific version
-uv pip install numpy==1.24.0
-
-# Compile requirements (creates lock file)
-uv pip compile requirements.in -o requirements.txt
-```
-
-#### Speed Comparison
-
-**Installing 50 packages:**
-- pip: ~45 seconds
-- conda: ~120 seconds  
-- uv: ~3 seconds
+- **uv**: a very fast, pip-compatible installer and environment manager written in Rust. Install it with `pip install uv`, then use it as a drop-in replacement for pip and venv:
+  ```bash
+  uv venv myenv                       # create an environment
+  source myenv/bin/activate           # activate it (Linux/Mac)
+  uv pip install requests             # install a package
+  uv pip install requests==2.31.0     # install a specific version
+  uv pip install -r requirements.txt  # install from a requirements file
+  ```
+- **Poetry**: manages dependencies and packaging through a `pyproject.toml` file and creates a lock file with exact versions (`poetry add requests`, `poetry install`). Mostly used for developing packages that you want to publish.
+- **Pipenv**: combines pip and venv, tracking dependencies in a `Pipfile` and `Pipfile.lock` (`pipenv install requests`, `pipenv shell`).
+- **virtualenvwrapper**: a set of shell commands that keeps all environments in one place and makes them quick to create and switch (`mkvirtualenv myenv`, `workon myenv`, `deactivate`).
 
 ### Choosing the Right Tool
 
@@ -1339,12 +1235,6 @@ uv pip compile requirements.in -o requirements.txt
 - Need different Python versions easily
 - Working with bioinformatics packages
 - Teaching (Anaconda provides consistent environment)
-
-#### Use **uv** when:
-- Speed is critical (CI/CD pipelines)
-- Working with modern Python tooling
-- Want pip compatibility with better performance
-- Managing monorepos or complex projects
 
 ### Best Practices
 
@@ -1366,7 +1256,7 @@ mkdir myproject
 cd myproject
 python -m venv .venv
 source .venv/bin/activate
-pip install numpy pandas matplotlib
+pip install requests
 pip freeze > requirements.txt
 git init
 echo ".venv/" >> .gitignore
@@ -1378,7 +1268,7 @@ mkdir myproject
 cd myproject
 conda create -n myproject python=3.10
 conda activate myproject
-conda install numpy pandas matplotlib
+conda install requests
 conda env export > environment.yml
 git init
 echo "environment file ready for version control"
@@ -1407,13 +1297,11 @@ conda activate project
 
 **Create requirements.txt:**
 ```bash
-# venv/uv
+# venv
 pip freeze > requirements.txt
 
 # Or manually curate (better)
-echo "numpy>=1.24.0
-pandas>=2.0.0
-matplotlib>=3.7.0" > requirements.txt
+echo "requests>=2.31.0" > requirements.txt
 ```
 
 **Create environment.yml:**
@@ -1955,7 +1843,7 @@ git diff
 
 # 5. Stage changes
 git add analysis.py
-git add tests/test_analysis.py
+git add README.md
 
 # 6. Commit
 git commit -m "Add statistical analysis module"
@@ -1979,7 +1867,7 @@ Pull Requests are a GitHub feature (not Git) for:
 - Proposing changes
 - Code review
 - Discussion
-- Testing before merge
+- Checking before merge
 
 **Creating a PR:**
 1. Push branch to GitHub
@@ -2003,16 +1891,15 @@ Why is this change needed?
 - Fixed bug in Y
 - Updated documentation
 
-## Testing
-How has this been tested?
+## Checking
+How did you check that the change works?
 
 ## Screenshots (if applicable)
 
 ## Checklist
 - [ ] Code follows style guidelines
-- [ ] Tests added/updated
 - [ ] Documentation updated
-- [ ] All tests passing
+- [ ] Code runs without errors
 ```
 
 #### Forking Workflow
@@ -2165,30 +2052,7 @@ What actually happened
 
 #### GitHub Actions (CI/CD)
 
-Automate testing, building, deploying.
-
-**Example: `.github/workflows/tests.yml`**
-```yaml
-name: Tests
-
-on: [push, pull_request]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.10'
-      - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
-          pip install pytest
-      - name: Run tests
-        run: pytest
-```
+GitHub Actions can automatically run checks every time you push or open a pull request. Automated testing is covered later in the course.
 
 ### Best Practices
 
@@ -2199,7 +2063,7 @@ jobs:
 5. **Review before committing**: Use `git diff`
 6. **Don't commit secrets**: API keys, passwords
 7. **Use .gitignore**: Don't track generated files
-8. **Test before pushing**: Ensure code works
+8. **Run your code before pushing**: Ensure it works
 9. **Meaningful branch names**: `fix-bug-123`, `add-feature-x`
 10. **Keep commits atomic**: One logical change per commit
 
@@ -2358,15 +2222,15 @@ project_name/
 ├── notebooks/            # Jupyter notebooks
 │   ├── 01_exploration.ipynb
 │   ├── 02_analysis.ipynb
-│   └── 03_visualization.ipynb
+│   └── 03_reports.ipynb
 │
 ├── src/                  # Source code
 │   ├── __init__.py
 │   ├── data_processing.py
 │   ├── analysis.py
-│   └── visualization.py
+│   └── reporting.py
 │
-├── tests/                # Unit tests
+├── tests/                # Automated tests (covered later in the course)
 │   ├── test_data_processing.py
 │   └── test_analysis.py
 │
@@ -2404,7 +2268,7 @@ python -m venv .venv
 source .venv/bin/activate
 
 # Install dependencies
-pip install numpy pandas matplotlib jupyter
+pip install requests jupyterlab
 
 # Save dependencies
 pip freeze > requirements.txt
@@ -2426,7 +2290,7 @@ git pull origin main
 git switch -c data-processing
 
 # Start Jupyter
-jupyter notebook
+jupyter lab
 
 # Work in notebook, develop code
 
@@ -2449,86 +2313,102 @@ git push -u origin data-processing
 **Start in Notebook** (exploratory):
 ```python
 # In notebook cell
-import pandas as pd
+import csv
+import math
 
 # Load data
-df = pd.read_csv('../data/raw/experiment.csv')
+with open('../data/raw/experiment.csv') as f:
+    rows = list(csv.DictReader(f))
 
-# Clean data
-df = df.dropna()
-df = df[df['value'] > 0]
-df['log_value'] = np.log(df['value'])
+# Clean data: keep rows with a valid, positive value
+clean = []
+for row in rows:
+    if row['value'] != '' and float(row['value']) > 0:
+        clean.append({'trial': row['trial'], 'value': float(row['value'])})
+
+# Add a log transformation
+for row in clean:
+    row['log_value'] = math.log(row['value'])
 
 # Explore
-print(df.describe())
-df.hist()
+print(len(rows), 'rows loaded,', len(clean), 'kept')
+print(clean[:3])
 ```
 
 **Extract to Module** (reusable):
 ```python
 # In src/data_processing.py
 
-import pandas as pd
-import numpy as np
+import csv
+import math
+
 
 def load_data(filepath):
     """
-    Load experimental data from CSV file.
-    
+    Load experimental data from a CSV file.
+
     Parameters
     ----------
     filepath : str or Path
-        Path to CSV file.
-    
+        Path to CSV file with columns 'trial' and 'value'.
+
     Returns
     -------
-    DataFrame
-        Loaded data.
+    list of dict
+        One dictionary per row, with all values as strings.
     """
-    return pd.read_csv(filepath)
+    with open(filepath, newline='') as f:
+        return list(csv.DictReader(f))
 
-def clean_data(df):
+
+def clean_data(rows):
     """
     Clean data by removing missing values and invalid entries.
-    
+
     Parameters
     ----------
-    df : DataFrame
-        Raw data.
-    
+    rows : list of dict
+        Raw rows as returned by load_data.
+
     Returns
     -------
-    DataFrame
-        Cleaned data with log-transformed values.
+    list of dict
+        Cleaned rows with numeric values and a log-transformed value.
     """
-    # Remove missing values
-    df = df.dropna()
-    
-    # Filter invalid values
-    df = df[df['value'] > 0]
-    
-    # Add log transformation
-    df['log_value'] = np.log(df['value'])
-    
-    return df
+    cleaned = []
+    for row in rows:
+        # Remove missing values
+        if row['value'] == '':
+            continue
+        value = float(row['value'])
+        # Filter invalid values
+        if value <= 0:
+            continue
+        # Add log transformation
+        cleaned.append({
+            'trial': row['trial'],
+            'value': value,
+            'log_value': math.log(value),
+        })
+    return cleaned
+
 
 def load_and_clean(filepath):
     """
     Load and clean data in one step.
-    
+
     Parameters
     ----------
     filepath : str or Path
         Path to CSV file.
-    
+
     Returns
     -------
-    DataFrame
+    list of dict
         Cleaned data ready for analysis.
     """
-    df = load_data(filepath)
-    df = clean_data(df)
-    return df
+    rows = load_data(filepath)
+    return clean_data(rows)
 ```
 
 **Use in Notebook** (clean):
@@ -2537,82 +2417,12 @@ def load_and_clean(filepath):
 from src.data_processing import load_and_clean
 
 # Now simple one-liner
-df = load_and_clean('../data/raw/experiment.csv')
+data = load_and_clean('../data/raw/experiment.csv')
 
 # Continue with analysis
 ```
 
-#### 4. Testing Your Code
-
-```python
-# In tests/test_data_processing.py
-
-import pytest
-import pandas as pd
-import numpy as np
-from src.data_processing import clean_data
-
-def test_clean_data_removes_na():
-    """Test that clean_data removes missing values."""
-    # Create test data
-    df = pd.DataFrame({
-        'value': [1, 2, np.nan, 4],
-        'other': ['a', 'b', 'c', 'd']
-    })
-    
-    # Clean
-    result = clean_data(df)
-    
-    # Check no NaN values
-    assert not result.isnull().any().any()
-    assert len(result) == 3
-
-def test_clean_data_filters_invalid():
-    """Test that clean_data removes non-positive values."""
-    df = pd.DataFrame({
-        'value': [-1, 0, 1, 2],
-        'other': ['a', 'b', 'c', 'd']
-    })
-    
-    result = clean_data(df)
-    
-    # Only positive values remain
-    assert (result['value'] > 0).all()
-    assert len(result) == 2
-
-def test_clean_data_adds_log():
-    """Test that log transformation is added."""
-    df = pd.DataFrame({
-        'value': [1, 2, 4, 8],
-        'other': ['a', 'b', 'c', 'd']
-    })
-    
-    result = clean_data(df)
-    
-    # Check log column exists
-    assert 'log_value' in result.columns
-    
-    # Check log values correct
-    expected_log = np.log([1, 2, 4, 8])
-    np.testing.assert_array_almost_equal(result['log_value'], expected_log)
-```
-
-**Run tests:**
-```bash
-# Install pytest
-pip install pytest
-
-# Run tests
-pytest tests/
-
-# With verbose output
-pytest -v tests/
-
-# Run specific test
-pytest tests/test_data_processing.py::test_clean_data_removes_na
-```
-
-#### 5. Documentation
+#### 4. Documentation
 
 **README.md:**
 ```markdown
@@ -2654,7 +2464,7 @@ Data files are located in `data/`:
 Analysis notebooks in `notebooks/`:
 1. `01_exploration.ipynb`: Initial data exploration
 2. `02_analysis.ipynb`: Statistical analysis
-3. `03_visualization.ipynb`: Figure generation
+3. `03_reports.ipynb`: Summary tables and reports
 
 ## Citation
 
@@ -2675,7 +2485,6 @@ MIT License - see LICENSE file
 - [ ] Random seeds set for reproducibility
 - [ ] Software versions recorded
 - [ ] README explains how to reproduce
-- [ ] Tests verify correctness
 - [ ] Figures can be regenerated from code
 
 ### Publishing Your Research
@@ -2715,42 +2524,7 @@ Users can run your notebook in browser without installing anything!
 
 ### Continuous Integration
 
-**Example: Automated Testing**
-
-`.github/workflows/tests.yml`:
-```yaml
-name: Tests
-
-on: [push, pull_request]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ['3.9', '3.10', '3.11']
-    
-    steps:
-    - uses: actions/checkout@v3
-    
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
-      with:
-        python-version: ${{ matrix.python-version }}
-    
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install pytest pytest-cov
-    
-    - name: Run tests
-      run: |
-        pytest tests/ --cov=src --cov-report=xml
-    
-    - name: Upload coverage
-      uses: codecov/codecov-action@v3
-```
+Services such as GitHub Actions can run your checks automatically whenever you push. Automated testing is covered later in the course.
 
 ### Collaboration Best Practices
 
@@ -2758,7 +2532,7 @@ jobs:
 2. **Issue templates**: Help users report bugs effectively
 3. **Pull request template**: Standardize PR descriptions
 4. **Code review**: At least one review before merging
-5. **Protected main branch**: Require PRs, passing tests
+5. **Protected main branch**: Require PRs and reviews
 6. **Semantic versioning**: v1.0.0 → v1.0.1 (patch), v1.1.0 (minor), v2.0.0 (major)
 7. **Changelog**: Document changes between versions
 
@@ -2771,7 +2545,7 @@ jobs:
    alias gc='git commit -m'
    alias gp='git push'
    alias gs='git status'
-   alias jn='jupyter notebook'
+   alias jl='jupyter lab'
    ```
 
 2. **Templates**: Create project templates
@@ -2786,27 +2560,27 @@ jobs:
 
 4. **Makefile**: Automate common tasks
    ```makefile
-   .PHONY: test clean install
+   .PHONY: run clean install
    
    install:
        pip install -r requirements.txt
    
-   test:
-       pytest tests/
+   run:
+       python scripts/run_pipeline.py
    
    clean:
        find . -type f -name '*.pyc' -delete
        find . -type d -name '__pycache__' -delete
    
    notebook:
-       jupyter notebook
+       jupyter lab
    ```
 
 ### Conclusion
 
 Mastering these development tools and workflows will:
 - **Save time** through automation and reusability
-- **Reduce errors** through version control and testing
+- **Reduce errors** through version control and careful review
 - **Enhance collaboration** through clear processes
 - **Increase impact** through reproducibility and sharing
 - **Advance science** through open, transparent research

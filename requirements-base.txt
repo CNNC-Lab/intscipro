@@ -1,0 +1,5 @@
+# pip equivalent of environment-base.yml (Days 2 and 3):
+#   python -m venv .venv
+#   .venv\Scripts\activate         (Windows)   or   source .venv/bin/activate   (macOS, Linux)
+#   pip install -r requirements-base.txt
+ipython
