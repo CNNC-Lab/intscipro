@@ -13,11 +13,11 @@ Day 2 starts with a hands-on hour on **setting up and running Python** (installa
 ## Lecture Materials
 - **Setup guide**: [setup/setup_tutorial.md](setup/setup_tutorial.md), with the scripts used in class ([`hello.py`](setup/hello.py), [`check_python.py`](setup/check_python.py), `broken_*.py`).
 - **Slides**: one deck, starting with Part 0 (setting up and running Python) followed by the Lecture 2 content. Available from [this link](https://slides.com/renatocfduarte/sci-pro2/scroll?token=vGNyExFb&chrome=hidden) (download as HTML)
-- **PDF**: Download from [this link](https://drive.google.com/file/d/1oHaSGSNGd3LjKbSY8DamkAMK9iJKOYTV/view?usp=sharing)
-- **Detailed Handout**: [day02_handout.md](day02_handout.md). Comprehensive reference material covering all concepts. You can also download the pdf from [this link](https://drive.google.com/file/d/16xJ3C-9-FYixNVefMn0qXSDfR8N37wbd/view?usp=sharing)
+- **PDF**: Download from [this link](pdf/day02_slides.pdf)
+- **Detailed Handout**: [day02_handout.md](day02_handout.md). Comprehensive reference material covering all concepts. You can also download the pdf from [this link](pdf/day02_handout.pdf)
 
 ## Practical Exercises
-- **Exercise Set**: [day02_exercises.md](day02_exercises.md) (also available as pdf from [this link](https://drive.google.com/file/d/18r-yc6AXCjlAtKIHI3ColImFw4EcRNF7/view?usp=drive_link)) - a Part 0 checkpoint plus 18 hands-on exercises covering:
+- **Exercise Set**: [day02_exercises.md](day02_exercises.md) (also available as pdf from [this link](pdf/day02_exercises.pdf)) - a Part 0 checkpoint plus 18 hands-on exercises covering:
   - Setting up, the terminal, environments, running and debugging scripts (Part 0)
   - Variables, data types, and basic I/O operations
   - Operators, expressions, and control flow structures
