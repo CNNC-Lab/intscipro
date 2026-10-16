@@ -1,15 +1,17 @@
 # Day 1: *Introduction & Modern Development Ecosystem*
 
 ## Lecture
-You can obtain the lecture slides from [this link](https://slides.com/renatocfduarte/sci-pro1/scroll?token=fOSrB0Qa&chrome=hidden) and download them as html, or as a pdf from [this link](https://drive.google.com/file/d/1a6M78QesU6smRofBst1Uu-XXPRRpQ0hj/view?usp=sharing).
+You can obtain the lecture slides from [this link](https://slides.com/renatocfduarte/sci-pro1/scroll?token=fOSrB0Qa&chrome=hidden) and download them as html, or as a pdf from [this link](pdf/day01_slides.pdf).
 
 
 ## Practicals: Introduction & AI-Assisted Coding Demos
 
-### Session Overview (3 hours total)
-1. **Setup preview** (optional, 10 min): the full setup, with installation help and a first-code checkpoint, is the first hour of **Day 2** ([setup tutorial](../day02-fundamentals/setup/setup_tutorial.md)). If you want a head start, install Miniconda and VS Code before Day 2 following the [pre-work checklist](../resources/before_day2.md).
-2. **Simple AI-assisted coding demonstration** (30 min demo + 30 min hands-on): follow [AI_chat_demo.md](AI_chat_demo.md). Uses [`datasets/sample_neuron_data.csv`](../datasets/sample_neuron_data.csv); the script the AI is expected to produce is in [`demo_scripts/neuron_analysis.py`](demo_scripts/neuron_analysis.py).
-3. **End-to-end agentic analysis with Claude Code** (15 min live demo + discussion): an AI agent takes a real single-cell RNA-seq dataset (human blood cells, bundled with `scanpy`) from question to research report: it proposes a plan, we approve it, and it runs the analysis and writes the report. See [claude_code_demo/](claude_code_demo/) for the data, the prompt and what to look for.
+### Session Overview
+1. **Simple AI-assisted coding demonstration** (30 min demo + 30 min hands-on): follow [AI_chat_demo.md](AI_chat_demo.md). Uses [`datasets/sample_neuron_data.csv`](../datasets/sample_neuron_data.csv); the script the AI is expected to produce is in [`demo_scripts/neuron_analysis.py`](demo_scripts/neuron_analysis.py).
+2. **End-to-end agentic analysis with Claude Code** (15 min live demo + discussion): an AI agent takes a real single-cell RNA-seq dataset (human blood cells, bundled with `scanpy`) from question to research report: it proposes a plan, we approve it, and it runs the analysis and writes the report. See [claude_code_demo/](claude_code_demo/) for the data, the prompt and what to look for.
 
 ### Take-home exercise
 Write a one-page brief for your own dataset (what the data is, the questions, your statistical standards, the deliverable), paste it into an AI assistant, and check the result against what you know. Bring one thing the assistant got wrong.
+
+## Before Day 2
+Day 2 starts with setting up Python on your own computer. To save time, do the short [pre-work checklist](../resources/before_day2.md) beforehand.
