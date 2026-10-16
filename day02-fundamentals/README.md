@@ -11,9 +11,8 @@ Day 2 starts with a hands-on hour on **setting up and running Python** (installa
 **Before class:** do the 10-minute checklist in [`resources/before_day2.md`](../resources/before_day2.md), so the first hour is spent running code instead of installing it.
 
 ## Lecture Materials
-- **Part 0 slides** (setting up and running Python): the deck "Scientific Programming 2, Part 0: Setting up and running Python" (link provided in class), followed by the main Lecture 2 slides below.
 - **Setup guide**: [setup/setup_tutorial.md](setup/setup_tutorial.md), with the scripts used in class ([`hello.py`](setup/hello.py), [`check_python.py`](setup/check_python.py), `broken_*.py`).
-- **Slides**: Available from [this link](https://slides.com/renatocfduarte/sci-pro2/scroll?token=vGNyExFb&chrome=hidden) (download as HTML)
+- **Slides**: one deck, starting with Part 0 (setting up and running Python) followed by the Lecture 2 content. Available from [this link](https://slides.com/renatocfduarte/sci-pro2/scroll?token=vGNyExFb&chrome=hidden) (download as HTML)
 - **PDF**: Download from [this link](https://drive.google.com/file/d/1oHaSGSNGd3LjKbSY8DamkAMK9iJKOYTV/view?usp=sharing)
 - **Detailed Handout**: [day02_handout.md](day02_handout.md). Comprehensive reference material covering all concepts. You can also download the pdf from [this link](https://drive.google.com/file/d/16xJ3C-9-FYixNVefMn0qXSDfR8N37wbd/view?usp=sharing)
 
