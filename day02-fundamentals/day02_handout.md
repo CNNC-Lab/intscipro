@@ -10,6 +10,7 @@ Today we start writing Python. First we make sure everyone can **run** Python on
 Today uses **pure Python** only (the standard library). Packages for numerical work are introduced from Day 4. If the session runs out of time, Part 3 continues at the start of Day 3.
 
 By the end of this lecture, you'll have all the essential building blocks needed to write real scientific programs. Every program ever written consists of these components - it's how you combine them that distinguishes well-written, robust code from poorly-written, difficult-to-maintain code.
+
 ---
 ## **Part 0**: Setting up and running Python
 This part is a condensed reference. The full step-by-step guide for Windows, macOS and Linux, with troubleshooting, is [`setup/setup_tutorial.md`](setup/setup_tutorial.md), and the install checklist to do **before** class is [`resources/before_day2.md`](../resources/before_day2.md).
