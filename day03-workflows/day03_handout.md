@@ -80,22 +80,16 @@ This makes them ideal for:
 
 ### Installation
 
-**Via Anaconda (Recommended for beginners):**
+**In the course environment (recommended):** you already have Miniconda and the `scientific-programming` environment from Day 2. Add JupyterLab to it:
 ```bash
-# Download Anaconda from https://www.anaconda.com/download/
-# Install and then launch Jupyter:
-jupyter notebook
-```
-
-**Via pip (Minimal installation):**
-```bash
-pip install jupyterlab
+conda activate scientific-programming
+conda install jupyterlab
 jupyter lab
 ```
 
-**Via conda:**
+**With pip (venv users):**
 ```bash
-conda install jupyterlab
+pip install jupyterlab
 jupyter lab
 ```
 
@@ -975,6 +969,8 @@ A virtual environment is an isolated Python installation with its own:
 - Package library (site-packages)
 - Scripts and executables
 
+> **You already use one.** The `scientific-programming` environment from Day 2 is a conda environment created from a file, [`environment-base.yml`](../environment-base.yml) (its pip twin is [`requirements-base.txt`](../requirements-base.txt)). Open both files: they are small real examples of what this section teaches. Later days extend the same environment with `conda env update`.
+
 ### Two Main Tools: venv and conda
 
 | Feature | venv | conda |
@@ -1003,7 +999,7 @@ python -m venv myenv
 python -m venv project_env
 
 # Create with specific Python version (if multiple installed)
-python3.10 -m venv myenv
+python3.11 -m venv myenv
 ```
 
 This creates a directory (`myenv/`) containing:
@@ -1080,7 +1076,7 @@ Conda is a package manager and environment manager combined, particularly strong
 
 #### Installing Conda
 
-**Miniconda (Minimal, Recommended):**
+**Miniconda (Minimal, Recommended; already installed if you followed Day 2):**
 ```bash
 # Download from https://docs.conda.io/en/latest/miniconda.html
 # Install and follow prompts
@@ -1097,10 +1093,10 @@ conda --version
 
 ```bash
 # Create environment with specific Python version
-conda create -n myenv python=3.10
+conda create -n myenv python=3.11
 
 # Create with packages
-conda create -n webenv python=3.10 requests
+conda create -n webenv python=3.11 requests
 
 # Create from environment file
 conda env create -f environment.yml
@@ -1162,7 +1158,7 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python=3.10
+  - python=3.11
   - requests=2.31
   - pip
 ```
@@ -1266,7 +1262,7 @@ echo ".venv/" >> .gitignore
 ```bash
 mkdir myproject
 cd myproject
-conda create -n myproject python=3.10
+conda create -n myproject python=3.11
 conda activate myproject
 conda install requests
 conda env export > environment.yml

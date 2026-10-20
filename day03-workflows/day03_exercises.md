@@ -446,11 +446,11 @@ In this exercise we use the small, popular package `requests` (an HTTP library) 
     conda --version
     ```
     
-    If not installed, download Miniconda: https://docs.conda.io/en/latest/miniconda.html
+    If it is missing, go back to the Day 2 setup guide ([`day02-fundamentals/setup/setup_tutorial.md`](../day02-fundamentals/setup/setup_tutorial.md)) and install Miniconda.
 
 18. **Create conda environment**:
     ```bash
-    conda create -n analysis_env python=3.10
+    conda create -n analysis_env python=3.11
     ```
     
     Type `y` when prompted.
@@ -539,7 +539,7 @@ In this exercise we use the small, popular package `requests` (an HTTP library) 
     
     **conda**:
     ```bash
-    conda create -n conda_minimal python=3.10
+    conda create -n conda_minimal python=3.11
     conda activate conda_minimal
     conda install requests jupyterlab
     conda list > conda_packages.txt
@@ -564,7 +564,7 @@ In this exercise we use the small, popular package `requests` (an HTTP library) 
       - conda-forge
       - defaults
     dependencies:
-      - python=3.10
+      - python=3.11
       - requests=2.31
       - jupyterlab
       - pip
@@ -605,7 +605,7 @@ In this exercise we use the small, popular package `requests` (an HTTP library) 
     # Environment Setup
     
     ## Prerequisites
-    - Miniconda or Anaconda
+    - Miniconda (see the Day 2 setup guide)
     
     ## Installation
     1. Create environment:

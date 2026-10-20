@@ -8,7 +8,7 @@ Activate your environment and add JupyterLab (we install and use it today):
 conda activate scientific-programming
 conda install jupyterlab
 ```
-(pip users: `pip install jupyterlab`.) If Day 2 ran out of time, we start today with the end of Day 2: functions and modular programming.
+(pip users: `pip install jupyterlab`.) If Day 2 ran out of time, we start today with the end of Day 2: functions and modular programming. Need the installation steps again? See the [Day 2 setup guide](../day02-fundamentals/setup/setup_tutorial.md).
 
 ## Overview
 This day covers the essential tools and workflows that enable efficient scientific programming and reproducible research. We explore six fundamental topics:
@@ -23,10 +23,10 @@ This day covers the essential tools and workflows that enable efficient scientif
 ## Lecture Materials
 - **Slides**: Available from [this link](https://slides.com/renatocfduarte/scientific-programming-2-variables-and-data-structures/scroll?token=KO943Kek&chrome=hidden) (download as HTML)
 - **PDF**: Download from [this link](https://drive.google.com/file/d/1ksQypHAsw9aKQCKMEemt-1_BAo6-OiB4/view?usp=sharing)
-- **Detailed Handout**: [day03_handout.md](day03_handout.md). Comprehensive reference material covering all concepts. You can also download the pdf from [this link](https://drive.google.com/file/d/1uqERrYK-g0bCTqCFPkdsJ-qftjk8f4my/view?usp=sharing)
+- **Detailed Handout**: [day03_handout.md](day03_handout.md). Comprehensive reference material covering all concepts. You can also download the pdf from [this link](pdf/day03_handout.pdf)
 
 ## Practical Exercises
-- **Exercise Set**: [day03_exercises.md](day03_exercises.md) (also available as pdf from [this link](https://drive.google.com/file/d/1aQAYyoEgcDeAmhMxPkgd2voUocbbXtdP/view?usp=sharing)) - Hands-on exercises covering:
+- **Exercise Set**: [day03_exercises.md](day03_exercises.md) (also available as pdf from [this link](pdf/day03_exercises.pdf)) - Hands-on exercises covering:
   - Jupyter Notebooks for interactive computing
   - Virtual environment creation and management
   - Git fundamentals and version control
