@@ -1421,6 +1421,17 @@ Configuration levels:
 - `--global`: All repositories for your user
 - `--local`: Specific repository (default)
 
+### Authenticating with GitHub
+
+GitHub no longer accepts your account password for `git push` or `git pull` over HTTPS. Use one of:
+
+1. **GitHub CLI (simplest, all systems):** install it from <https://cli.github.com/>, then run `gh auth login`, choose **GitHub.com**, **HTTPS**, and **Login with a web browser**. Git then uses this login automatically.
+2. **Git Credential Manager (Windows):** installed with Git for Windows. The first push opens a browser window to sign in.
+3. **Personal access token:** on GitHub go to Settings, Developer settings, Personal access tokens, create a token with the `repo` scope, and paste it when Git asks for a password. Treat it like a password and never commit it.
+4. **SSH keys:** more setup, but no repeated prompts (see GitHub's documentation, "Connecting to GitHub with SSH").
+
+Check that it works with `git push` on your first repository (Exercise 4, Part A). A `Permission denied` or `Authentication failed` message means the login is missing.
+
 ### Creating a Repository
 
 #### Option 1: Start from Scratch

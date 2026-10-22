@@ -3,7 +3,7 @@
 > Day 3 uses only the Python standard library and the tools themselves; the scientific libraries are introduced from Day 4.
 
 ## Before the session
-Activate your environment and add JupyterLab (we install and use it today):
+Do the 15-minute [Git and GitHub checklist](../resources/before_day3.md) (GitHub account, Git, login). Then activate your environment and add JupyterLab (we install and use it today):
 ```bash
 conda activate scientific-programming
 conda install jupyterlab
@@ -22,7 +22,7 @@ This day covers the essential tools and workflows that enable efficient scientif
 
 ## Lecture Materials
 - **Slides**: Available from [this link](https://slides.com/renatocfduarte/scientific-programming-2-variables-and-data-structures/scroll?token=KO943Kek&chrome=hidden) (download as HTML)
-- **PDF**: Download from [this link](https://drive.google.com/file/d/1ksQypHAsw9aKQCKMEemt-1_BAo6-OiB4/view?usp=sharing)
+- **PDF**: Download from [this link](pdf/day03_slides.pdf)
 - **Detailed Handout**: [day03_handout.md](day03_handout.md). Comprehensive reference material covering all concepts. You can also download the pdf from [this link](pdf/day03_handout.pdf)
 
 ## Practical Exercises

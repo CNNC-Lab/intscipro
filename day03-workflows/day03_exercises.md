@@ -1137,6 +1137,8 @@ if __name__ == "__main__":
     print(f"Translation: {translate(test_seq)}")
 ```
 
+**Before you start:** you need a GitHub account, Git installed and a working GitHub login (see [`resources/before_day3.md`](../resources/before_day3.md) and "Authenticating with GitHub" in the handout). If `git push` says `Authentication failed`, fix the login first.
+
 ### Part A: Creating a GitHub Repository 
 
 1. **Go to GitHub**: https://github.com
