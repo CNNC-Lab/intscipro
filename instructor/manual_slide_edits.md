@@ -30,6 +30,9 @@ Rule for Day 3: no scientific libraries (they arrive on Days 4 to 8); use `reque
 | 30 (uv) | `uv pip install pandas numpy matplotlib` | `uv pip install requests`, or move to the appendix |
 | 31 ("More options") | `pipenv install pandas`, `rye add pandas` | `requests` in both, or move to the appendix |
 | 50 ("Computational Research Workflow") | `conda install numpy scipy matplotlib pandas` | `conda install requests` |
+| 28 ("Conda environments") | also `conda create -n myproject python=3.10` | `python=3.11` (the course version) |
+| 36 ("Best practices") | example environment name `rna_seq_2024` contains a year | `rna_seq_analysis` |
+| 3 ("Day 3" agenda) | lists "conda, poetry, uv" | "Virtual environments (venv and conda)" |
 | 29 to 31 and the comparison table slides | poetry, uv, pipenv, rye and virtualenvwrapper are too much for beginners | move to an "Optional: other tools" appendix after the Thank-you slide (or hide them) and keep venv and conda as the core |
 
 The handout and exercises already follow this rule.
