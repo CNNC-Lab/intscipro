@@ -123,8 +123,9 @@ E = np.linspace(0, 10, 100)
 # MATLAB: F = A'
 F = A.T
 
-# MATLAB: G = inv(A)
-G = np.linalg.inv(A)
+# MATLAB: G = inv(S)  (only square matrices can be inverted)
+S = np.array([[2, 1], [1, 3]])
+G = np.linalg.inv(S)
 
 # MATLAB: H = A * B (matrix multiplication)
 H = A @ B  # or np.dot(A, B)
@@ -366,7 +367,7 @@ c2 = np.concatenate((a, b), axis=1)  # Horizontal
 x = np.array([1, 2, 3])
 y = np.array([4, 5, 6])
 column_stack = np.column_stack((x, y))  # [[1 4] [2 5] [3 6]]
-row_stack = np.row_stack((x, y))        # [[1 2 3] [4 5 6]]
+row_stack = np.vstack((x, y))           # [[1 2 3] [4 5 6]] (np.row_stack was removed in NumPy 2.x)
 ```
 
 ### 1.7 Array Indexing and Slicing
@@ -1116,12 +1117,14 @@ y = np.linspace(0, 4, 5)
 X, Y = np.meshgrid(x, y)
 Z = np.sin(X) * np.cos(Y)
 
-f_2d = interpolate.interp2d(x, y, Z, kind='cubic')
+# (interp2d was removed in SciPy 1.14; use RegularGridInterpolator or RectBivariateSpline)
+f_2d = interpolate.RegularGridInterpolator((x, y), Z.T, method='cubic')
 
-# Evaluate at new points
+# Evaluate at new points (a grid of (x, y) pairs)
 x_new = np.linspace(0, 4, 20)
 y_new = np.linspace(0, 4, 20)
-Z_new = f_2d(x_new, y_new)
+Xn, Yn = np.meshgrid(x_new, y_new)
+Z_new = f_2d((Xn, Yn))      # shape (20, 20)
 ```
 ---
 ## **Part 3**: Matplotlib - Data Visualization
@@ -1293,6 +1296,9 @@ plt.show()
 ### 3.3 Figure and Axes
 Understanding the matplotlib object hierarchy:
 ```python
+x = np.linspace(0, 10, 100)
+y1, y2 = np.sin(x), np.cos(x)
+
 # Create figure and axes explicitly
 fig, ax = plt.subplots()
 ax.plot(x, y1)

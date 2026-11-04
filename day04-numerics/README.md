@@ -8,22 +8,22 @@ This day covers the essential numerical computing tools that form the backbone o
 3. **Matplotlib** - Data visualization and publication-quality figures
 
 ## Before the session
-Extend your environment with the scientific packages introduced today, then check it:
+From the main course folder, extend your environment with the scientific packages introduced today, then check it:
 ```bash
 conda activate scientific-programming
 conda env update -n scientific-programming -f environment.yml
-python examples/check_installation.py
+python day04-numerics/examples/check_installation.py
 ```
 (pip users: `pip install -r requirements.txt` from the course folder.)
 
 ## Lecture Materials
 - **Slides**: Available from [this link](https://slides.com/renatocfduarte/scientific-programming-4-numericalcore/scroll?token=LRfvwh_i&chrome=hidden) (download as HTML)
-- **PDF**: Download from [this link](https://drive.google.com/file/d/1IxbXeuslgZb3_nU68hOp4JVjaG8ciOSk/view?usp=sharing)
-- **Examples**: Code snippets used throught the lecture are available in the [`examples/`](examples/) directory
-- **Detailed Handout**: [day04_handout.md](day04_handout.md). Comprehensive reference material covering all concepts. You can also download the pdf from [this link](https://drive.google.com/file/d/10OSYZj458qomckHifwLOGltswfjFKxSl/view?usp=sharing)
+- **PDF**: Download from [this link](pdf/day04_slides.pdf)
+- **Examples**: Code snippets used throughout the lecture are available in the [`examples/`](examples/) directory
+- **Detailed Handout**: [day04_handout.md](day04_handout.md). Comprehensive reference material covering all concepts. You can also download the pdf from [this link](pdf/day04_handout.pdf)
 
 ## Practical Exercises
-- **Exercise Set**: [day04_exercises.md](day04_exercises.md) (also available as pdf from [this link](https://drive.google.com/file/d/1Q09mbb4qWafgSMjrPukYkXUOLG7ZWdpo/view?usp=sharing)) - Hands-on exercises covering:
+- **Exercise Set**: [day04_exercises.md](day04_exercises.md) (also available as pdf from [this link](pdf/day04_exercises.pdf)) - Hands-on exercises covering:
   - NumPy array creation, manipulation, and operations
   - Statistical operations and linear algebra
   - SciPy statistical analysis and signal processing
