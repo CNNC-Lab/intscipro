@@ -17,7 +17,7 @@ conda env update -n scientific-programming -f environment.yml
 
 ## Lecture Materials
 - **Slides**: Available from [this link](https://slides.com/renatocfduarte/scientific-programming-5-data-analysis/scroll?token=CyhMM07K&chrome=hidden)
-- **PDF**: Download from [this link](https://drive.google.com/file/d/1aoigNOmM4m7JrG7p5CZ7qViHnAkmFXQx/view?usp=sharing)
+- **PDF**: Download from [this link](pdf/day05_slides.pdf)
 - **Notebooks**: Interactive examples in the [`notebooks/`](notebooks/) directory
 - **Detailed Handout**: [day05_handout.md](day05_handout.md). Comprehensive reference material covering all concepts. You can also download the pdf from [this link](pdf/day05_handout.pdf)
 
