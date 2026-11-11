@@ -216,6 +216,8 @@ pd.reset_option('all')
 
 ## 3. Reading Data Files
 
+> **About the examples.** Unless a snippet creates its own data, `df` is the DataFrame from Exercise 1.1 (columns `subject_id`, `condition`, `trial`, `reaction_time`, `accuracy`, `session`; see [`day05_exercises.md`](day05_exercises.md)). Other column names that appear in the examples (`age`, `iq`, `gene_name`, ...) and file names such as `data.csv` are placeholders for your own data.
+
 ### Reading CSV Files
 
 CSV (Comma-Separated Values) is the most common format for tabular data. Pandas provides `read_csv()` with extensive options for handling various CSV formats.
@@ -416,7 +418,7 @@ df.isnull().all()                 # Which columns are entirely missing
 ```python
 df.dtypes                         # Data type of each column
 df.select_dtypes(include='number')  # Select only numeric columns
-df.select_dtypes(include='object')  # Select only object/string columns
+df.select_dtypes(include=['object', 'string'])  # Select only text columns
 df.select_dtypes(exclude='number')  # Exclude numeric columns
 ```
 
@@ -439,7 +441,7 @@ df.plot.scatter(x='age', y='reaction_time')
 
 # Correlation heatmap (requires seaborn)
 import seaborn as sns
-sns.heatmap(df.corr(), annot=True, cmap='coolwarm')
+sns.heatmap(df.corr(numeric_only=True), annot=True, cmap='coolwarm')
 ```
 
 ---
@@ -1276,7 +1278,7 @@ df.groupby('condition')['reaction_time'].mean().plot(kind='barh')
 df['reaction_time'].plot(kind='hist', bins=20)
 
 # Box plot
-df.plot(kind='box', y='reaction_time', by='condition')
+df.boxplot(column='reaction_time', by='condition')
 
 # Area plot
 df.plot(kind='area', x='time', y='neural_activity')
@@ -1319,6 +1321,12 @@ plt.show()
 ### Timeseries Basics
 
 ```python
+# Example data: one value per day (replace with your own recordings)
+df = pd.DataFrame({
+    'date': pd.date_range('2000-01-01', periods=120, freq='D').astype(str),
+    'reaction_time': np.random.normal(350, 40, 120),
+})
+
 # Create datetime index
 df['date'] = pd.to_datetime(df['date'])
 df = df.set_index('date')
@@ -1328,17 +1336,16 @@ df['year'] = df.index.year
 df['month'] = df.index.month
 df['day'] = df.index.day
 df['dayofweek'] = df.index.dayofweek
-df['hour'] = df.index.hour
 
-# Time-based selection
-df['2024-01']  # All data from January 2024
-df['2024-01':'2024-03']  # January to March 2024
-df.loc['2024-01-15']  # Specific date
+# Time-based selection (use .loc with partial date strings)
+df.loc['2000-01']                 # All data from January 2000
+df.loc['2000-01':'2000-03']       # January to March 2000
+df.loc['2000-01-15']              # One specific day
 
-# Resampling (change frequency)
-df.resample('D').mean()  # Daily mean
-df.resample('W').sum()   # Weekly sum
-df.resample('M').count() # Monthly count
+# Resampling (change frequency); numeric columns only
+df[['reaction_time']].resample('D').mean()   # Daily mean
+df[['reaction_time']].resample('W').sum()    # Weekly sum
+df[['reaction_time']].resample('ME').count() # Monthly count ('M' was removed in pandas 3)
 
 # Rolling windows
 df['reaction_time'].rolling(window=7).mean()  # 7-day moving average

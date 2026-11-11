@@ -8,14 +8,21 @@ This day covers essential data manipulation and statistical analysis tools for s
 3. **Statistical Analysis** - Hypothesis testing, correlation, and distribution fitting
 4. **Signal Processing** - Filtering, smoothing, and timeseries analysis
 
+## Before the session
+This day needs the full environment from Day 4 (pandas, SciPy, matplotlib, seaborn). If you have not extended it yet, run from the main course folder:
+```bash
+conda activate scientific-programming
+conda env update -n scientific-programming -f environment.yml
+```
+
 ## Lecture Materials
 - **Slides**: Available from [this link](https://slides.com/renatocfduarte/scientific-programming-5-data-analysis/scroll?token=CyhMM07K&chrome=hidden)
-- **PDF**: Download from [this link](https://drive.google.com/file/d/1aoigNOmM4m7JrG7p5CZ7qViHnAkmFXQx/view?usp=sharing)
+- **PDF**: Download from [this link](pdf/day05_slides.pdf)
 - **Notebooks**: Interactive examples in the [`notebooks/`](notebooks/) directory
-- **Detailed Handout**: [day05_handout.md](day05_handout.md). Comprehensive reference material covering all concepts. You can also download the pdf from [this link](https://drive.google.com/file/d/1prFhuJgwAYTha4kRisytcVBJALP7Ld0E/view?usp=sharing)
+- **Detailed Handout**: [day05_handout.md](day05_handout.md). Comprehensive reference material covering all concepts. You can also download the pdf from [this link](pdf/day05_handout.pdf)
 
 ## Practical Exercises
-- **Exercise Set**: [day05_exercises.md](day05_exercises.md) (also available as pdf from [this link](https://drive.google.com/file/d/1oBLmwhaTArdWcLR_q5uoKGNCX6GG8cSj/view?usp=sharing)) - Hands-on exercises covering:
+- **Exercise Set**: [day05_exercises.md](day05_exercises.md) (also available as pdf from [this link](pdf/day05_exercises.pdf)) - Hands-on exercises covering:
   - Data loading, exploration, and quality assessment
   - Boolean indexing and data selection (.loc[], .iloc[])
   - Data cleaning (missing data, outliers)
