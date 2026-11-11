@@ -9,7 +9,7 @@ dependencies:
   # Scientific computing
   - numpy>=1.26
   - scipy>=1.11
-  - pandas>=2.1
+  - pandas>=2.2
   - openpyxl>=3.1
   - statsmodels>=0.14
   - scikit-learn>=1.5
