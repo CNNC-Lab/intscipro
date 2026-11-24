@@ -19,7 +19,7 @@ conda env update -n scientific-programming -f environment.yml
 
 ## Lecture Materials
 - **Slides**: Available from [this link](https://slides.com/renatocfduarte/scientific-programming-7-intermediate-programming-concepts/scroll?token=q5vn1Q1h&chrome=hidden)
-- **PDF**: Download from [this link](https://drive.google.com/file/d/1IWw8AwsYQBc6ZugoF0R6ITiJn37CwMEH/view?usp=sharing)
+- **PDF**: Download from [this link](pdf/day07_slides.pdf)
 - **Detailed Handout**: [day07_handout.md](day07_handout.md). Comprehensive reference material covering all concepts. You can also download the pdf from [this link](pdf/day07_handout.pdf)
 
 ## Practical Exercises
