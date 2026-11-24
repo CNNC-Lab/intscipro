@@ -39,7 +39,7 @@ class LIFNeuron:
     --------
     >>> neuron = LIFNeuron(tau_m=10.0, v_rest=-65.0)
     >>> for t in np.arange(0, 100, 0.1):
-    ...     fired = neuron.step(current=1.5, dt=0.1)
+    ...     fired = neuron.step(current=2.0, dt=0.1)
     ...     if fired:
     ...         print(f"Spike at {t:.1f} ms")
     """

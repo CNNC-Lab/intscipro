@@ -10,13 +10,20 @@ This day covers intermediate programming concepts essential for writing professi
 5. **Functional Programming** - Map, filter, reduce, and lambda functions
 6. **Testing** - Unit testing with pytest, fixtures, and test-driven development
 
+## Before the session
+This day uses `pytest`, which is part of the full environment from Day 4. If you have not extended the environment yet, run from the main course folder:
+```bash
+conda activate scientific-programming
+conda env update -n scientific-programming -f environment.yml
+```
+
 ## Lecture Materials
 - **Slides**: Available from [this link](https://slides.com/renatocfduarte/scientific-programming-7-intermediate-programming-concepts/scroll?token=q5vn1Q1h&chrome=hidden)
 - **PDF**: Download from [this link](https://drive.google.com/file/d/1IWw8AwsYQBc6ZugoF0R6ITiJn37CwMEH/view?usp=sharing)
-- **Detailed Handout**: [day07_handout.md](day07_handout.md). Comprehensive reference material covering all concepts. You can also download the pdf from [this link](https://drive.google.com/file/d/115f00guTYnmWQkpY0SR9HrVBeicfagFm/view?usp=sharing)
+- **Detailed Handout**: [day07_handout.md](day07_handout.md). Comprehensive reference material covering all concepts. You can also download the pdf from [this link](pdf/day07_handout.pdf)
 
 ## Practical Exercises
-- **Exercise Set**: [day07_exercises.md](day07_exercises.md) (also available as pdf from [this link](https://drive.google.com/file/d/1UO2Kg9IcjEaS7oi5B7nq9F9dB61Gd5iE/view?usp=sharing)) - Hands-on exercises covering:
+- **Exercise Set**: [day07_exercises.md](day07_exercises.md) (also available as pdf from [this link](pdf/day07_exercises.pdf)) - Hands-on exercises covering:
   - Robust data loading with error handling
   - LIF neuron class with type hints and documentation
   - Functional programming patterns for spike analysis
@@ -33,8 +40,6 @@ Complete solutions for all exercises are available in the [`solutions/`](solutio
 - `exercise_5_refactored.py` - Professional refactoring example
 - `bonus_complete_pipeline.py` - Complete analysis pipeline
 - `README.md` - Detailed documentation and usage examples
-- `SOLUTIONS_SUMMARY.md` - Summary of all solutions with test results
-- `QUICK_REFERENCE.md` - Quick start guide and code snippets
 
 ## Learning Objectives
 

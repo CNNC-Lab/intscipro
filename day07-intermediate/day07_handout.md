@@ -24,6 +24,7 @@
    - Object-Oriented Programming for Science
    - Classes: Basic Structure
    - Inheritance & Composition
+   - Dataclasses and Protocols
    - Functional Programming Concepts
    - Map, Filter, Reduce
    - Lambda Functions & List Comprehensions
@@ -788,7 +789,7 @@ class Neuron:
 # Usage
 neuron = Neuron(tau_m=10.0, v_rest=-65.0)
 for t in range(1000):
-    fired = neuron.integrate(current=1.5, dt=0.1)
+    fired = neuron.integrate(current=20.0, dt=0.1)  # strong enough to reach threshold
     if fired:
         neuron.spike_times.append(t * 0.1)
 
@@ -873,6 +874,47 @@ network.simulate(duration=1000.0, dt=0.1)
 ```
 
 **Rule of thumb:** Favor composition over inheritance. Inheritance creates tight coupling; composition is more flexible.
+
+### Dataclasses and Protocols
+
+**Dataclasses** generate `__init__`, `__repr__` and `__eq__` for classes that mainly hold data (results, parameters, records):
+
+```python
+from dataclasses import dataclass, asdict
+
+@dataclass
+class SpikeTrainStats:
+    """Summary statistics of one spike train."""
+    neuron_id: str
+    n_spikes: int
+    firing_rate: float   # Hz
+
+stats = SpikeTrainStats("neuron_001", 6, 6.0)
+print(stats)                 # SpikeTrainStats(neuron_id='neuron_001', n_spikes=6, firing_rate=6.0)
+print(asdict(stats))         # plain dict, handy for saving to JSON
+print(stats == SpikeTrainStats("neuron_001", 6, 6.0))   # True: compared by value
+```
+
+Use `@dataclass(frozen=True)` to make instances immutable, and `field(default_factory=list)` for mutable defaults such as lists.
+
+**Protocols** describe an interface by the methods an object must have, without requiring inheritance ("if it has an `analyze` method, it is an analyzer"). Type checkers such as mypy verify the match:
+
+```python
+from typing import Protocol
+import numpy as np
+
+class SpikeAnalyzer(Protocol):
+    def analyze(self, spike_times: np.ndarray) -> dict: ...
+
+class RateAnalyzer:                       # note: no inheritance from SpikeAnalyzer
+    def analyze(self, spike_times: np.ndarray) -> dict:
+        return {"n_spikes": len(spike_times)}
+
+def run(analyzer: SpikeAnalyzer, spikes: np.ndarray) -> dict:
+    return analyzer.analyze(spikes)       # any object with .analyze() is accepted
+
+print(run(RateAnalyzer(), np.array([0.1, 0.2, 0.5])))   # {'n_spikes': 3}
+```
 
 ### Functional Programming Concepts
 
@@ -1344,6 +1386,9 @@ def test_smooth_signal_length():
 
 **1. Parametrized tests** (test multiple inputs)
 ```python
+import numpy as np
+import pytest
+
 @pytest.mark.parametrize("spike_times,duration,expected", [
     (np.array([0.1, 0.2, 0.3]), 1.0, 3.0),
     (np.array([0.1, 0.2]), 2.0, 1.0),
